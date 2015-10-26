@@ -1,4 +1,4 @@
-// Offline JS
+  // Offline JS
 // To re-generate the offline bundle, run this from the root of your project:
 //
 // $ react-native bundle --minify
