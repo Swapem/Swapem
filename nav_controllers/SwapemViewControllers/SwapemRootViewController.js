@@ -4,8 +4,8 @@ var React = require('react-native');
 
 var {
   StyleSheet,
-  View,
   Component,
+  View,
 } = React;
 
 var styles = StyleSheet.create({

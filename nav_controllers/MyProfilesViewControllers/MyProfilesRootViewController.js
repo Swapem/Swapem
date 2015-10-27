@@ -4,12 +4,17 @@ var React = require('react-native');
 var TableView = require('react-native-tableview')
 var Section = TableView.Section;
 var Item = TableView.Item;
+var MyProfilesViewController1 = require('./MyProfilesViewController1')
 
 var {
   StyleSheet,
-  View,
   Component,
 } = React;
+
+var MyProfileTitles = [
+{title: 'Basic'},
+{title: 'School'},
+];
 
 var styles = StyleSheet.create({
   container: {
@@ -19,17 +24,22 @@ var styles = StyleSheet.create({
 
 class MyProfilesRootViewController extends Component {
 	render() {
+		var profileTitle = MyProfileTitles[0];
 		return (
 			<TableView
 			style = {styles.container}
-			onPress={(event) => console.log(event)}>
+			onPress = {(event) => this.showProfileDetail(profileTitle)}>
 			<Section>
-			<Item>Basic</Item>
-			<Item>Work</Item>
-			<Item>School</Item>
+			<Item>{profileTitle.title}</Item>
 			</Section>
 			</TableView>
 		);
+	}
+	showProfileDetail(profileTitle) {
+		this.props.navigator.push({
+			title: profileTitle.title,
+			component: MyProfilesViewController1,
+		})
 	}
 }
 

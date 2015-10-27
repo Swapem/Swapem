@@ -1,12 +1,10 @@
 'use strict';
 
 var React = require('react-native');
-var MyProfilesRootViewController = require('../nav_controllers/MyProfilesRootViewController');
+var MyProfilesRootViewController = require('../nav_controllers/MyProfilesViewControllers/MyProfilesRootViewController');
 
 var {
   StyleSheet,
-  Text,
-  View,
   Component,
   NavigatorIOS,
 } = React;
@@ -23,6 +21,8 @@ class MyProfilesTab extends Component {
       <NavigatorIOS
       translucent = {false}
       style = {styles.container}
+      titleTextColor = '#2C3E50'
+      tintColor = '#3498DB'
       initialRoute = {{
         title: 'My Profiles',
         component: MyProfilesRootViewController,

@@ -1,11 +1,10 @@
 'use strict';
 
 var React = require('react-native');
-var SwapemRootViewController = require('../nav_controllers/SwapemRootViewController');
+var SwapemRootViewController = require('../nav_controllers/SwapemViewControllers/SwapemRootViewController');
 
 var {
   StyleSheet,
-  View,
   Component,
   NavigatorIOS,
 } = React;
@@ -22,6 +21,8 @@ class SwapemTab extends Component {
       <NavigatorIOS
       translucent = {false}
       style = {styles.container}
+      titleTextColor = '#2C3E50'
+      tintColor = '#3498DB'
       initialRoute = {{
         title: 'Swapem',
         component: SwapemRootViewController,
