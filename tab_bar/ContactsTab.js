@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var SwapemRootViewController = require('../nav_controllers/SwapemViewControllers/SwapemRootViewController');
+var ContactsRootViewController = require('../nav_controllers/ContactsViewControllers/ContactsRootViewController');
 
 var {
   StyleSheet,
@@ -15,7 +15,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class SwapemTab extends Component {
+class ContactsTab extends Component {
   render() {
     return (
       <NavigatorIOS
@@ -24,11 +24,11 @@ class SwapemTab extends Component {
       titleTextColor = '#2C3E50'
       tintColor = '#3498DB'
       initialRoute = {{
-        title: "Swap'em",
-        component: SwapemRootViewController,
+        title: 'Contacts',
+        component: ContactsRootViewController,
       }}/>
       );
   }
 }
 
-module.exports = SwapemTab;
+module.exports = ContactsTab;
