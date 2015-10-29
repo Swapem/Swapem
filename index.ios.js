@@ -15,11 +15,7 @@ var DeviceUUID = require("react-native-device-uuid");
 DeviceUUID.getUUID().then((uuid) => {
   console.log("Device UUID: "+ uuid);
 });
-navigator.geolocation.getCurrentPosition(
-      (pos) => console.log("latitude: " + pos.coords.latitude + ", longitude: " + pos.coords.longitude),
-      (error) => alert(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-);
+
 var {
   AppRegistry,
   Component,
