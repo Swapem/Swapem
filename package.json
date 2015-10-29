@@ -6,9 +6,10 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "react-native": "^0.12.0",
     "parse": "^1.5.0",
     "parse-react": "^0.4.2",
+    "react-native": "^0.12.0",
+    "react-native-device-uuid": "^1.1.2",
     "react-native-fbsdkcore": "0.0.5",
     "react-native-fbsdklogin": "0.0.5",
     "react-native-tableview": "^1.3.4"
