@@ -10,7 +10,7 @@ var SwapemTab = require('./tab_bar/SwapemTab');
 var RequestsTab = require('./tab_bar/RequestsTab');
 var ContactsTab = require('./tab_bar/ContactsTab');
 var SettingsTab = require('./tab_bar/SettingsTab');
-
+var DataAccessManager = require('./DataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
 DeviceUUID.getUUID().then((uuid) => {
   console.log("Device UUID: "+ uuid);
@@ -61,6 +61,10 @@ class Swapem extends Component {
       selectedIcon = {require('image!RequestsSelected')}
       selected = {this.state.selectedTab === 'RequestsTab'}
       onPress = {() => {
+        // Query if new contact requests were made.
+        DataAccessManager.checkForRecentContactsSent("receiver2");
+        // TODO ****************************************************
+        // ADD LOGIC TO STORE THE DATA, AND SHOW THEM IN LIST VIEW ON THE REQUESTS PAGE
         this.setState({
           selectedTab: 'RequestsTab'
         });
