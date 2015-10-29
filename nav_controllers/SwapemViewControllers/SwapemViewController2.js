@@ -4,7 +4,6 @@ var React = require('react-native');
 var TableView = require('react-native-tableview')
 var Section = TableView.Section;
 var Item = TableView.Item;
-var MyProfilesViewController3 = require('./MyProfilesViewController3')
 
 var {
   StyleSheet,
@@ -24,24 +23,18 @@ var styles = StyleSheet.create({
   },
 });
 
-class MyProfilesViewController2 extends Component {
+class SwapemViewController2 extends Component {
 	render() {
 		var profileItem = MyProfileItems[3];
 		return (
 			<TableView
-			style = {styles.container}
-			onPress = {(event) => this.showProfileDetails(profileItem)}>
+			style = {styles.container}>
 			<Section>
 			<Item>{profileItem.item}</Item>
 			</Section>
 			</TableView>
 		);
 	}
-	showProfileDetails(profileItem) {
-		this.props.navigator.push({
-			component: MyProfilesViewController3,
-		})
-	}
 }
 
-module.exports = MyProfilesViewController2;
+module.exports = SwapemViewController2;
