@@ -1,20 +1,16 @@
+/**
+ * Starting view controller for My Profiles tab
+ */
 'use strict';
 
 var React = require('react-native');
-var TableView = require('react-native-tableview')
-var Section = TableView.Section;
-var Item = TableView.Item;
-var MyProfilesViewController1 = require('./MyProfilesViewController1')
+var MyProfilesViewController1 = require('./MyProfilesViewController1');
 
 var {
   StyleSheet,
   Component,
+  NavigatorIOS,
 } = React;
-
-var MyProfileTitles = [
-{title: 'Basic'},
-{title: 'School'},
-];
 
 var styles = StyleSheet.create({
   container: {
@@ -24,23 +20,21 @@ var styles = StyleSheet.create({
 
 class MyProfilesRootViewController extends Component {
 	render() {
-		var profileTitle = MyProfileTitles[0];
 		return (
-			<TableView
-			style = {styles.container}
-			onPress = {(event) => this.showProfileDetail(profileTitle)}>
-			<Section>
-			<Item>{profileTitle.title}</Item>
-			</Section>
-			</TableView>
-		);
-	}
-	showProfileDetail(profileTitle) {
-		this.props.navigator.push({
-			title: profileTitle.title,
-			component: MyProfilesViewController1,
-		})
-	}
+      <NavigatorIOS
+      translucent = {false}
+      style = {styles.container}
+      barTintColor = '#ECF0F1'
+      titleTextColor = '#2C3E50'
+      tintColor = '#3498DB'
+      initialRoute = {{
+        title: 'My Profiles',
+        component: MyProfilesViewController1,
+        backButtonTitle: ' ',
+        rightButtonIcon: require('image!Add'),
+      }}/>
+      );
+  }
 }
 
 module.exports = MyProfilesRootViewController;

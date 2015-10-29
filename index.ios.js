@@ -1,15 +1,14 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Tab bar view controller
  */
 'use strict';
 
 var React = require('react-native');
-var MyProfilesTab = require('./tab_bar/MyProfilesTab');
-var SwapemTab = require('./tab_bar/SwapemTab');
-var RequestsTab = require('./tab_bar/RequestsTab');
-var ContactsTab = require('./tab_bar/ContactsTab');
-var SettingsTab = require('./tab_bar/SettingsTab');
+var MyProfilesRootViewController = require('./nav_controllers/MyProfilesViewControllers/MyProfilesRootViewController');
+var SwapemRootViewController = require('./nav_controllers/SwapemViewControllers/SwapemRootViewController');
+var RequestsRootViewController = require('./nav_controllers/RequestsViewControllers/RequestsRootViewController');
+var ContactsRootViewController = require('./nav_controllers/ContactsViewControllers/ContactsRootViewController');
+var SettingsRootViewController = require('./nav_controllers/SettingsViewControllers/SettingsRootViewController');
 var DataAccessManager = require('./DataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
 
@@ -23,40 +22,41 @@ class Swapem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'MyProfilesTab'
+      selectedTab: 'MyProfilesRootViewController'
     };
   }
   render() {
     return (
       <TabBarIOS
       translucent = {false}
+      barTintColor = '#ECF0F1'
       tintColor = '#3498DB'>
       <TabBarIOS.Item
       icon = {require('image!MyProfiles')}
       selectedIcon = {require('image!MyProfilesSelected')}
-      selected = {this.state.selectedTab === 'MyProfilesTab'}
+      selected = {this.state.selectedTab === 'MyProfilesRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'MyProfilesTab'
+          selectedTab: 'MyProfilesRootViewController'
         });
       }}>
-      <MyProfilesTab/>
+      <MyProfilesRootViewController/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Swapem')}
       selectedIcon = {require('image!SwapemSelected')}
-      selected = {this.state.selectedTab === 'SwapemTab'}
+      selected = {this.state.selectedTab === 'SwapemRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'SwapemTab'
+          selectedTab: 'SwapemRootViewController'
         });
       }}>
-      <SwapemTab/>
+      <SwapemRootViewController/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Requests')}
       selectedIcon = {require('image!RequestsSelected')}
-      selected = {this.state.selectedTab === 'RequestsTab'}
+      selected = {this.state.selectedTab === 'RequestsRootViewController'}
       onPress = {() => {
         // Query if new contact requests were made.
         console.log(DeviceUUID.getUUID());
@@ -64,32 +64,32 @@ class Swapem extends Component {
         // TODO ****************************************************
         // ADD LOGIC TO STORE THE DATA, AND SHOW THEM IN LIST VIEW ON THE REQUESTS PAGE
         this.setState({
-          selectedTab: 'RequestsTab'
+          selectedTab: 'RequestsRootViewController'
         });
       }}>
-      <RequestsTab/>
+      <RequestsRootViewController/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Contacts')}
       selectedIcon = {require('image!ContactsSelected')}
-      selected = {this.state.selectedTab === 'ContactsTab'}
+      selected = {this.state.selectedTab === 'ContactsRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'ContactsTab'
+          selectedTab: 'ContactsRootViewController'
         });
       }}>
-      <ContactsTab/>
+      <ContactsRootViewController/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Settings')}
       selectedIcon = {require('image!SettingsSelected')}
-      selected = {this.state.selectedTab === 'SettingsTab'}
+      selected = {this.state.selectedTab === 'SettingsRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'SettingsTab'
+          selectedTab: 'SettingsRootViewController'
         });
       }}>
-      <SettingsTab/>
+      <SettingsRootViewController/>
       </TabBarIOS.Item>
       </TabBarIOS>
       );
