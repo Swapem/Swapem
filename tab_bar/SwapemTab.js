@@ -24,7 +24,7 @@ class SwapemTab extends Component {
       titleTextColor = '#2C3E50'
       tintColor = '#3498DB'
       initialRoute = {{
-        title: 'Swapem',
+        title: "Swap'em",
         component: SwapemRootViewController,
       }}/>
       );

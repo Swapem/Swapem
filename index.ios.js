@@ -7,6 +7,10 @@
 var React = require('react-native');
 var MyProfilesTab = require('./tab_bar/MyProfilesTab');
 var SwapemTab = require('./tab_bar/SwapemTab');
+var RequestsTab = require('./tab_bar/RequestsTab');
+var ContactsTab = require('./tab_bar/ContactsTab');
+var SettingsTab = require('./tab_bar/SettingsTab');
+
 var DeviceUUID = require("react-native-device-uuid");
 DeviceUUID.getUUID().then((uuid) => {
   console.log("Device UUID: "+ uuid);
@@ -15,7 +19,7 @@ navigator.geolocation.getCurrentPosition(
       (pos) => console.log("latitude: " + pos.coords.latitude + ", longitude: " + pos.coords.longitude),
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
+);
 var {
   AppRegistry,
   Component,
@@ -55,6 +59,39 @@ class Swapem extends Component {
         });
       }}>
       <SwapemTab/>
+      </TabBarIOS.Item>
+      <TabBarIOS.Item
+      icon = {require('image!Requests')}
+      selectedIcon = {require('image!RequestsSelected')}
+      selected = {this.state.selectedTab === 'RequestsTab'}
+      onPress = {() => {
+        this.setState({
+          selectedTab: 'RequestsTab'
+        });
+      }}>
+      <RequestsTab/>
+      </TabBarIOS.Item>
+      <TabBarIOS.Item
+      icon = {require('image!Contacts')}
+      selectedIcon = {require('image!ContactsSelected')}
+      selected = {this.state.selectedTab === 'ContactsTab'}
+      onPress = {() => {
+        this.setState({
+          selectedTab: 'ContactsTab'
+        });
+      }}>
+      <ContactsTab/>
+      </TabBarIOS.Item>
+      <TabBarIOS.Item
+      icon = {require('image!Settings')}
+      selectedIcon = {require('image!SettingsSelected')}
+      selected = {this.state.selectedTab === 'SettingsTab'}
+      onPress = {() => {
+        this.setState({
+          selectedTab: 'SettingsTab'
+        });
+      }}>
+      <SettingsTab/>
       </TabBarIOS.Item>
       </TabBarIOS>
       );
