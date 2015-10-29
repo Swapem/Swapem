@@ -2,10 +2,13 @@
 
 var React = require('react-native');
 var TableView = require('react-native-tableview')
+var DeviceUUID = require("react-native-device-uuid");
 var Section = TableView.Section;
 var Item = TableView.Item;
+var DataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemViewController2 = require('./SwapemViewController2')
 var SwapemViewController3 = require('./SwapemViewController3')
+
 
 var {
   StyleSheet,
@@ -22,6 +25,17 @@ var styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+var uniqueIdentifier;
+DeviceUUID.getUUID().then((uuid) => {
+  uniqueIdentifier = uuid;
+});
+
+var userInfo = {
+	uuid: uniqueIdentifier,
+	name: "InsertMyNameHere",
+	searching: true
+}
 
 class SwapemViewController1 extends Component {
 	render() {
@@ -42,7 +56,10 @@ class SwapemViewController1 extends Component {
 			component: SwapemViewController2,
 			backButtonTitle: ' ',
 			rightButtonTitle: 'Scan',
-			onRightButtonPress: () => this.showScanProgress(),
+			onRightButtonPress: () => {
+				this.showScanProgress();
+				DataAccessManager.scan(userInfo);
+				}
 		})
 	}
 	showScanProgress() {

@@ -9,7 +9,7 @@ var SwapemRootViewController = require('./nav_controllers/SwapemViewControllers/
 var RequestsRootViewController = require('./nav_controllers/RequestsViewControllers/RequestsRootViewController');
 var ContactsRootViewController = require('./nav_controllers/ContactsViewControllers/ContactsRootViewController');
 var SettingsRootViewController = require('./nav_controllers/SettingsViewControllers/SettingsRootViewController');
-var DataAccessManager = require('./DataAccessManager');
+var RemoteDataAccessManager = require('./RemoteDataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
 
 var {
@@ -60,7 +60,7 @@ class Swapem extends Component {
       onPress = {() => {
         // Query if new contact requests were made.
         console.log(DeviceUUID.getUUID());
-        DataAccessManager.checkForRecentContactsSent(DeviceUUID.getUUID());
+        RemoteDataAccessManager.checkForRecentContactsSent(DeviceUUID.getUUID());
         // TODO ****************************************************
         // ADD LOGIC TO STORE THE DATA, AND SHOW THEM IN LIST VIEW ON THE REQUESTS PAGE
         this.setState({
