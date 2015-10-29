@@ -12,9 +12,6 @@ var ContactsTab = require('./tab_bar/ContactsTab');
 var SettingsTab = require('./tab_bar/SettingsTab');
 var DataAccessManager = require('./DataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
-DeviceUUID.getUUID().then((uuid) => {
-  console.log("Device UUID: "+ uuid);
-});
 
 var {
   AppRegistry,
@@ -62,7 +59,8 @@ class Swapem extends Component {
       selected = {this.state.selectedTab === 'RequestsTab'}
       onPress = {() => {
         // Query if new contact requests were made.
-        DataAccessManager.checkForRecentContactsSent("receiver2");
+        console.log(DeviceUUID.getUUID());
+        DataAccessManager.checkForRecentContactsSent(DeviceUUID.getUUID());
         // TODO ****************************************************
         // ADD LOGIC TO STORE THE DATA, AND SHOW THEM IN LIST VIEW ON THE REQUESTS PAGE
         this.setState({

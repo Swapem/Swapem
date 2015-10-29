@@ -25,7 +25,7 @@ var checkForRecentContactsSent = function(to) {
 	// Initiate the query
 	query.find({
 	success: function(results) {
-	   alert("Successfully retrieved " + results.length + "instances of contact information");
+	   alert("Successfully retrieved " + results.length + " instances of contact information");
 	   // Do something with the returned Parse.Object values
 	     for (var i = 0; i < results.length; i++) {
 	         var object = results[i];
