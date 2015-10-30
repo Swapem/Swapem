@@ -36,36 +36,34 @@ class MyProfilesViewController1 extends Component {
 			style = {styles.container}
 			editing = {this.props.editing}
 			onPress = {(event) => {
-				for (var i = 0; i < MyProfileTitles.length; i++) {
-					this.showProfileDetails(MyProfileTitles[i]);
-				}
+				this.showProfileDetails(event.label)
 			}}>
-			<Section
-			arrow = {true}
-			canMove = {true}
-			canEdit = {true}>
-			{MyProfileTitles.map(function(item, i) {
-				return (
-					<Item>
-					{MyProfileTitles[i]}
-					</Item>
-					);
-			})}
-			</Section>
+				<Section
+				arrow = {true}
+				canMove = {true}
+				canEdit = {true}>
+					{MyProfileTitles.map((item, i) => {
+						return (
+							<Item key={i}>
+								{item}
+							</Item>
+						);
+					})}
+				</Section>
 			</TableView>
 		);
 	}
-	showProfileDetails(profileTitle) {
+	showProfileDetails(profileType) {
 		this.props.navigator.push({
-			title: profileTitle,
+			title: profileType,
 			component: MyProfilesViewController2,
-			backButtonTitle: ' ',
 			rightButtonTitle: this.state.editing ? 'Done' : 'Edit',
 			onRightButtonPress: () => {
 				this.state.editing = !this.state.editing;
 			},
 			passProps: {
-				editing: this.state.editing},
+				editing: this.state.editing,
+				profileType: profileType},
 		})
 	}
 }

@@ -5,6 +5,7 @@ var TableView = require('react-native-tableview')
 var Section = TableView.Section;
 var Item = TableView.Item;
 var MyProfilesViewController3 = require('./MyProfilesViewController3')
+var MyProfilesDetailsVC = require('./MyProfilesDetailsVC')
 
 var {
   StyleSheet,
@@ -21,7 +22,7 @@ var MyProfileItems = [
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
+  }
 });
 
 class MyProfilesViewController2 extends Component {
@@ -31,14 +32,13 @@ class MyProfilesViewController2 extends Component {
 			style = {styles.container}
 			editing = {this.props.editing}
 			onPress = {(event) => {
-				for (var i = 0; i < MyProfileItems.length; i++) {
-					this.showProfileDetails(MyProfileItems[i]);
-				}
+				// Push MyProfileDetailsVC with selectedIndex
+				this.showProfileDetails(event.label)
 			}}>
 			<Section
 			canMove = {true}
 			canEdit = {true}>
-			{MyProfileItems.map(function(item, i) {
+			{MyProfileItems.map((item, i) => {
 				return (
 					<Item>
 					{MyProfileItems[i]}
@@ -52,10 +52,15 @@ class MyProfilesViewController2 extends Component {
 			</TableView>
 		);
 	}
-	showProfileDetails(profileItem) {
+	showProfileDetails(selectedLabel) {		
+
 		this.props.navigator.push({
-			component: MyProfilesViewController3,
-			backButtonTitle: ' ',
+			component: MyProfilesDetailsVC,
+			backButtonTitle: 'Save',
+			passProps: { label: selectedLabel,
+				profileType: this.props.profileType
+			},
+			title: selectedLabel
 		})
 	}
 }
