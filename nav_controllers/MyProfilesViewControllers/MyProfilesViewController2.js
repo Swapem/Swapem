@@ -52,8 +52,19 @@ class MyProfilesViewController2 extends Component {
 			</TableView>
 		);
 	}
+
 	showProfileDetails(selectedLabel) {		
 
+		if(selectedLabel === "Facebook"){
+			this.props.navigator.push({
+			component: MyProfilesViewController3,
+			backButtonTitle: 'Save',
+			title: selectedLabel
+		})
+
+		}
+
+		else{
 		this.props.navigator.push({
 			component: MyProfilesDetailsVC,
 			backButtonTitle: 'Save',
@@ -63,6 +74,7 @@ class MyProfilesViewController2 extends Component {
 			title: selectedLabel
 		})
 	}
+}
 }
 
 module.exports = MyProfilesViewController2;
