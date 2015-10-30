@@ -12,8 +12,9 @@ var {
 } = React;
 
 var MyProfileTitles = [
-{title: 'Basic'},
-{title: 'School'},
+'Basic',
+'School',
+'Work'
 ];
 
 var styles = StyleSheet.create({
@@ -23,24 +24,48 @@ var styles = StyleSheet.create({
 });
 
 class MyProfilesViewController1 extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			editing: false,
+		};
+	}
 	render() {
-		var profileTitle = MyProfileTitles[0];
 		return (
 			<TableView
 			style = {styles.container}
-			onPress = {(event) => this.showProfileDetails(profileTitle)}>
-			<Section>
-			<Item>{profileTitle.title}</Item>
+			editing = {this.props.editing}
+			onPress = {(event) => {
+				for (var i = 0; i < MyProfileTitles.length; i++) {
+					this.showProfileDetails(MyProfileTitles[i]);
+				}
+			}}>
+			<Section
+			arrow = {true}
+			canMove = {true}
+			canEdit = {true}>
+			{MyProfileTitles.map(function(item, i) {
+				return (
+					<Item>
+					{MyProfileTitles[i]}
+					</Item>
+					);
+			})}
 			</Section>
 			</TableView>
 		);
 	}
 	showProfileDetails(profileTitle) {
 		this.props.navigator.push({
-			title: profileTitle.title,
+			title: profileTitle,
 			component: MyProfilesViewController2,
 			backButtonTitle: ' ',
-			rightButtonTitle: 'Edit',
+			rightButtonTitle: this.state.editing ? 'Done' : 'Edit',
+			onRightButtonPress: () => {
+				this.state.editing = !this.state.editing;
+			},
+			passProps: {
+				editing: this.state.editing},
 		})
 	}
 }

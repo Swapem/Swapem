@@ -11,10 +11,10 @@ var {
 } = React;
 
 var MyProfileItems = [
-{item: 'Name'},
-{item: 'Phone'},
-{item: 'Email'},
-{item: 'Facebook'},
+'Name',
+'Phone',
+'Email',
+'Facebook',
 ];
 
 var styles = StyleSheet.create({
@@ -25,12 +25,18 @@ var styles = StyleSheet.create({
 
 class SwapemViewController2 extends Component {
 	render() {
-		var profileItem = MyProfileItems[3];
 		return (
 			<TableView
 			style = {styles.container}>
 			<Section>
-			<Item>{profileItem.item}</Item>
+			{MyProfileItems.map(function(item, i) {
+				return (
+					<Item
+					selected = {true}>
+					{MyProfileItems[i]}
+					</Item>
+					);
+			})}
 			</Section>
 			</TableView>
 		);

@@ -12,10 +12,10 @@ var {
 } = React;
 
 var MyProfileItems = [
-{item: 'Name'},
-{item: 'Phone'},
-{item: 'Email'},
-{item: 'Facebook'},
+'Name',
+'Phone',
+'Email',
+'Facebook',
 ];
 
 var styles = StyleSheet.create({
@@ -26,13 +26,28 @@ var styles = StyleSheet.create({
 
 class MyProfilesViewController2 extends Component {
 	render() {
-		var profileItem = MyProfileItems[3];
 		return (
 			<TableView
 			style = {styles.container}
-			onPress = {(event) => this.showProfileDetails(profileItem)}>
-			<Section>
-			<Item>{profileItem.item}</Item>
+			editing = {this.props.editing}
+			onPress = {(event) => {
+				for (var i = 0; i < MyProfileItems.length; i++) {
+					this.showProfileDetails(MyProfileItems[i]);
+				}
+			}}>
+			<Section
+			canMove = {true}
+			canEdit = {true}>
+			{MyProfileItems.map(function(item, i) {
+				return (
+					<Item>
+					{MyProfileItems[i]}
+					</Item>
+					);
+			})}
+			</Section>
+			<Section> 
+			<Item>Add field</Item>
 			</Section>
 			</TableView>
 		);
@@ -40,6 +55,7 @@ class MyProfilesViewController2 extends Component {
 	showProfileDetails(profileItem) {
 		this.props.navigator.push({
 			component: MyProfilesViewController3,
+			backButtonTitle: ' ',
 		})
 	}
 }

@@ -19,6 +19,12 @@ var styles = StyleSheet.create({
 });
 
 class MyProfilesRootViewController extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: false,
+    };
+  }
 	render() {
 		return (
       <NavigatorIOS
@@ -30,9 +36,15 @@ class MyProfilesRootViewController extends Component {
       initialRoute = {{
         title: 'My Profiles',
         component: MyProfilesViewController1,
-        backButtonTitle: ' ',
+        leftButtonTitle: this.state.editing ? 'Done' : 'Edit',
+        onLeftButtonPress: () => {
+          this.state.editing = !this.state.editing;
+        },
         rightButtonIcon: require('image!Add'),
-      }}/>
+        backButtonTitle: ' ',
+        passProps: {
+          editing: this.state.editing},
+        }}/>
       );
   }
 }

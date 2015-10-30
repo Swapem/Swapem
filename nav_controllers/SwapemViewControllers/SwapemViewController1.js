@@ -2,10 +2,13 @@
 
 var React = require('react-native');
 var TableView = require('react-native-tableview')
+var DeviceUUID = require("react-native-device-uuid");
 var Section = TableView.Section;
 var Item = TableView.Item;
+var DataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemViewController2 = require('./SwapemViewController2')
 var SwapemViewController3 = require('./SwapemViewController3')
+
 
 var {
   StyleSheet,
@@ -13,8 +16,9 @@ var {
 } = React;
 
 var MyProfileTitles = [
-{title: 'Basic'},
-{title: 'School'},
+'Basic',
+'School',
+'Work'
 ];
 
 var styles = StyleSheet.create({
@@ -23,15 +27,37 @@ var styles = StyleSheet.create({
   },
 });
 
+var uniqueIdentifier;
+DeviceUUID.getUUID().then((uuid) => {
+  uniqueIdentifier = uuid;
+});
+
+var userInfo = {
+	uuid: uniqueIdentifier,
+	name: "InsertMyNameHere",
+	searching: true
+}
+
 class SwapemViewController1 extends Component {
 	render() {
 		var profileTitle = MyProfileTitles[0];
 		return (
 			<TableView
 			style = {styles.container}
-			onPress = {(event) => this.showProfileDetails()}>
-			<Section>
-			<Item>{profileTitle.title}</Item>
+			onPress = {(event) => {
+				for (var i = 0; i < MyProfileTitles.length; i++) {
+					this.showProfileDetails(MyProfileTitles[i]);
+				}
+			}}>
+			<Section
+			arrow = {true}>
+			{MyProfileTitles.map(function(item, i) {
+				return (
+					<Item>
+					{MyProfileTitles[i]}
+					</Item>
+					);
+			})}
 			</Section>
 			</TableView>
 		);
@@ -42,7 +68,10 @@ class SwapemViewController1 extends Component {
 			component: SwapemViewController2,
 			backButtonTitle: ' ',
 			rightButtonTitle: 'Scan',
-			onRightButtonPress: () => this.showScanProgress(),
+			onRightButtonPress: () => {
+				this.showScanProgress();
+				DataAccessManager.scan(userInfo);
+				}
 		})
 	}
 	showScanProgress() {
