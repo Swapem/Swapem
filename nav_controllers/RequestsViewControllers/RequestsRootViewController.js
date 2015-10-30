@@ -30,6 +30,7 @@ class RequestsRootViewController extends Component {
       initialRoute = {{
         title: 'Requests',
         component: RequestsViewController1,
+        rightButtonIcon: require('image!Refresh'),
       }}/>
       );
   }

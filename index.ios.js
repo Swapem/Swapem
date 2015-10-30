@@ -37,7 +37,7 @@ class Swapem extends Component {
       selected = {this.state.selectedTab === 'MyProfilesRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'MyProfilesRootViewController'
+          selectedTab: 'MyProfilesRootViewController',
         });
       }}>
       <MyProfilesRootViewController/>
@@ -48,7 +48,7 @@ class Swapem extends Component {
       selected = {this.state.selectedTab === 'SwapemRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'SwapemRootViewController'
+          selectedTab: 'SwapemRootViewController',
         });
       }}>
       <SwapemRootViewController/>
@@ -64,7 +64,7 @@ class Swapem extends Component {
         // TODO ****************************************************
         // ADD LOGIC TO STORE THE DATA, AND SHOW THEM IN LIST VIEW ON THE REQUESTS PAGE
         this.setState({
-          selectedTab: 'RequestsRootViewController'
+          selectedTab: 'RequestsRootViewController',
         });
       }}>
       <RequestsRootViewController/>
@@ -75,7 +75,7 @@ class Swapem extends Component {
       selected = {this.state.selectedTab === 'ContactsRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'ContactsRootViewController'
+          selectedTab: 'ContactsRootViewController',
         });
       }}>
       <ContactsRootViewController/>
@@ -86,7 +86,7 @@ class Swapem extends Component {
       selected = {this.state.selectedTab === 'SettingsRootViewController'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'SettingsRootViewController'
+          selectedTab: 'SettingsRootViewController',
         });
       }}>
       <SettingsRootViewController/>

@@ -16,8 +16,9 @@ var {
 } = React;
 
 var MyProfileTitles = [
-{title: 'Basic'},
-{title: 'School'},
+'Basic',
+'School',
+'Work'
 ];
 
 var styles = StyleSheet.create({
@@ -43,9 +44,20 @@ class SwapemViewController1 extends Component {
 		return (
 			<TableView
 			style = {styles.container}
-			onPress = {(event) => this.showProfileDetails()}>
-			<Section>
-			<Item>{profileTitle.title}</Item>
+			onPress = {(event) => {
+				for (var i = 0; i < MyProfileTitles.length; i++) {
+					this.showProfileDetails(MyProfileTitles[i]);
+				}
+			}}>
+			<Section
+			arrow = {true}>
+			{MyProfileTitles.map(function(item, i) {
+				return (
+					<Item>
+					{MyProfileTitles[i]}
+					</Item>
+					);
+			})}
 			</Section>
 			</TableView>
 		);
