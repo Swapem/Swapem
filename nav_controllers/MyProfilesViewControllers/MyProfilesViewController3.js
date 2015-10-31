@@ -8,7 +8,7 @@ exports.FBSDKLoginManager = require('../../node_modules/react-native-fbsdklogin/
 var React = require('react-native');
 var FBSDKCore = require ('react-native-fbsdkcore');
 var FBSDKLogin = require('react-native-fbsdklogin');
-var TableView = require('react-native-tableview')
+var TableView = require('react-native-tableview');
 var Section = TableView.Section;
 var Item = TableView.Item;
 
@@ -27,16 +27,14 @@ var {
   Text,
   StyleSheet,
   Component,
-  View
+  View, 
+  LinkingIOS
 } = React;
 
 var styles = StyleSheet.create({
 });
 
-var fetchURL = new FBSDKGraphRequest ((error, result) => {
-  console.log('FBSDKGraphRequest', error, result);
-  }, 'me?fields=link');
-FBSDKGraphRequestManager.batchRequests([fetchURL], function() {}, 60);
+var FBURL;
 
 
 class MyProfilesViewController3 extends Component { 
@@ -52,21 +50,35 @@ class MyProfilesViewController3 extends Component {
                 alert('Login cancelled.');
               } else {
                 alert('Logged in.');
-                var token = new FBSDKAccessToken.getCurrentAccessToken(token => console.log (token, 'Type of Token is:' + typeof token));              
-                <Text style={styles.appendURL}>
-  Welcome to React Native!
-</Text>
-              }
+                var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
+                  console.log (token, 'Type of Token is:' + typeof token));
+                }
             }
-          }}
+        }}
           onLogoutFinished={() => alert('Logged out.')} 
           readPermissions={[]}
-          publishPermissions={['publish_actions']}/>             
+          publishPermissions={['publish_actions']}/>
+
+              <Text style={styles.appendURL} onPress = {() => LinkingIOS.openURL(FBURL)}>
+              	Check Your Facebook Profile Here!
+              	
+              </Text>
       </View>
     );
   }
 }
 
+
+          var fetchURL = new FBSDKGraphRequest ((error, result) => {
+                  if (error) {
+                    alert('Error making request');
+                  } else {
+                  console.log('FBSDKGraphRequest', error, result);
+                  // alert(JSON.stringify(result.link));
+                  FBURL = (result.link);
+                }
+            }, 'me?fields=link');
+              FBSDKGraphRequestManager.batchRequests([fetchURL], function() {}, 60);
 
 
 var styles = StyleSheet.create({
