@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react-native');
-var ContactsVC2 = require('./ContactsVC2');
 
 var {
   StyleSheet,
@@ -13,7 +12,7 @@ var {
   Text,
 } = React;
 
-var fakeContacts = [
+var fakeRequests = [
 {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',},
 {name: 'Lisa Wong', phone: '(778) 222-2222', email: 'lisawong@cs410.com', facebook: 'lisawong',},
 {name: 'Ryan Lee', phone: '(778) 333-3333', email: 'ryanlee@cs410.com', facebook: 'ryanlee',},
@@ -28,8 +27,16 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
   },
+  checkmark: {
+    alignSelf: 'flex-end',
+    height: 20,
+    marginLeft: 15,
+    marginRight: 5,
+    tintColor: '#3498DB',
+    width: 20,
+  },
   content: {
-    flex: 1,
+      flex: 1,
   },
   icon: {
     height: 40,
@@ -38,24 +45,16 @@ var styles = StyleSheet.create({
     tintColor: '#3498DB',
     width: 40,
   },
-  next: {
-  	alignSelf: 'flex-end',
-    height: 20,
-    marginLeft: 15,
-    marginRight: 5,
-    tintColor: '#E0E0E0',
-    width: 20,
-  },
   separator: {
-  	backgroundColor: '#E0E0E0',
+    backgroundColor: '#E0E0E0',
     height: 0.5,
   },
   person: {
-  	fontSize: 20,
-  },
-});
+     fontSize: 20,
+   },
+ });
 
-class ContactsVC1 extends Component {
+class RequestsVC1 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -65,24 +64,24 @@ class ContactsVC1 extends Component {
 		};
 	}
 	componentDidMount() {
-		var contacts = fakeContacts;
+		var requests = fakeRequests;
 		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(contacts)
+			dataSource: this.state.dataSource.cloneWithRows(requests)
 		});
 	}
 	render() {
 		return (
 			<ListView
       dataSource = {this.state.dataSource}
-      renderRow = {this.renderContact.bind(this)}
-      style = {styles.listView}/>
+      renderRow = {this.renderRequest.bind(this)}
+      style = {styles.listView}
+      />
       );
 	}
-	renderContact(contact) {
-    // e.g. contact = {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',}
+	renderRequest(request) {
+    // e.g. request = {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',}
 		return (
       <TouchableHighlight
-      onPress = {() => this.showContactInfo(contact,rowID)}
       underlayColor = '#2980B9'>
       <View>
       <View style = {styles.cell}>
@@ -90,12 +89,10 @@ class ContactsVC1 extends Component {
       source = {require('image!Person')}
       style = {styles.icon} />
       <View style = {styles.content}>
-      <Text style = {styles.person}>{contact.name}</Text>
+      <Text style = {styles.person}>{request.name}</Text>
       </View>
       <View>
-      <Image
-      source = {require('image!Next')}
-      style = {styles.next} />
+      <Image source = {require('image!Checkmark')} style = {styles.checkmark} />
       </View>
       </View>
       <View style = {styles.separator} />
@@ -103,26 +100,6 @@ class ContactsVC1 extends Component {
       </TouchableHighlight>
       );
 	}
-  showContactInfo(contact) {
-    var contactInfo = [
-    {name: contact.name},
-    {phone: contact.phone},
-    {email: contact.email},
-    {facebook: contact.facebook},
-    ];
-    this.props.navigator.push({
-      title: contact.name,
-      component: ContactsVC2,
-      leftButtonIcon: require('image!Back'),
-      onLeftButtonPress: () => {
-        this.props.navigator.pop();
-      },
-      rightButtonTitle: 'Import',
-      passProps: {
-        contactInfo: contactInfo,
-      },
-    })
-  }
 }
 
-module.exports = ContactsVC1;
+module.exports = RequestsVC1;

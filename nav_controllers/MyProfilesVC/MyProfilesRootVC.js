@@ -4,7 +4,7 @@
 'use strict';
 
 var React = require('react-native');
-var MyProfilesViewController1 = require('./MyProfilesViewController1');
+var MyProfilesVC1 = require('./MyProfilesVC1');
 
 var {
   StyleSheet,
@@ -18,7 +18,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class MyProfilesRootViewController extends Component {
+class MyProfilesRootVC extends Component {
 	render() {
 		return (
       <NavigatorIOS
@@ -29,7 +29,7 @@ class MyProfilesRootViewController extends Component {
       tintColor = '#3498DB'
       initialRoute = {{
         title: 'My Profiles',
-        component: MyProfilesViewController1,
+        component: MyProfilesVC1,
         leftButtonTitle: 'Edit',
         rightButtonIcon: require('image!Add'),
         }}/>
@@ -37,4 +37,4 @@ class MyProfilesRootViewController extends Component {
   }
 }
 
-module.exports = MyProfilesRootViewController;
+module.exports = MyProfilesRootVC;

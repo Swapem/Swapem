@@ -1,10 +1,10 @@
 /**
- * Starting view controller for Settings tab
+ * Starting view controller for Requests tab
  */
 'use strict';
 
 var React = require('react-native');
-var SettingsViewController1 = require('./SettingsViewController1');
+var RequestsVC1 = require('./RequestsVC1');
 
 var {
   StyleSheet,
@@ -18,7 +18,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class SettingsRootViewController extends Component {
+class RequestsRootVC extends Component {
   render() {
     return (
       <NavigatorIOS
@@ -28,11 +28,13 @@ class SettingsRootViewController extends Component {
       titleTextColor = '#2C3E50'
       tintColor = '#3498DB'
       initialRoute = {{
-        title: 'Settings',
-        component: SettingsViewController1,
+        title: 'Requests',
+        component: RequestsVC1,
+        leftButtonTitle: 'Edit',
+        rightButtonTitle: 'Accept',
       }}/>
       );
   }
 }
 
-module.exports = SettingsRootViewController;
+module.exports = RequestsRootVC;

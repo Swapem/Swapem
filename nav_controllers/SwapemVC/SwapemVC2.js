@@ -54,7 +54,7 @@ var styles = StyleSheet.create({
 	},
 });
 
-class ContactsVC2 extends Component {
+class SwapemVC2 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -64,9 +64,9 @@ class ContactsVC2 extends Component {
 		};
 	}
 	componentDidMount() {
-		var contactInfo = this.props.contactInfo;
+		var profileDetails = this.props.profileDetails;
 		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(contactInfo)
+			dataSource: this.state.dataSource.cloneWithRows(profileDetails)
 		});
 	}
 	render() {
@@ -77,7 +77,7 @@ class ContactsVC2 extends Component {
 			style = {styles.listView}/>
 			);
 	}
-	renderRequest(contactInfoItem) {
+	renderRequest(profileItem) {
 		return (
 			<TouchableHighlight
 			underlayColor = '#2980B9'>
@@ -85,7 +85,7 @@ class ContactsVC2 extends Component {
 			<View style = {styles.cell}>
 			<Image
 			source = {(() => {
-				switch (Object.keys(contactInfoItem).toString()) {
+				switch (Object.keys(profileItem).toString()) {
 					case 'email': return require('image!Email');
 					case 'facebook': return require('image!Facebook');
 					case 'name': return require('image!Person');
@@ -95,20 +95,20 @@ class ContactsVC2 extends Component {
 				style = {styles.icon} />
 				<View style = {styles.content}>
 				{(() => {
-					switch (Object.keys(contactInfoItem).toString()) {
+					switch (Object.keys(profileItem).toString()) {
 						case 'email': return <Text style = {styles.info}>home</Text>;
 						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
 						case 'phone': return <Text style = {styles.info}>mobile</Text>;
-						default: return;
+						default: return;t
 					}})()}
 					<Text style = {styles.item}>
 					{(() => {
-						switch (Object.keys(contactInfoItem).toString()) {
-							case 'email': return (contactInfoItem.email);
-							case 'facebook': return (contactInfoItem.facebook);
-							case 'name': return (contactInfoItem.name);
-							case 'phone': return (contactInfoItem.phone);
-							default: return (contactInfoItem.name);
+						switch (Object.keys(profileItem).toString()) {
+							case 'email': return (profileItem.email);
+							case 'facebook': return (profileItem.facebook);
+							case 'name': return (profileItem.name);
+							case 'phone': return (profileItem.phone);
+							default: return (profileItem.name);
 						}})()}
 						</Text>
 						</View>
@@ -123,4 +123,4 @@ class ContactsVC2 extends Component {
 }
 }
 
-module.exports = ContactsVC2;
+module.exports = SwapemVC2;

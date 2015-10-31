@@ -17,7 +17,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class SwapemViewController3 extends Component {
+class SwapemVC3 extends Component {
   render() {
     return (
       <View>
@@ -26,4 +26,4 @@ class SwapemViewController3 extends Component {
   }
 }
 
-module.exports = SwapemViewController3;
+module.exports = SwapemVC3;

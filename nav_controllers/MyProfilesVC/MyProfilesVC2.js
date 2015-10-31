@@ -4,7 +4,7 @@ var React = require('react-native');
 var TableView = require('react-native-tableview')
 var Section = TableView.Section;
 var Item = TableView.Item;
-var MyProfilesViewController3 = require('./MyProfilesViewController3')
+var MyProfilesVC3 = require('./MyProfilesVC3')
 var MyProfilesDetailsVC = require('./MyProfilesDetailsVC')
 
 var {
@@ -25,7 +25,7 @@ var styles = StyleSheet.create({
   }
 });
 
-class MyProfilesViewController2 extends Component {
+class MyProfilesVC2 extends Component {
 	render() {
 		return (
 			<TableView
@@ -54,7 +54,7 @@ class MyProfilesViewController2 extends Component {
 
 		if(selectedLabel === "Facebook"){
 			this.props.navigator.push({
-			component: MyProfilesViewController3,
+			component: MyProfilesVC3,
 			backButtonTitle: 'Save',
 			title: selectedLabel
 		})
@@ -74,4 +74,4 @@ class MyProfilesViewController2 extends Component {
 }
 }
 
-module.exports = MyProfilesViewController2;
+module.exports = MyProfilesVC2;
