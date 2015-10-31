@@ -76,7 +76,7 @@ class MyProfilesVC3 extends Component {
 
 var fetchURL = new FBSDKGraphRequest ((error, result) => {
   if (error) {
-    alert('Error making request');
+    // alert('Error making request');
     } else {
       console.log('FBSDKGraphRequest', error, result);
       // alert(JSON.stringify(result.link));
