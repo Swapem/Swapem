@@ -66,7 +66,10 @@ class SwapemViewController1 extends Component {
 		this.props.navigator.push({
 			title: 'Customize',
 			component: SwapemViewController2,
-			backButtonTitle: ' ',
+			leftButtonIcon: require('image!Back'),
+			onLeftButtonPress: () => {
+				this.props.navigator.pop();
+			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
 				this.showScanProgress();
@@ -77,6 +80,10 @@ class SwapemViewController1 extends Component {
 	showScanProgress() {
 		this.props.navigator.push({
 			component: SwapemViewController3,
+			leftButtonIcon: require('image!Back'),
+			onLeftButtonPress: () => {
+				this.props.navigator.pop();
+			},
 		})
 	}
 }

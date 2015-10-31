@@ -30,14 +30,11 @@ class MyProfilesViewController2 extends Component {
 		return (
 			<TableView
 			style = {styles.container}
-			editing = {this.props.editing}
 			onPress = {(event) => {
 				// Push MyProfileDetailsVC with selectedIndex
 				this.showProfileDetails(event.label)
 			}}>
-			<Section
-			canMove = {true}
-			canEdit = {true}>
+			<Section>
 			{MyProfileItems.map((item, i) => {
 				return (
 					<Item>

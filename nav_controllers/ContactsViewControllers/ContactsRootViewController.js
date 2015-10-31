@@ -30,6 +30,7 @@ class ContactsRootViewController extends Component {
       initialRoute = {{
         title: 'Contacts',
         component: ContactsViewController1,
+        rightButtonTitle: 'Edit',
       }}/>
       );
   }

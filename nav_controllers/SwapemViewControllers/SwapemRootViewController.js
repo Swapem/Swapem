@@ -30,7 +30,6 @@ class SwapemRootViewController extends Component {
       initialRoute = {{
         title: 'Select profile',
         component: SwapemViewController1,
-        backButtonTitle: ' ',
       }}/>
       );
   }

@@ -24,12 +24,6 @@ var styles = StyleSheet.create({
 });
 
 class MyProfilesViewController1 extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			editing: false,
-		};
-	}
 	render() {
 		return (
 			<TableView
@@ -39,9 +33,7 @@ class MyProfilesViewController1 extends Component {
 				this.showProfileDetails(event.label)
 			}}>
 				<Section
-				arrow = {true}
-				canMove = {true}
-				canEdit = {true}>
+				arrow = {true}>
 					{MyProfileTitles.map((item, i) => {
 						return (
 							<Item key={i}>
@@ -57,12 +49,12 @@ class MyProfilesViewController1 extends Component {
 		this.props.navigator.push({
 			title: profileType,
 			component: MyProfilesViewController2,
-			rightButtonTitle: this.state.editing ? 'Done' : 'Edit',
-			onRightButtonPress: () => {
-				this.state.editing = !this.state.editing;
+			leftButtonIcon: require('image!Back'),
+			onLeftButtonPress: () => {
+				this.props.navigator.pop();
 			},
+			rightButtonTitle: 'Edit',
 			passProps: {
-				editing: this.state.editing,
 				profileType: profileType},
 		})
 	}
