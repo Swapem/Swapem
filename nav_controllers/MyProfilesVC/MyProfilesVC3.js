@@ -11,10 +11,12 @@ var FBSDKLogin = require('react-native-fbsdklogin');
 var TableView = require('react-native-tableview');
 var Section = TableView.Section;
 var Item = TableView.Item;
+var FBURL;
+
 
 var {
-	FBSDKLoginButton,
-  	FBSDKLoginManager,
+  FBSDKLoginButton,
+    FBSDKLoginManager,
 } = FBSDKLogin;
 
 var {
@@ -28,17 +30,21 @@ var {
   StyleSheet,
   Component,
   View, 
-  LinkingIOS
+  LinkingIOS,
 } = React;
 
 var styles = StyleSheet.create({
+  redirect: {
+    fontSize: 20,
+    color: 'blue',
+    textAlign: 'center',
+    margin: 10,
+  },
 });
-
-var FBURL;
 
 
 class MyProfilesVC3 extends Component { 
-	render() {
+  render() {
     return (
       <View>
         <FBSDKLoginButton
@@ -46,48 +52,39 @@ class MyProfilesVC3 extends Component {
             if (error) {
               alert('Error logging in.');
             } else {
-              if (result.isCanceled) {
-                alert('Login cancelled.');
-              } else {
-                alert('Logged in.');
-                var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
-                  console.log (token, 'Type of Token is:' + typeof token));
+                if (result.isCanceled) {
+                  alert('Login cancelled.');
+                  } else {
+                    alert('Logged in.');
+                    var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
+                      console.log (token, 'Type of Token is:' + typeof token));
+                    }
+                  }
                 }
             }
-        }}
-          onLogoutFinished={() => alert('Logged out.')} 
-          readPermissions={[]}
-          publishPermissions={['publish_actions']}/>
-
-              <Text style={styles.appendURL} onPress = {() => LinkingIOS.openURL(FBURL)}>
-              	Check Your Facebook Profile Here!
-              	
-              </Text>
+            onLogoutFinished={() => alert('Logged out.')} 
+            readPermissions={[]}
+            publishPermissions={['publish_actions']}/>
+            <Text style={styles.redirect} onPress = {() => LinkingIOS.openURL(FBURL)}>
+              Check Your Facebook Profile Here!
+            </Text>
       </View>
     );
   }
 }
 
 
-          var fetchURL = new FBSDKGraphRequest ((error, result) => {
-                  if (error) {
-                    alert('Error making request');
-                  } else {
-                  console.log('FBSDKGraphRequest', error, result);
-                  // alert(JSON.stringify(result.link));
-                  FBURL = (result.link);
-                }
-            }, 'me?fields=link');
-              FBSDKGraphRequestManager.batchRequests([fetchURL], function() {}, 60);
+var fetchURL = new FBSDKGraphRequest ((error, result) => {
+  if (error) {
+    alert('Error making request');
+    } else {
+      console.log('FBSDKGraphRequest', error, result);
+      // alert(JSON.stringify(result.link));
+      FBURL = (result.link);
+      }
+    }, 'me?fields=link');
+FBSDKGraphRequestManager.batchRequests([fetchURL], function() {}, 60);
 
-
-var styles = StyleSheet.create({
-  appendURL: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
 
 FBSDKLoginManager.setLoginBehavior('native');
 FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
