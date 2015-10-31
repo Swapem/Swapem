@@ -31,11 +31,11 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   icon: {
-    width: 40,
     height: 40,
     marginLeft: 5,
     marginRight: 10,
     tintColor: '#3498DB',
+    width: 40,
   },
   separator: {
   	backgroundColor: '#E0E0E0',

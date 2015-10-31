@@ -12,12 +12,6 @@ var {
   Text,
 } = React;
 
-var fakeRequests = [
-'Junoh Lee',
-'Lisa Wong',
-'Ryan Lee',
-];
-
 var styles = StyleSheet.create({
   cell: {
     alignItems: 'center',
@@ -31,32 +25,22 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   icon: {
-    width: 40,
     height: 40,
     marginLeft: 5,
-    marginRight: 10,
+    marginRight: 15,
     tintColor: '#3498DB',
-  },
-  indicator: {
-    flex: 1,
-  },
-  next: {
-  	alignSelf: 'flex-end',
-    height: 20,
-    marginRight: 5,
-    tintColor: '#E0E0E0',
-    width: 20,
+    width: 40,
   },
   separator: {
   	backgroundColor: '#E0E0E0',
     height: 0.5,
   },
-  person: {
+  item: {
   	fontSize: 20,
   },
 });
 
-class ContactsViewController1 extends Component {
+class ContactsVC2 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -66,9 +50,9 @@ class ContactsViewController1 extends Component {
 		};
 	}
 	componentDidMount() {
-		var requests = fakeRequests;
+		var contactInfo = this.props.contactInfo;
 		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(requests)
+			dataSource: this.state.dataSource.cloneWithRows(contactInfo)
 		});
 	}
 	render() {
@@ -80,22 +64,33 @@ class ContactsViewController1 extends Component {
             />
 		);
 	}
-	renderRequest(request) {
+	renderRequest(contactInfoItem) {
 		return (
             <TouchableHighlight
             underlayColor = '#2980B9'>
                 <View>
                     <View style = {styles.cell}>
                         <Image
-                            source = {require('image!Person')}
+                            source = {(() => {
+                              switch (Object.keys(contactInfoItem).toString()) {
+                                case 'name': return require('image!Person');
+                                case 'phone': return require('image!Phone');
+                                case 'email': return require('image!Email');
+                                case 'facebook': return require('image!Facebook');
+                                default: return require('image!Person');
+                              }})()}
                             style = {styles.icon} />
                         <View style = {styles.content}>
-                        <Text style = {styles.person}>{request}</Text>
-                        </View>
-                        <View style = {styles.indicator}>
-                        <Image
-                            source = {require('image!Next')}
-                            style = {styles.next} />
+                        <Text style = {styles.item}>
+                        {(() => {
+                          switch (Object.keys(contactInfoItem).toString()) {
+                            case 'name': return (contactInfoItem.name);
+                            case 'phone': return (contactInfoItem.phone);
+                            case 'email': return (contactInfoItem.email);
+                            case 'facebook': return (contactInfoItem.facebook);
+                            default: return 'name';
+                          }})()}
+                        </Text>
                         </View>
                     </View>
                     <View style = {styles.separator} />
@@ -105,4 +100,4 @@ class ContactsViewController1 extends Component {
 	}
 }
 
-module.exports = ContactsViewController1;
+module.exports = ContactsVC2;

@@ -7,7 +7,7 @@ var React = require('react-native');
 var MyProfilesRootViewController = require('./nav_controllers/MyProfilesViewControllers/MyProfilesRootViewController');
 var SwapemRootViewController = require('./nav_controllers/SwapemViewControllers/SwapemRootViewController');
 var RequestsRootViewController = require('./nav_controllers/RequestsViewControllers/RequestsRootViewController');
-var ContactsRootViewController = require('./nav_controllers/ContactsViewControllers/ContactsRootViewController');
+var ContactsRootVC = require('./nav_controllers/ContactsVC/ContactsRootVC');
 var SettingsRootViewController = require('./nav_controllers/SettingsViewControllers/SettingsRootViewController');
 var RemoteDataAccessManager = require('./RemoteDataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
@@ -72,13 +72,13 @@ class Swapem extends Component {
       <TabBarIOS.Item
       icon = {require('image!Contacts')}
       selectedIcon = {require('image!ContactsSelected')}
-      selected = {this.state.selectedTab === 'ContactsRootViewController'}
+      selected = {this.state.selectedTab === 'ContactsRootVC'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'ContactsRootViewController',
+          selectedTab: 'ContactsRootVC',
         });
       }}>
-      <ContactsRootViewController/>
+      <ContactsRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Settings')}

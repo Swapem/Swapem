@@ -4,7 +4,7 @@
 'use strict';
 
 var React = require('react-native');
-var ContactsViewController1 = require('./ContactsViewController1');
+var ContactsVC1 = require('./ContactsVC1');
 
 var {
   StyleSheet,
@@ -18,7 +18,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class ContactsRootViewController extends Component {
+class ContactsRootVC extends Component {
   render() {
     return (
       <NavigatorIOS
@@ -29,11 +29,11 @@ class ContactsRootViewController extends Component {
       tintColor = '#3498DB'
       initialRoute = {{
         title: 'Contacts',
-        component: ContactsViewController1,
+        component: ContactsVC1,
         rightButtonTitle: 'Edit',
       }}/>
       );
   }
 }
 
-module.exports = ContactsRootViewController;
+module.exports = ContactsRootVC;
