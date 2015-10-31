@@ -82,7 +82,7 @@ class ContactsVC1 extends Component {
     // e.g. contact = {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',}
 		return (
       <TouchableHighlight
-      onPress = {() => this.showContactInfo(contact,rowID)}
+      onPress = {() => this.showContactInfo(contact)}
       underlayColor = '#2980B9'>
       <View>
       <View style = {styles.cell}>
