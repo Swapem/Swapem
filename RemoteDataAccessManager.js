@@ -331,7 +331,7 @@ var scanForNearbyUsers = function(userName) {
 module.exports = {
 	checkForRecentContactsSent: checkForRecentContactsSent,
 	scanForNearbyUsers: scanForNearbyUsers,
-	prepareUserForScan: prepareUserForScan
+	prepareUserForScan: prepareUserForScan,
 	getRequestedContacts: getRequestedContacts,
 	getAcceptedContacts: getAcceptedContacts,
 	updateContactToAccepted: updateContactToAccepted
