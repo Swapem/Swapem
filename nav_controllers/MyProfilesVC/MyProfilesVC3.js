@@ -8,9 +8,6 @@ exports.FBSDKLoginManager = require('../../node_modules/react-native-fbsdklogin/
 var React = require('react-native');
 var FBSDKCore = require ('react-native-fbsdkcore');
 var FBSDKLogin = require('react-native-fbsdklogin');
-var TableView = require('react-native-tableview');
-var Section = TableView.Section;
-var Item = TableView.Item;
 var FBURL;
 
 
