@@ -21,7 +21,7 @@ DeviceUUID.getUUID().then((uuid) => {
 * Checks if contact information was recently sent.
 * Args: to - The receiver's UUID.
 */
-var checkForRecentContactsSent = function(to, callback) {
+var checkForRecentContactsSent = function(to) {
 	var TempSentContact = Parse.Object.extend("TempSentContact");
 	// Query instance of TempSentContact table
 	var query = new Parse.Query(TempSentContact);
@@ -36,10 +36,76 @@ var checkForRecentContactsSent = function(to, callback) {
 	   // Do something with the returned Parse.Object values
 	     for (var i = 0; i < results.length; i++) {
 	         var object = results[i];
-	         //alert(object.id + ' - ' + object.get('name'));
+	         alert(object.id + ' - ' + object.get('name'));
 	       }
-	       callback(null, results)
+	   },
+	error: function(error) {
+	   alert("Error: " + error.code + " " + error.message);
+	   }
+	})
+}
 
+var getRequestedContacts = function(to, callback) {
+	var TempSentContact = Parse.Object.extend("TempSentContact");
+	// Query instance of TempSentContact table
+	var query = new Parse.Query(TempSentContact);
+
+	// Query for instance where contact information was sent to the user and hasn't been accepted
+	query.equalTo("to", to);
+	query.equalTo("accepted", false);
+
+	// Initiate the query
+	query.find({
+	success: function(results) {
+	   //alert("Successfully retrieved " + results.length + " instances of contact information");
+	       callback(null, results)
+	   },
+	error: function(error) {
+	   alert("Error: " + error.code + " " + error.message);
+	   callback(error, null)
+	   }
+	})
+}
+
+var getAcceptedContacts = function(to, callback) {
+	var TempSentContact = Parse.Object.extend("TempSentContact");
+	// Query instance of TempSentContact table
+	var query = new Parse.Query(TempSentContact);
+
+	// Query for instance where contact information has been accepted
+	query.equalTo("to", to);
+	query.equalTo("accepted", true)
+
+	// Initiate the query
+	query.find({
+	success: function(results) {
+	   //alert("Successfully retrieved " + results.length + " instances of contact information");
+	       callback(null, results)
+	   },
+	error: function(error) {
+	   alert("Error: " + error.code + " " + error.message);
+	   callback(error, null)
+	   }
+	})
+}
+
+var updateContactToAccepted = function(to, name, callback) {
+	var TempSentContact = Parse.Object.extend("TempSentContact");
+	// Query instance of TempSentContact table
+	var query = new Parse.Query(TempSentContact);
+
+	// Query for instance where contact information is accepted by user
+	query.equalTo("to", to);
+	query.equalTo("name", name)
+
+	// Initiate the query
+	query.first({
+	success: function(result) {
+	   alert("Successfully retrieved " + result.length + " instances of contact information");
+	   // update accepted to true
+	    	result.set("accepted", true)
+	    	result.save()
+	       	callback(null, result)
 	   },
 	error: function(error) {
 	   alert("Error: " + error.code + " " + error.message);
@@ -196,5 +262,8 @@ var scanForNearbyUsers = function(userName) {
 
 module.exports = {
 	checkForRecentContactsSent: checkForRecentContactsSent,
-	scanForNearbyUsers: scanForNearbyUsers
+	scanForNearbyUsers: scanForNearbyUsers,
+	getRequestedContacts: getRequestedContacts,
+	getAcceptedContacts: getAcceptedContacts,
+	updateContactToAccepted: updateContactToAccepted
 }

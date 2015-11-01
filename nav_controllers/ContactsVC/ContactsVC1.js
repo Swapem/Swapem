@@ -65,10 +65,9 @@ class ContactsVC1 extends Component {
 	}
 
   componentDidMount() {
-    //var contacts = fakeContacts;
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
-      ParseDB.checkForRecentContactsSent(uuid, (error, results) => {
+      ParseDB.getAcceptedContacts(uuid, (error, results) => {
         myself.setState({
           dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
         })

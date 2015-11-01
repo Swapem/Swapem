@@ -1,6 +1,8 @@
 'use strict';
 
 var React = require('react-native');
+var DeviceUUID = require('react-native-device-uuid');
+var ParseDB = require('../../RemoteDataAccessManager');
 
 var {
   StyleSheet,
@@ -17,6 +19,8 @@ var fakeRequests = [
 {name: 'Lisa Wong', phone: '(778) 222-2222', email: 'lisawong@cs410.com', facebook: 'lisawong',},
 {name: 'Ryan Lee', phone: '(778) 333-3333', email: 'ryanlee@cs410.com', facebook: 'ryanlee',},
 ];
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 var styles = StyleSheet.create({
   cell: {
@@ -55,20 +59,24 @@ var styles = StyleSheet.create({
  });
 
 class RequestsVC1 extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			dataSource: new ListView.DataSource({
-				rowHasChanged: (row1, row2) => row1 !== row2
-			}),
-		};
-	}
-	componentDidMount() {
-		var requests = fakeRequests;
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(requests)
-		});
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataSource: ds.cloneWithRows([])
+    }
+  }
+
+  componentDidMount() {
+    let myself = this
+    DeviceUUID.getUUID().then((uuid) => {
+      ParseDB.getRequestedContacts(uuid, (error, results) => {
+        myself.setState({
+          dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
+        })
+      })
+    })
+  }
+
 	render() {
 		return (
 			<ListView
@@ -104,5 +112,5 @@ class RequestsVC1 extends Component {
 
 module.exports = {
   RequestsVC1: RequestsVC1,
-  contacts: fakeRequests,
+  contacts: fakeRequests
 }
