@@ -72,15 +72,18 @@ class MyProfilesVC2 extends Component {
 			);
 	}
 	renderRequest(profileItem) {
+	// e.g. profileItem = {name: 'Ann Kim'}
+	var profileType = Object.keys(profileItem).toString();
+	// e.g. profileType = 'name'
 		return (
 			<TouchableHighlight
-			onPress = {(event) => this.showProfileDetails(event.label)}
+			onPress = {() => this.showProfileDetails(profileItem, profileType)}
 			underlayColor = '#2980B9'>
 			<View>
 			<View style = {styles.cell}>
 			<Image
 			source = {(() => {
-				switch (Object.keys(profileItem).toString()) {
+				switch (profileType) {
 					case 'email': return require('image!Email');
 					case 'facebook': return require('image!Facebook');
 					case 'name': return require('image!Person');
@@ -90,7 +93,7 @@ class MyProfilesVC2 extends Component {
 				style = {styles.icon} />
 				<View style = {styles.content}>
 				{(() => {
-					switch (Object.keys(profileItem).toString()) {
+					switch (profileType) {
 						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
 						default: return;t
 					}})()}
@@ -111,27 +114,23 @@ class MyProfilesVC2 extends Component {
 						</TouchableHighlight>
 						);
 	}
-	showProfileDetails(selectedLabel) {		
-		if(selectedLabel === "Facebook"){
+	showProfileDetails(profileItem,profileType) {	
+		if (profileType === 'facebook') {
 			this.props.navigator.push({
 			component: MyProfilesVC3,
 			backButtonTitle: 'Save',
-			title: selectedLabel
-		})
-
-		}
-
-		else{
+			title: profileType,
+		})}
+		else {
 		this.props.navigator.push({
+			title: profileType,
 			component: MyProfilesDetailsVC,
 			backButtonTitle: 'Save',
-			passProps: { label: selectedLabel,
-				profileType: this.props.profileType
+			passProps: { label: profileType,
+				profileType: profileType,
 			},
-			title: selectedLabel
-		})
+		})}
 	}
-}
 }
 
 module.exports = MyProfilesVC2;
