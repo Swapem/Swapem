@@ -3,6 +3,8 @@
 var React = require('react-native');
 var RequestsVC1 = require('../RequestsVC/RequestsVC1');
 var ContactsVC2 = require('./ContactsVC2');
+var DeviceUUID = require('react-native-device-uuid');
+var ParseDB = require('../../RemoteDataAccessManager')
 
 var {
   StyleSheet,
@@ -15,6 +17,8 @@ var {
 } = React;
 
 var fakeContacts = RequestsVC1.fakeRequests;
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 var styles = StyleSheet.create({
   cell: {
@@ -56,17 +60,22 @@ class ContactsVC1 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataSource: new ListView.DataSource({
-				rowHasChanged: (row1, row2) => row1 !== row2
-			}),
-		};
+      dataSource: ds.cloneWithRows([])
+		}
 	}
-	componentDidMount() {
-		var contacts = fakeContacts;
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(contacts)
-		});
-	}
+
+  componentDidMount() {
+    //var contacts = fakeContacts;
+    let myself = this
+    DeviceUUID.getUUID().then((uuid) => {
+      ParseDB.checkForRecentContactsSent(uuid, (error, results) => {
+        myself.setState({
+          dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
+        })
+      })
+    })
+  }
+
 	render() {
 		return (
 			<ListView

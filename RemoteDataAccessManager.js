@@ -21,7 +21,7 @@ DeviceUUID.getUUID().then((uuid) => {
 * Checks if contact information was recently sent.
 * Args: to - The receiver's UUID.
 */
-var checkForRecentContactsSent = function(to) {
+var checkForRecentContactsSent = function(to, callback) {
 	var TempSentContact = Parse.Object.extend("TempSentContact");
 	// Query instance of TempSentContact table
 	var query = new Parse.Query(TempSentContact);
@@ -36,11 +36,14 @@ var checkForRecentContactsSent = function(to) {
 	   // Do something with the returned Parse.Object values
 	     for (var i = 0; i < results.length; i++) {
 	         var object = results[i];
-	         alert(object.id + ' - ' + object.get('name'));
+	         //alert(object.id + ' - ' + object.get('name'));
 	       }
+	       callback(null, results)
+
 	   },
 	error: function(error) {
 	   alert("Error: " + error.code + " " + error.message);
+	   callback(error, null)
 	   }
 	})
 }
