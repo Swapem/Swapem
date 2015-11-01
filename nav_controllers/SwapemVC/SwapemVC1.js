@@ -87,7 +87,7 @@ class SwapemVC1 extends Component {
 	componentDidMount() {
 		var profiles = fakeProfiles;
 		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(profiles)
+			dataSource: this.state.dataSource.cloneWithRows(profiles),
 		});
 	}
 	render() {
