@@ -4,7 +4,7 @@ var React = require('react-native');
 var TableView = require('react-native-tableview')
 var Section = TableView.Section;
 var Item = TableView.Item;
-var MyProfilesViewController2 = require('./MyProfilesViewController2')
+var MyProfilesVC2 = require('./MyProfilesVC2')
 
 var {
   StyleSheet,
@@ -23,7 +23,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class MyProfilesViewController1 extends Component {
+class MyProfilesVC1 extends Component {
 	render() {
 		return (
 			<TableView
@@ -48,7 +48,7 @@ class MyProfilesViewController1 extends Component {
 	showProfileDetails(profileType) {
 		this.props.navigator.push({
 			title: profileType,
-			component: MyProfilesViewController2,
+			component: MyProfilesVC2,
 			leftButtonIcon: require('image!Back'),
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
@@ -60,4 +60,4 @@ class MyProfilesViewController1 extends Component {
 	}
 }
 
-module.exports = MyProfilesViewController1;
+module.exports = MyProfilesVC1;

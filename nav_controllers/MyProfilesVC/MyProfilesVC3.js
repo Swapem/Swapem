@@ -15,8 +15,8 @@ var FBURL;
 
 
 var {
-	FBSDKLoginButton,
-  	FBSDKLoginManager,
+  FBSDKLoginButton,
+    FBSDKLoginManager,
 } = FBSDKLogin;
 
 var {
@@ -43,8 +43,8 @@ var styles = StyleSheet.create({
 });
 
 
-class MyProfilesViewController3 extends Component { 
-	render() {
+class MyProfilesVC3 extends Component { 
+  render() {
     return (
       <View>
         <FBSDKLoginButton
@@ -52,22 +52,21 @@ class MyProfilesViewController3 extends Component {
             if (error) {
               alert('Error logging in.');
             } else {
-              	if (result.isCanceled) {
-                	alert('Login cancelled.');
-                	} else {
-                		alert('Logged in.');
-                		var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
-                			console.log (token, 'Type of Token is:' + typeof token));
-                		}
-                	}
+                if (result.isCanceled) {
+                  alert('Login cancelled.');
+                  } else {
+                    alert('Logged in.');
+                    var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
+                      console.log (token, 'Type of Token is:' + typeof token));
+                    }
+                  }
                 }
             }
             onLogoutFinished={() => alert('Logged out.')} 
             readPermissions={[]}
             publishPermissions={['publish_actions']}/>
             <Text style={styles.redirect} onPress = {() => LinkingIOS.openURL(FBURL)}>
-            	Check Your Facebook Profile Here!
-              {FBURL}
+              Check Your Facebook Profile Here!
             </Text>
       </View>
     );
@@ -76,14 +75,14 @@ class MyProfilesViewController3 extends Component {
 
 
 var fetchURL = new FBSDKGraphRequest ((error, result) => {
-	if (error) {
-		alert('Error making request');
-		} else {
-			console.log('FBSDKGraphRequest', error, result);
-			// alert(JSON.stringify(result.link));
-			FBURL = (result.link);
-			}
-		}, 'me?fields=link');
+  if (error) {
+    alert('Error making request');
+    } else {
+      console.log('FBSDKGraphRequest', error, result);
+      // alert(JSON.stringify(result.link));
+      FBURL = (result.link);
+      }
+    }, 'me?fields=link');
 FBSDKGraphRequestManager.batchRequests([fetchURL], function() {}, 60);
 
 
@@ -101,4 +100,4 @@ FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
 });
 
 
-module.exports = MyProfilesViewController3;
+module.exports = MyProfilesVC3;

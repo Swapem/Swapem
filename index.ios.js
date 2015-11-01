@@ -4,11 +4,11 @@
 'use strict';
 
 var React = require('react-native');
-var MyProfilesRootViewController = require('./nav_controllers/MyProfilesViewControllers/MyProfilesRootViewController');
-var SwapemRootViewController = require('./nav_controllers/SwapemViewControllers/SwapemRootViewController');
-var RequestsRootViewController = require('./nav_controllers/RequestsViewControllers/RequestsRootViewController');
+var MyProfilesRootVC = require('./nav_controllers/MyProfilesVC/MyProfilesRootVC');
+var SwapemRootVC = require('./nav_controllers/SwapemVC/SwapemRootVC');
+var RequestsRootVC = require('./nav_controllers/RequestsVC/RequestsRootVC');
 var ContactsRootVC = require('./nav_controllers/ContactsVC/ContactsRootVC');
-var SettingsRootViewController = require('./nav_controllers/SettingsViewControllers/SettingsRootViewController');
+var SettingsRootVC = require('./nav_controllers/SettingsVC/SettingsRootVC');
 var RemoteDataAccessManager = require('./RemoteDataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
 
@@ -22,7 +22,7 @@ class Swapem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'MyProfilesRootViewController'
+      selectedTab: 'MyProfilesRootVC'
     };
   }
   render() {
@@ -34,24 +34,24 @@ class Swapem extends Component {
       <TabBarIOS.Item
       icon = {require('image!MyProfiles')}
       selectedIcon = {require('image!MyProfilesSelected')}
-      selected = {this.state.selectedTab === 'MyProfilesRootViewController'}
+      selected = {this.state.selectedTab === 'MyProfilesRootVC'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'MyProfilesRootViewController',
+          selectedTab: 'MyProfilesRootVC',
         });
       }}>
-      <MyProfilesRootViewController/>
+      <MyProfilesRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Swapem')}
       selectedIcon = {require('image!SwapemSelected')}
-      selected = {this.state.selectedTab === 'SwapemRootViewController'}
+      selected = {this.state.selectedTab === 'SwapemRootVC'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'SwapemRootViewController',
+          selectedTab: 'SwapemRootVC',
         });
       }}>
-      <SwapemRootViewController/>
+      <SwapemRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Requests')}
@@ -67,7 +67,7 @@ class Swapem extends Component {
           selectedTab: 'RequestsRootViewController',
         });
       }}>
-      <RequestsRootViewController/>
+      <RequestsRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
       icon = {require('image!Contacts')}
@@ -83,13 +83,13 @@ class Swapem extends Component {
       <TabBarIOS.Item
       icon = {require('image!Settings')}
       selectedIcon = {require('image!SettingsSelected')}
-      selected = {this.state.selectedTab === 'SettingsRootViewController'}
+      selected = {this.state.selectedTab === 'SettingsRootVC'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'SettingsRootViewController',
+          selectedTab: 'SettingsRootVC',
         });
       }}>
-      <SettingsRootViewController/>
+      <SettingsRootVC/>
       </TabBarIOS.Item>
       </TabBarIOS>
       );

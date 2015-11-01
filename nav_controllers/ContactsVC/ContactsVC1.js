@@ -15,11 +15,10 @@ var {
 } = React;
 
 var fakeContacts = [
-{name: 'Junoh Lee', phone: '(778) 000-0000', email: 'junohlee@cs410.com', facebook: 'junohlee'},
-{name: 'Lisa Wong', phone: '(778) 111-1111', email: 'lisawong@cs410.com', facebook: 'lisawong'},
-{name: 'Ryan Lee', phone: '(778) 222-2222', email: 'ryanlee@cs410.com', facebook: 'ryanlee'},
+{name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',},
+{name: 'Lisa Wong', phone: '(778) 222-2222', email: 'lisawong@cs410.com', facebook: 'lisawong',},
+{name: 'Ryan Lee', phone: '(778) 333-3333', email: 'ryanlee@cs410.com', facebook: 'ryanlee',},
 ];
-
 
 var styles = StyleSheet.create({
   cell: {
@@ -43,6 +42,7 @@ var styles = StyleSheet.create({
   next: {
   	alignSelf: 'flex-end',
     height: 20,
+    marginLeft: 15,
     marginRight: 5,
     tintColor: '#E0E0E0',
     width: 20,
@@ -104,28 +104,29 @@ class ContactsVC1 extends Component {
 		);
 	}
 	renderContact(contact) {
+    // e.g. contact = {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',}
 		return (
-            <TouchableHighlight
-            onPress={() => this.showContactInfo(contact)}
-            underlayColor = '#2980B9'>
-                <View>
-                    <View style = {styles.cell}>
-                        <Image
-                            source = {require('image!Person')}
-                            style = {styles.icon} />
-                        <View style = {styles.content}>
-                        <Text style = {styles.person}>{contact.name}</Text>
-                        </View>
-                        <View>
-                        <Image
-                            source = {require('image!Next')}
-                            style = {styles.next} />
-                        </View>
-                    </View>
-                    <View style = {styles.separator} />
-                </View>
-            </TouchableHighlight>
-            );
+      <TouchableHighlight
+      onPress = {() => this.showContactInfo(contact)}
+      underlayColor = '#2980B9'>
+      <View>
+      <View style = {styles.cell}>
+      <Image
+      source = {require('image!Person')}
+      style = {styles.icon} />
+      <View style = {styles.content}>
+      <Text style = {styles.person}>{contact.name}</Text>
+      </View>
+      <View>
+      <Image
+      source = {require('image!Next')}
+      style = {styles.next} />
+      </View>
+      </View>
+      <View style = {styles.separator} />
+      </View>
+      </TouchableHighlight>
+      );
 	}
   showContactInfo(contact) {
     var contactInfo = [
@@ -141,7 +142,7 @@ class ContactsVC1 extends Component {
       onLeftButtonPress: () => {
         this.props.navigator.pop();
       },
-      rightButtonIcon: require('image!More'),
+      rightButtonTitle: 'Import',
       passProps: {
         contactInfo: contactInfo,
       },

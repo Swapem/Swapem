@@ -1,10 +1,10 @@
 /**
- * Starting view controller for Requests tab
+ * Starting view controller for Swap'em tab
  */
 'use strict';
 
 var React = require('react-native');
-var RequestsViewController1 = require('./RequestsViewController1');
+var SwapemVC1 = require('./SwapemVC1');
 
 var {
   StyleSheet,
@@ -18,7 +18,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class RequestsRootViewController extends Component {
+class SwapemRootVC extends Component {
   render() {
     return (
       <NavigatorIOS
@@ -28,13 +28,11 @@ class RequestsRootViewController extends Component {
       titleTextColor = '#2C3E50'
       tintColor = '#3498DB'
       initialRoute = {{
-        title: 'Requests',
-        component: RequestsViewController1,
-        leftButtonTitle: 'Edit',
-        rightButtonTitle: 'Accept',
+        title: 'Select profile',
+        component: SwapemVC1,
       }}/>
       );
   }
 }
 
-module.exports = RequestsRootViewController;
+module.exports = SwapemRootVC;

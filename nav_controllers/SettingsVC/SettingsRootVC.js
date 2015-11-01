@@ -1,10 +1,10 @@
 /**
- * Starting view controller for Swap'em tab
+ * Starting view controller for Settings tab
  */
 'use strict';
 
 var React = require('react-native');
-var SwapemViewController1 = require('./SwapemViewController1');
+var SettingsVC1 = require('./SettingsVC1');
 
 var {
   StyleSheet,
@@ -18,7 +18,7 @@ var styles = StyleSheet.create({
   },
 });
 
-class SwapemRootViewController extends Component {
+class SettingsRootVC extends Component {
   render() {
     return (
       <NavigatorIOS
@@ -28,11 +28,11 @@ class SwapemRootViewController extends Component {
       titleTextColor = '#2C3E50'
       tintColor = '#3498DB'
       initialRoute = {{
-        title: 'Select profile',
-        component: SwapemViewController1,
+        title: 'Settings',
+        component: SettingsVC1,
       }}/>
       );
   }
 }
 
-module.exports = SwapemRootViewController;
+module.exports = SettingsRootVC;
