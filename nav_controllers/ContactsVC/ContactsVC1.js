@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var ContactsVC2 = require('./ContactsVC2');
+var DB = require('../../DB.js');
 
 var {
   StyleSheet,
@@ -18,6 +19,7 @@ var fakeContacts = [
 {name: 'Lisa Wong', phone: '(778) 111-1111', email: 'lisawong@cs410.com', facebook: 'lisawong'},
 {name: 'Ryan Lee', phone: '(778) 222-2222', email: 'ryanlee@cs410.com', facebook: 'ryanlee'},
 ];
+
 
 var styles = StyleSheet.create({
   cell: {
@@ -54,6 +56,8 @@ var styles = StyleSheet.create({
   },
 });
 
+let addressBookResult = {}
+
 class ContactsVC1 extends Component {
 	constructor(props) {
 		super(props);
@@ -62,20 +66,41 @@ class ContactsVC1 extends Component {
 				rowHasChanged: (row1, row2) => row1 !== row2
 			}),
 		};
+
 	}
 	componentDidMount() {
-		var contacts = fakeContacts;
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(contacts)
-		});
+    // uncomment this to clear the addressbook
+    //DB.addressbook.erase_db((dd)=>{})
+    DB.addressbook.get({accepted: true}, (results) =>{
+      addressBookResult = results
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(addressBookResult)
+      })
+    })
 	}
+
+  addToAddressBook(){
+  DB.addressbook.add({name: 'Snoopy', phone: '3333', email: 'tttt', facebook:'SnoopyFacebook', accepted: true}, function(added_data){
+    addressBookResult.push(added_data)
+    alert(JSON.stringify(addressBookResult))
+    this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(addressBookResult)
+      })
+  })
+}
 	render() {
 		return (
+      <View>
 			<ListView
             dataSource = {this.state.dataSource}
             renderRow = {this.renderContact.bind(this)}
             style = {styles.listView}
             />
+            <TouchableHighlight
+            onPress={this.addToAddressBook}>
+            <Text>Add Contacts</Text>
+          </TouchableHighlight>
+          </View>
 		);
 	}
 	renderContact(contact) {

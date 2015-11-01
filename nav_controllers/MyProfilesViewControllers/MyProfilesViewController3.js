@@ -67,6 +67,7 @@ class MyProfilesViewController3 extends Component {
             publishPermissions={['publish_actions']}/>
             <Text style={styles.redirect} onPress = {() => LinkingIOS.openURL(FBURL)}>
             	Check Your Facebook Profile Here!
+              {FBURL}
             </Text>
       </View>
     );
