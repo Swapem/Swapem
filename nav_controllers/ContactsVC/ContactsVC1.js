@@ -149,6 +149,7 @@ class ContactsVC1 extends Component {
                     alert("Permission to import contacts has been denied")
                   } else {
                     console.log("added Junoh Lee to contacts list")
+                    alert(contact.name + " was imported successfully")
                   }
                 })
             }
