@@ -27,6 +27,7 @@
 		2D0F68811BE01E7500FC92A3 /* libRCTFBSDKLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0F68801BE01E7200FC92A3 /* libRCTFBSDKLogin.a */; };
 		2D225DCF1BE2224E005F60FD /* libRCTFBSDKCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D225DCE1BE22244005F60FD /* libRCTFBSDKCore.a */; };
 		2DFED9DD1BE4AE550002C025 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DFED9D41BE4AE430002C025 /* libRCTLinking.a */; };
+		79FDEBA61BE588FB007910A6 /* libRCTDeviceUUID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FDEB981BE588DD007910A6 /* libRCTDeviceUUID.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
 		};
+		79FDEB971BE588DD007910A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79FDEB921BE588DC007910A6 /* RCTDeviceUUID.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
+			remoteInfo = RCTDeviceUUID;
+		};
 		832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
@@ -157,6 +165,7 @@
 		2D225DC91BE22244005F60FD /* RCTFBSDKCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDKCore.xcodeproj; path = "../node_modules/react-native-fbsdkcore/RCTFBSDKCore.xcodeproj"; sourceTree = "<group>"; };
 		2DFED9CA1BE4AE430002C025 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		79FDEB921BE588DC007910A6 /* RCTDeviceUUID.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTDeviceUUID.xcodeproj; path = "../node_modules/react-native-device-uuid/RCTDeviceUUID.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79FDEBA61BE588FB007910A6 /* libRCTDeviceUUID.a in Frameworks */,
 				2DFED9DD1BE4AE550002C025 /* libRCTLinking.a in Frameworks */,
 				2D225DCF1BE2224E005F60FD /* libRCTFBSDKCore.a in Frameworks */,
 				2D0F68811BE01E7500FC92A3 /* libRCTFBSDKLogin.a in Frameworks */,
@@ -330,9 +340,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		79FDEB931BE588DC007910A6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				79FDEB981BE588DD007910A6 /* libRCTDeviceUUID.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				79FDEB921BE588DC007910A6 /* RCTDeviceUUID.xcodeproj */,
 				2DFED9CA1BE4AE430002C025 /* RCTLinking.xcodeproj */,
 				2D225DC91BE22244005F60FD /* RCTFBSDKCore.xcodeproj */,
 				2D0F687B1BE01E7200FC92A3 /* RCTFBSDKLogin.xcodeproj */,
@@ -447,6 +466,10 @@
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
+				},
+				{
+					ProductGroup = 79FDEB931BE588DC007910A6 /* Products */;
+					ProjectRef = 79FDEB921BE588DC007910A6 /* RCTDeviceUUID.xcodeproj */;
 				},
 				{
 					ProductGroup = 2D225DCA1BE22244005F60FD /* Products */;
@@ -588,6 +611,13 @@
 			fileType = archive.ar;
 			path = libRCTLinking.a;
 			remoteRef = 78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		79FDEB981BE588DD007910A6 /* libRCTDeviceUUID.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTDeviceUUID.a;
+			remoteRef = 79FDEB971BE588DD007910A6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		832341B51AAA6A8300B99B32 /* libRCTText.a */ = {

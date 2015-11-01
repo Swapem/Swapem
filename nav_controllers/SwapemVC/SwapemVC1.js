@@ -1,8 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var DeviceUUID = require("react-native-device-uuid");
-var DataAccessManager = require('./../../RemoteDataAccessManager');
+var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemVC2 = require('./SwapemVC2')
 var SwapemVC3 = require('./SwapemVC3')
 
@@ -16,6 +15,7 @@ var {
 	Text,
 } = React;
 
+// TODO: Dynamically grab profile(s) information from local DB
 var fakeProfiles = [
 {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
 {School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
@@ -63,17 +63,6 @@ var styles = StyleSheet.create({
 		fontSize: 20,
 	},
 });
-
-var uniqueIdentifier;
-DeviceUUID.getUUID().then((uuid) => {
-	uniqueIdentifier = uuid;
-});
-
-var userInfo = {
-	uuid: uniqueIdentifier,
-	name: "InsertMyNameHere",
-	searching: true
-}
 
 class SwapemVC1 extends Component {
 	constructor(props) {
@@ -142,7 +131,7 @@ class SwapemVC1 extends Component {
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
 				this.showScanProgress();
-				DataAccessManager.scan(userInfo);
+				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name);
 			},
 			passProps: {
 				profileDetails: profileDetails,
