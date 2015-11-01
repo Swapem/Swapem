@@ -10,6 +10,7 @@ var {
   View,
   Image,
   Text,
+  AsyncStorage
 } = React;
 
 var fakeNearbyDevices = [
@@ -64,10 +65,16 @@ class RequestsVC1 extends Component {
     };
   }
   componentDidMount() {
-    var nearbyDevices = fakeNearbyDevices;
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(nearbyDevices)
-    });
+    AsyncStorage.getItem('nearbyDevices').then((value) => {
+       this.setState({'nearbyDevices': value});
+       var nearbyUsers = JSON.parse(value);
+       console.log("value of asyncStorage nearby users: " + nearbyUsers);
+       
+       this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(nearbyUsers)
+        });
+   }).done();
+    
   }
   render() {
     return (

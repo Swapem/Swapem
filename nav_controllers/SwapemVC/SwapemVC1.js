@@ -13,6 +13,7 @@ var {
 	View,
 	Image,
 	Text,
+	AsyncStorage
 } = React;
 
 // TODO: Dynamically grab profile(s) information from local DB
@@ -87,7 +88,6 @@ class SwapemVC1 extends Component {
 			style = {styles.listView}/>
 			);
 	}
-	
 	renderContact(profile) {
 		// e.g. profile = {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}}
 		return (
@@ -122,6 +122,7 @@ class SwapemVC1 extends Component {
 		{facebook: profile[profileType].facebook},
 		];
 		this.props.navigator.push({
+
 			title: 'Customize',
 			component: SwapemVC2,
 			leftButtonIcon: require('image!Back'),
@@ -130,15 +131,38 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				this.showScanProgress();
-				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name);
-			},
+				RemoteDataAccessManager.prepareUserForScan(profile[profileType].name, function(usersNearby) {
+					// Make sure that local temp storage is cleared
+					AsyncStorage.removeItem('nearbyDevices').then((value) => {
+				      console.log('nearbyDevices table cleared');
+				      var jsonArray = [];
+
+						for (var i = 0; i < usersNearby.length; i++) {
+					         var user = usersNearby[i];
+					         jsonArray.push({
+									        name: user.get('name'),
+									        uuid: user.get('uuid'),
+									    	});
+					         // user.get('name')
+					         // user.get('uuid')
+					         // Store in async storage here
+					         //var fakeNearbyDevices = [
+							 //		{name: 'Junoh Lee', uuid: '0000',},
+							 // 	{name: 'Lisa Wong', uuid: '1111',},
+							 //		{name: 'Ryan Lee', uuid: '2222',},
+							 //	];
+					       }
+				       AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray));
+				     });
+				})
+				this.showResults();
+		    },
 			passProps: {
 				profileDetails: profileDetails,
 			},
 		})
 	}
-	showScanProgress() {
+	showResults() {
 		this.props.navigator.push({
 			title: 'Nearby Devices',
 			component: SwapemVC3,
