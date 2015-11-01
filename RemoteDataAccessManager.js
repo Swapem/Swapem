@@ -44,6 +44,76 @@ var checkForRecentContactsSent = function(to) {
 	   }
 	})
 }
+
+var getRequestedContacts = function(to, callback) {
+	var TempSentContact = Parse.Object.extend("TempSentContact");
+	// Query instance of TempSentContact table
+	var query = new Parse.Query(TempSentContact);
+
+	// Query for instance where contact information was sent to the user and hasn't been accepted
+	query.equalTo("to", to);
+	query.equalTo("accepted", false);
+
+	// Initiate the query
+	query.find({
+	success: function(results) {
+	   //alert("Successfully retrieved " + results.length + " instances of contact information");
+	       callback(null, results)
+	   },
+	error: function(error) {
+	   alert("Error: " + error.code + " " + error.message);
+	   callback(error, null)
+	   }
+	})
+}
+
+var getAcceptedContacts = function(to, callback) {
+	var TempSentContact = Parse.Object.extend("TempSentContact");
+	// Query instance of TempSentContact table
+	var query = new Parse.Query(TempSentContact);
+
+	// Query for instance where contact information has been accepted
+	query.equalTo("to", to);
+	query.equalTo("accepted", true)
+
+	// Initiate the query
+	query.find({
+	success: function(results) {
+	   //alert("Successfully retrieved " + results.length + " instances of contact information");
+	       callback(null, results)
+	   },
+	error: function(error) {
+	   alert("Error: " + error.code + " " + error.message);
+	   callback(error, null)
+	   }
+	})
+}
+
+var updateContactToAccepted = function(to, name, callback) {
+	var TempSentContact = Parse.Object.extend("TempSentContact");
+	// Query instance of TempSentContact table
+	var query = new Parse.Query(TempSentContact);
+
+	// Query for instance where contact information is accepted by user
+	query.equalTo("to", to);
+	query.equalTo("name", name)
+
+	// Initiate the query
+	query.first({
+	success: function(result) {
+	   alert("Successfully retrieved " + result.length + " instances of contact information");
+	   // update accepted to true
+	    	result.set("accepted", true)
+	    	result.save()
+	       	callback(null, result)
+	   },
+	error: function(error) {
+	   alert("Error: " + error.code + " " + error.message);
+	   callback(error, null)
+	   }
+	})
+}
+
 /**
 * Prepares the given user for scanning of nearby users:
 * (a) Updates/Saves Geolocation
@@ -262,4 +332,7 @@ module.exports = {
 	checkForRecentContactsSent: checkForRecentContactsSent,
 	scanForNearbyUsers: scanForNearbyUsers,
 	prepareUserForScan: prepareUserForScan
+	getRequestedContacts: getRequestedContacts,
+	getAcceptedContacts: getAcceptedContacts,
+	updateContactToAccepted: updateContactToAccepted
 }

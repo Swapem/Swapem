@@ -5,7 +5,6 @@
 
 var React = require('react-native');
 var ContactsVC1 = require('./ContactsVC1');
-var DB = require('../../DB.js');
 
 var {
   StyleSheet,
@@ -19,13 +18,10 @@ var styles = StyleSheet.create({
   },
 });
 
-    //     var ahahnbh= DB.addressbook.get({accepted: true}, (results) =>{
-    //   alert(JSON.stringify(results))
-    // })
-
 class ContactsRootVC extends Component {
   render() {
-      return <NavigatorIOS
+    return (
+      <NavigatorIOS
       translucent = {false}
       style = {styles.container}
       barTintColor = '#ECF0F1'
@@ -34,9 +30,9 @@ class ContactsRootVC extends Component {
       initialRoute = {{
         title: 'Contacts',
         component: ContactsVC1,
-        rightButtonTitle: 'Edit'
+        rightButtonTitle: 'Edit',
       }}/>
-
+      );
   }
 }
 

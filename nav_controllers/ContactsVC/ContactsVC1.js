@@ -1,8 +1,10 @@
 'use strict';
 
 var React = require('react-native');
+var RequestsVC1 = require('../RequestsVC/RequestsVC1');
 var ContactsVC2 = require('./ContactsVC2');
-var DB = require('../../DB.js');
+var DeviceUUID = require('react-native-device-uuid');
+var ParseDB = require('../../RemoteDataAccessManager')
 
 var {
   StyleSheet,
@@ -14,11 +16,9 @@ var {
   Text,
 } = React;
 
-var fakeContacts = [
-{name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',},
-{name: 'Lisa Wong', phone: '(778) 222-2222', email: 'lisawong@cs410.com', facebook: 'lisawong',},
-{name: 'Ryan Lee', phone: '(778) 333-3333', email: 'ryanlee@cs410.com', facebook: 'ryanlee',},
-];
+var fakeContacts = RequestsVC1.contacts;
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 var styles = StyleSheet.create({
   cell: {
@@ -56,52 +56,32 @@ var styles = StyleSheet.create({
   },
 });
 
-let addressBookResult = {}
-
 class ContactsVC1 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataSource: new ListView.DataSource({
-				rowHasChanged: (row1, row2) => row1 !== row2
-			}),
-		};
-
+      dataSource: ds.cloneWithRows([])
+		}
 	}
-	componentDidMount() {
-    // uncomment this to clear the addressbook
-    //DB.addressbook.erase_db((dd)=>{})
-    DB.addressbook.get({accepted: true}, (results) =>{
-      addressBookResult = results
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(addressBookResult)
+
+  componentDidMount() {
+    let myself = this
+    DeviceUUID.getUUID().then((uuid) => {
+      ParseDB.getAcceptedContacts(uuid, (error, results) => {
+        myself.setState({
+          dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
+        })
       })
     })
-	}
+  }
 
-  addToAddressBook(){
-  DB.addressbook.add({name: 'Snoopy', phone: '3333', email: 'tttt', facebook:'SnoopyFacebook', accepted: true}, function(added_data){
-    addressBookResult.push(added_data)
-    alert(JSON.stringify(addressBookResult))
-    this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(addressBookResult)
-      })
-  })
-}
 	render() {
 		return (
-      <View>
 			<ListView
-            dataSource = {this.state.dataSource}
-            renderRow = {this.renderContact.bind(this)}
-            style = {styles.listView}
-            />
-            <TouchableHighlight
-            onPress={this.addToAddressBook}>
-            <Text>Add Contacts</Text>
-          </TouchableHighlight>
-          </View>
-		);
+      dataSource = {this.state.dataSource}
+      renderRow = {this.renderContact.bind(this)}
+      style = {styles.listView}/>
+      );
 	}
 	renderContact(contact) {
     // e.g. contact = {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',}
