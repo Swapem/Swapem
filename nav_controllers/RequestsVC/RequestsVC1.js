@@ -103,6 +103,6 @@ class RequestsVC1 extends Component {
 }
 
 module.exports = {
-  RequestsVC1,
-  fakeRequests,
-};
+  RequestsVC1: RequestsVC1,
+  contacts: fakeRequests,
+}

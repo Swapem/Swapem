@@ -14,7 +14,7 @@ var {
   Text,
 } = React;
 
-var fakeContacts = RequestsVC1.fakeRequests;
+var fakeContacts = RequestsVC1.contacts;
 
 var styles = StyleSheet.create({
   cell: {
