@@ -91,9 +91,7 @@ class MyProfilesVC2 extends Component {
 				<View style = {styles.content}>
 				{(() => {
 					switch (Object.keys(profileItem).toString()) {
-						case 'email': return <Text style = {styles.info}>home</Text>;
 						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
-						case 'phone': return <Text style = {styles.info}>mobile</Text>;
 						default: return;t
 					}})()}
 					<Text style = {styles.item}>
