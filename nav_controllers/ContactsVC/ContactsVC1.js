@@ -16,7 +16,7 @@ var {
   Text,
 } = React;
 
-var fakeContacts = RequestsVC1.fakeRequests;
+var fakeContacts = RequestsVC1.contacts;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
