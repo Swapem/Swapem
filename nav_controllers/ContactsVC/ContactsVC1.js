@@ -4,7 +4,8 @@ var React = require('react-native');
 var RequestsVC1 = require('../RequestsVC/RequestsVC1');
 var ContactsVC2 = require('./ContactsVC2');
 var DeviceUUID = require('react-native-device-uuid');
-var ParseDB = require('../../RemoteDataAccessManager')
+var ParseDB = require('../../RemoteDataAccessManager');
+var Contacts = require('react-native-contacts');
 
 var {
   StyleSheet,
@@ -123,6 +124,39 @@ class ContactsVC1 extends Component {
         this.props.navigator.pop();
       },
       rightButtonTitle: 'Import',
+      onRightButtonPress: () => {
+        // Import button
+        // (a) Properly format the contact information
+        var newPerson = {
+            givenName: contact.name,
+            phoneNumbers: [ { number: contact.phone, label: 'mobile' } ],
+            emailAddresses: [{
+              label: "personal",
+              email: contact.email,
+            }]
+          }
+          Contacts.checkPermission( (err, permission) => {
+            if(permission === 'undefined'){
+              Contacts.requestPermission( (err, permission) => {
+                console.log("Requesting addressbook for permissions")
+              })
+            }
+            if(permission === 'authorized'){
+              console.log("Addressbook permission has been granted")
+              // (b) Import
+                Contacts.addContact(newPerson, (err) => {
+                  if(err && err.type === 'permissionDenied'){
+                    alert("Permission to import contacts has been denied")
+                  } else {
+                    console.log("added Junoh Lee to contacts list")
+                  }
+                })
+            }
+            if(permission === 'denied'){
+              alert("Swap'em requires permission to use the addressbook")
+            }
+          })
+      },
       passProps: {
         contactInfo: contactInfo,
       },
