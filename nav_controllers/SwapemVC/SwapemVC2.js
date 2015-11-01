@@ -120,7 +120,7 @@ class SwapemVC2 extends Component {
 						</View>
 						</TouchableHighlight>
 						);
-}
+	}
 }
 
 module.exports = SwapemVC2;
