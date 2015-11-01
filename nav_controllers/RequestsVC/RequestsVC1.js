@@ -102,4 +102,7 @@ class RequestsVC1 extends Component {
 	}
 }
 
-module.exports = RequestsVC1;
+module.exports = {
+  RequestsVC1,
+  fakeRequests,
+};
