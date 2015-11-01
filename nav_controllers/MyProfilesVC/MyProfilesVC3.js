@@ -9,6 +9,7 @@ var React = require('react-native');
 var FBSDKCore = require ('react-native-fbsdkcore');
 var FBSDKLogin = require('react-native-fbsdklogin');
 var FBURL;
+var FBName;
 
 
 var {
@@ -63,7 +64,7 @@ class MyProfilesVC3 extends Component {
             readPermissions={[]}
             publishPermissions={['publish_actions']}/>
             <Text style={styles.redirect} onPress = {() => LinkingIOS.openURL(FBURL)}>
-              Check Your Facebook Profile Here!
+              {FBName}
             </Text>
       </View>
     );
@@ -78,8 +79,9 @@ var fetchURL = new FBSDKGraphRequest ((error, result) => {
       console.log('FBSDKGraphRequest', error, result);
       // alert(JSON.stringify(result.link));
       FBURL = (result.link);
+      FBName = (JSON.stringify(result.name));
       }
-    }, 'me?fields=link');
+    }, 'me?fields=link,name');
 FBSDKGraphRequestManager.batchRequests([fetchURL], function() {}, 60);
 
 
