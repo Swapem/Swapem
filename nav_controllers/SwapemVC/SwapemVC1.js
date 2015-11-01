@@ -151,11 +151,13 @@ class SwapemVC1 extends Component {
 	}
 	showScanProgress() {
 		this.props.navigator.push({
+			title: 'Nearby Devices',
 			component: SwapemVC3,
 			leftButtonIcon: require('image!Back'),
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
+			rightButtonTitle: 'Send',
 		})
 	}
 }
