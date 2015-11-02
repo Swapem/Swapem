@@ -349,7 +349,7 @@ var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 		tempSentContact.save(null, {
 		  success: function(tempSentContact) {
 		    // Execute any logic that should take place after the object is saved.
-		    alert('New object created with objectId: ' + tempSentContact.id);
+		    console.log('New object created with objectId: ' + tempSentContact.id);
 		  },
 		  error: function(tempSentContact, error) {
 		    alert('Failed to publish intent to send contact in Parse ' + error.message);
