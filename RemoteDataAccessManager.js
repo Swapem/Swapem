@@ -57,8 +57,8 @@ var getRequestedContacts = function(to, callback) {
 	// Initiate the query
 	query.find({
 	success: function(results) {
-	   //alert("Successfully retrieved " + results.length + " instances of contact information");
-	       callback(null, results)
+	   // alert("Successfully retrieved " + results.length + " instances of contact information");
+	   callback(null, results)
 	   },
 	error: function(error) {
 	   alert("Error: " + error.code + " " + error.message);

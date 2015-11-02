@@ -58,11 +58,6 @@ class Swapem extends Component {
       selectedIcon = {require('image!RequestsSelected')}
       selected = {this.state.selectedTab === 'RequestsRootViewController'}
       onPress = {() => {
-        // Query if new contact requests were made.
-        console.log(DeviceUUID.getUUID());
-        RemoteDataAccessManager.checkForRecentContactsSent(DeviceUUID.getUUID());
-        // TODO ****************************************************
-        // ADD LOGIC TO STORE THE DATA, AND SHOW THEM IN LIST VIEW ON THE REQUESTS PAGE
         this.setState({
           selectedTab: 'RequestsRootViewController',
         });

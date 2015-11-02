@@ -54,20 +54,16 @@ var styles = StyleSheet.create({
 	},
 });
 
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 class ContactsVC2 extends Component {
 	constructor(props) {
 		super(props);
+		this.contactInfo = this.props.contactInfo;
+		this.selectedInfo = this.contactInfo.slice();
 		this.state = {
-			dataSource: new ListView.DataSource({
-				rowHasChanged: (row1, row2) => row1 !== row2
-			}),
+			dataSource: ds.cloneWithRows(this.contactInfo),
 		};
-	}
-	componentDidMount() {
-		var contactInfo = this.props.contactInfo;
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(contactInfo)
-		});
 	}
 	render() {
 		return (
@@ -77,48 +73,66 @@ class ContactsVC2 extends Component {
 			style = {styles.listView}/>
 			);
 	}
-	renderRequest(contactInfoItem) {
+	renderRequest(contactInfoItem,sectionID,rowID) {
+		// e.g. contactInfoItem = {name: 'Ann Kim'}
+		var contactInfoKey = Object.keys(contactInfoItem).toString();
+		var index = this.contactInfo.indexOf(contactInfoItem);
 		return (
 			<TouchableHighlight
+			onPress = {(event) => {
+				if (this.selectedInfo.includes(contactInfoItem)) {
+					var index = this.selectedInfo.indexOf(contactInfoItem);
+					this.selectedInfo.splice(index, 1);
+				}
+				else {
+					this.selectedInfo.splice(index, 0, contactInfoItem);
+				}
+				// update tableview data
+				this.setState({
+					dataSource: ds.cloneWithRows(this.contactInfo),
+				});
+			}} 
 			underlayColor = '#2980B9'>
 			<View>
 			<View style = {styles.cell}>
 			<Image
 			source = {(() => {
-				switch (Object.keys(contactInfoItem).toString()) {
+				switch (contactInfoKey) {
 					case 'email': return require('image!Email');
 					case 'facebook': return require('image!Facebook');
-					case 'name': return require('image!Person');
 					case 'phone': return require('image!Phone');
 					default: return require('image!Person');
 				}})()}
 				style = {styles.icon} />
 				<View style = {styles.content}>
 				{(() => {
-					switch (Object.keys(contactInfoItem).toString()) {
+					switch (contactInfoKey) {
 						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
 						default: return;
 					}})()}
 					<Text style = {styles.item}>
 					{(() => {
-						switch (Object.keys(contactInfoItem).toString()) {
+						switch (contactInfoKey) {
 							case 'email': return (contactInfoItem.email);
 							case 'facebook': return (contactInfoItem.facebook);
-							case 'name': return (contactInfoItem.name);
 							case 'phone': return (contactInfoItem.phone);
 							default: return (contactInfoItem.name);
 						}})()}
 						</Text>
 						</View>
 						<View>
-						<Image source = {require('image!Checkmark')} style = {styles.checkmark} />
+						{(() => {
+							switch (this.selectedInfo.includes(contactInfoItem)) {
+								case false: return;
+								default: return <Image source = {require('image!Checkmark')} style = {styles.checkmark} />;
+							}})()}
 						</View>
 						</View>
 						<View style = {styles.separator} />
 						</View>
 						</TouchableHighlight>
 						);
-}
+						}
 }
 
 module.exports = ContactsVC2;

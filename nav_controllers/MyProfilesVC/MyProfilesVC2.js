@@ -75,46 +75,46 @@ class MyProfilesVC2 extends Component {
 	// e.g. profileItem = {name: 'Ann Kim'}
 	var profileType = Object.keys(profileItem).toString();
 	// e.g. profileType = 'name'
-		return (
-			<TouchableHighlight
-			onPress = {() => this.showProfileDetails(profileItem, profileType)}
-			underlayColor = '#2980B9'>
-			<View>
-			<View style = {styles.cell}>
-			<Image
-			source = {(() => {
+	return (
+		<TouchableHighlight
+		onPress = {() => this.showProfileDetails(profileItem, profileType)}
+		underlayColor = '#2980B9'>
+		<View>
+		<View style = {styles.cell}>
+		<Image
+		source = {(() => {
+			switch (profileType) {
+				case 'email': return require('image!Email');
+				case 'facebook': return require('image!Facebook');
+				case 'name': return require('image!Person');
+				case 'phone': return require('image!Phone');
+				default: return require('image!Person');
+			}})()}
+			style = {styles.icon} />
+			<View style = {styles.content}>
+			{(() => {
 				switch (profileType) {
-					case 'email': return require('image!Email');
-					case 'facebook': return require('image!Facebook');
-					case 'name': return require('image!Person');
-					case 'phone': return require('image!Phone');
-					default: return require('image!Person');
+					case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
+					default: return;t
 				}})()}
-				style = {styles.icon} />
-				<View style = {styles.content}>
+				<Text style = {styles.item}>
 				{(() => {
-					switch (profileType) {
-						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
-						default: return;t
+					switch (Object.keys(profileItem).toString()) {
+						case 'email': return (profileItem.email);
+						case 'facebook': return (profileItem.facebook);
+						case 'name': return (profileItem.name);
+						case 'phone': return (profileItem.phone);
+						default: return (profileItem.name);
 					}})()}
-					<Text style = {styles.item}>
-					{(() => {
-						switch (Object.keys(profileItem).toString()) {
-							case 'email': return (profileItem.email);
-							case 'facebook': return (profileItem.facebook);
-							case 'name': return (profileItem.name);
-							case 'phone': return (profileItem.phone);
-							default: return (profileItem.name);
-						}})()}
-						</Text>
-						</View>
-						</View>
-						<View style = {styles.separator} />
-						</View>
-						</TouchableHighlight>
-						);
+					</Text>
+					</View>
+					</View>
+					<View style = {styles.separator} />
+					</View>
+					</TouchableHighlight>
+					);
 	}
-	showProfileDetails(profileItem,profileType) {	
+	showProfileDetails(profileItem,profileType) {
 		if (profileType === 'facebook') {
 			this.props.navigator.push({
 			component: MyProfilesVC3,
@@ -122,14 +122,14 @@ class MyProfilesVC2 extends Component {
 			title: profileType,
 		})}
 		else {
-		this.props.navigator.push({
-			title: profileType,
-			component: MyProfilesDetailsVC,
-			backButtonTitle: 'Save',
-			passProps: { label: profileType,
-				profileType: profileType,
-			},
-		})}
+			this.props.navigator.push({
+				title: profileType,
+				component: MyProfilesDetailsVC,
+				backButtonTitle: 'Save',
+				passProps: { label: profileType,
+					profileType: profileType,
+				},
+			})}
 	}
 }
 
