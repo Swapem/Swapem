@@ -11,12 +11,21 @@ var ContactsRootVC = require('./nav_controllers/ContactsVC/ContactsRootVC');
 var SettingsRootVC = require('./nav_controllers/SettingsVC/SettingsRootVC');
 var RemoteDataAccessManager = require('./RemoteDataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
+var ParseDB = require('./RemoteDataAccessManager');
 
 var {
   AppRegistry,
   Component,
   TabBarIOS,
 } = React;
+
+// Device specific UUID
+// Update Geolocation of Device in Parse table upon startup
+// TODO: check GPS permissions.
+var uniqueIdentifier;
+DeviceUUID.getUUID().then((uuid) => {
+  ParseDB.updateGPSLocation(uuid);
+});
 
 class Swapem extends Component {
   constructor(props) {

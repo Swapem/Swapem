@@ -113,6 +113,51 @@ var updateContactToAccepted = function(to, name, callback) {
 	})
 }
 
+var updateGPSLocation = function(uuid) {
+	var DeviceLocations = Parse.Object.extend("DeviceLocations");
+	var query = new Parse.Query(DeviceLocations);
+	query.equalTo("uuid", uuid);
+	// Search for previous entries under the same UUID
+	query.find({
+	success: function(results) {
+		console.log("Number of previous entries: " + results.length);
+
+		var deviceLocation;
+		// If no previous entries, instantiate new Parse object
+		if (results.length == 0) {
+			deviceLocation = new DeviceLocations();
+		}
+		// If previous entry exists, resuse the same object
+		else {
+			deviceLocation = results[0];
+		}
+		// Update user's current geolocation 
+		var userGeoPoint = new Parse.GeoPoint.current({
+			success: function(userGeoPoint) {
+				deviceLocation.set("uuid", uuid);
+				deviceLocation.set("location", userGeoPoint);
+
+				// If User's current location is successfully accessed then insert into db
+				deviceLocation.save(null, {
+					success: function(deviceLocation) {
+						console.log('Geolocation updated for device: ' + deviceLocation.id);
+					},
+					error: function(error) {
+						alert("Error: " + error.code + " " + error.message);
+					   }
+					})
+			},
+			error: function(error) {
+			   alert("Error: " + error.code + " " + error.message);
+			}
+		})
+	},
+	error: function(error) {
+		alert("Error: " + error.code + " " + error.message);
+	}
+})
+}
+
 /**
 * Prepares the given user for scanning of nearby users:
 * (a) Updates/Saves Geolocation
@@ -393,5 +438,6 @@ module.exports = {
 	getRequestedContacts: getRequestedContacts,
 	getAcceptedContacts: getAcceptedContacts,
 	updateContactToAccepted: updateContactToAccepted,
-	sendContactInfoToSelectedUsers: sendContactInfoToSelectedUsers
+	sendContactInfoToSelectedUsers: sendContactInfoToSelectedUsers,
+	updateGPSLocation: updateGPSLocation
 }
