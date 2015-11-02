@@ -98,6 +98,9 @@ class RequestsVC1 extends Component {
           if(error){
             alert(error)
           }
+          else{
+            alert("Contacts saved");
+          }
         })
       }
     })
