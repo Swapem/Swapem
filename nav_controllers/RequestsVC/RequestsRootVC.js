@@ -29,9 +29,9 @@ class RequestsRootVC extends Component {
       tintColor = '#3498DB'
       initialRoute = {{
         title: 'Requests',
-        component: RequestsVC1.RequestsVC1,
+        component: RequestsVC1.instance,
         leftButtonTitle: 'Edit',
-        rightButtonTitle: 'Accept',
+        //rightButtonTitle: 'Accept'
       }}/>
       );
   }

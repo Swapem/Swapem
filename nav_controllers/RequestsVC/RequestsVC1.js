@@ -22,6 +22,8 @@ var fakeRequests = [
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+var checkedNames = []
+
 var styles = StyleSheet.create({
   cell: {
     alignItems: 'center',
@@ -56,16 +58,28 @@ var styles = StyleSheet.create({
   person: {
      fontSize: 20,
    },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  button: {
+    height: 44,
+    flexDirection: 'row',
+    backgroundColor: '#48BBEC',
+    alignSelf: 'stretch',
+    justifyContent: 'center'
+  }
  });
 
 class RequestsVC1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows([]),
     }
   }
-
+  
   componentDidMount() {
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
@@ -77,40 +91,88 @@ class RequestsVC1 extends Component {
     })
   }
 
+  handleAcceptButton(){
+    DeviceUUID.getUUID().then((uuid) => {
+      for(let i=0; i<checkedNames.length; i++){
+        ParseDB.updateContactToAccepted(uuid, checkedNames[i], (error, result) =>{
+          if(error){
+            alert(error)
+          }
+        })
+      }
+    })
+  }
+
 	render() {
 		return (
+      <View>
 			<ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderRequest.bind(this)}
       style = {styles.listView}
       />
+      <TouchableHighlight style={styles.button}
+        onPress={this.handleAcceptButton}>
+        <Text style={styles.buttonText}>Accept</Text>
+      </TouchableHighlight>
+      </View>
       );
 	}
 	renderRequest(request) {
     // e.g. request = {name: 'Junoh Lee', phone: '(778) 111-1111', email: 'junohlee@cs410.com', facebook: 'junohlee',}
 		return (
-      <TouchableHighlight
-      underlayColor = '#2980B9'>
-      <View>
-      <View style = {styles.cell}>
-      <Image
-      source = {require('image!Person')}
-      style = {styles.icon} />
-      <View style = {styles.content}>
-      <Text style = {styles.person}>{request.name}</Text>
-      </View>
-      <View>
-      <Image source = {require('image!Checkmark')} style = {styles.checkmark} />
-      </View>
-      </View>
-      <View style = {styles.separator} />
-      </View>
-      </TouchableHighlight>
-      );
+      <ContactRow request={request} />
+    )
 	}
 }
 
+class ContactRow extends Component{
+  constructor(props) {
+    super(props)
+    this.state = {
+      check: false
+    }
+  }
+
+  render(){
+    return(
+      <TouchableHighlight
+        onPress={() => {
+          if(!this.state.check){
+            checkedNames.push(this.props.request.name)
+          }
+          else{
+            let indexOfName = checkedNames.indexOf(this.props.request.name)
+            checkedNames.splice(indexOfName, 1)
+          }
+          this.setState({check:!(this.state.check)});
+        }
+        }
+        underlayColor = '#2980B9'>
+        <View>
+          <View style = {styles.cell}>
+            <Image
+            source = {require('image!Person')}
+            style = {styles.icon} />
+            <View style = {styles.content}>
+              <Text style = {styles.person}>{this.props.request.name}</Text>
+            </View>
+            {this.state.check? 
+              <View>
+                <Image source = {require('image!Checkmark')} style = {styles.checkmark} />
+              </View> 
+              :
+              null
+            }
+          </View>
+          <View style = {styles.separator} />
+        </View>
+      </TouchableHighlight>
+    )
+  }
+}
+
 module.exports = {
-  RequestsVC1: RequestsVC1,
+  instance: RequestsVC1,
   contacts: fakeRequests
 }

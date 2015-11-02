@@ -101,7 +101,6 @@ var updateContactToAccepted = function(to, name, callback) {
 	// Initiate the query
 	query.first({
 	success: function(result) {
-	   alert("Successfully retrieved " + result.length + " instances of contact information");
 	   // update accepted to true
 	    	result.set("accepted", true)
 	    	result.save()
