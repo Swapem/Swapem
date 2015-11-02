@@ -121,6 +121,15 @@ class SwapemVC1 extends Component {
 		{email: profile[profileType].email},
 		{facebook: profile[profileType].facebook},
 		];
+		// profileDetails formatting is depended on by the next VC
+		// this selectedProfileToSend is much easier to send.
+		// TODO: Consolidate formatting into one.
+		var selectedProfileToSend = 
+			{name: profile[profileType].name, 
+			phone: profile[profileType].phone, 
+			email: profile[profileType].email, 
+			facebook: profile[profileType].facebook};
+
 		this.props.navigator.push({
 
 			title: 'Customize',
@@ -155,14 +164,14 @@ class SwapemVC1 extends Component {
 				       AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray));
 				     });
 				})
-				this.showResults();
+				this.showResults(selectedProfileToSend);
 		    },
 			passProps: {
 				profileDetails: profileDetails,
 			},
 		})
 	}
-	showResults() {
+	showResults(selectedProfileToSend) {
 		this.props.navigator.push({
 			title: 'Nearby Devices',
 			component: SwapemVC3,
@@ -171,6 +180,15 @@ class SwapemVC1 extends Component {
 				this.props.navigator.pop();
 			},
 			rightButtonTitle: 'Send',
+			onRightButtonPress: () => {
+				AsyncStorage.getItem('nearbyDevices').then((selectedUsers) => {
+			       // Send contact information to chosen users
+			       // TODO: Currently sending info to all nearby devices rather than selected
+				   console.log("contact information sent to: " + JSON.stringify(selectedUsers));
+				   RemoteDataAccessManager.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
+			   }).done();
+				
+			},
 		})
 	}
 }
