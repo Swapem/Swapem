@@ -41,6 +41,7 @@ class Swapem extends Component {
       barTintColor = '#ECF0F1'
       tintColor = '#3498DB'>
       <TabBarIOS.Item
+      title = ''
       icon = {require('image!MyProfiles')}
       selectedIcon = {require('image!MyProfilesSelected')}
       selected = {this.state.selectedTab === 'MyProfilesRootVC'}
@@ -52,6 +53,7 @@ class Swapem extends Component {
       <MyProfilesRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
+      title = ''
       icon = {require('image!Swapem')}
       selectedIcon = {require('image!SwapemSelected')}
       selected = {this.state.selectedTab === 'SwapemRootVC'}
@@ -63,6 +65,7 @@ class Swapem extends Component {
       <SwapemRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
+      title = ''
       icon = {require('image!Requests')}
       selectedIcon = {require('image!RequestsSelected')}
       selected = {this.state.selectedTab === 'RequestsRootViewController'}
@@ -74,6 +77,7 @@ class Swapem extends Component {
       <RequestsRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
+      title = ''
       icon = {require('image!Contacts')}
       selectedIcon = {require('image!ContactsSelected')}
       selected = {this.state.selectedTab === 'ContactsRootVC'}
@@ -85,6 +89,7 @@ class Swapem extends Component {
       <ContactsRootVC/>
       </TabBarIOS.Item>
       <TabBarIOS.Item
+      title = ''
       icon = {require('image!Settings')}
       selectedIcon = {require('image!SettingsSelected')}
       selected = {this.state.selectedTab === 'SettingsRootVC'}
