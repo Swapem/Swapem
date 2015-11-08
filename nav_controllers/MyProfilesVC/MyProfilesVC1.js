@@ -78,7 +78,6 @@ class MyProfilesVC1 extends Component {
 			style = {styles.listView}/>
 			);
 	}
-	
 	renderContact(profile) {
 		// e.g. profile = {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}}
 		return (
@@ -102,7 +101,7 @@ class MyProfilesVC1 extends Component {
 			<View style = {styles.separator} />
 			</View>
 			</TouchableHighlight>
-			);d
+			);
 	}
 	showProfileDetails(profile) {
 		var profileType = Object.keys(profile).toString();

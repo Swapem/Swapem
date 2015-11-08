@@ -10,6 +10,7 @@ var {
   StyleSheet,
   Component,
   NavigatorIOS,
+  AlertIOS,
 } = React;
 
 var styles = StyleSheet.create({
@@ -32,8 +33,24 @@ class MyProfilesRootVC extends Component {
         component: MyProfilesVC1,
         leftButtonTitle: 'Edit',
         rightButtonIcon: require('image!Add'),
-        }}/>
+        onRightButtonPress: () => {
+          this.prompt();
+        },
+      }}/>
       );
+  }
+  prompt() {
+    AlertIOS.prompt (
+      'Enter profile name',
+      '',
+      [
+      {text: 'Cancel'},
+      {text: 'Save', onPress: this.save.bind(this)},
+      ]
+      )
+  }
+  save(value) {
+    alert(value);
   }
 }
 
