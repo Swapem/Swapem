@@ -32,8 +32,8 @@ class MyProfilesRootVC extends Component {
     this.state = {
     };
   }
+  // create myProfiles AsyncStorage the first time
   componentDidMount() {
-    // create myProfiles AsyncStorage only the first time
     AsyncStorage.getItem('myProfiles').then((dbValue) => {
       if (dbValue == null) {
         AsyncStorage.setItem('myProfiles', JSON.stringify([]));
@@ -76,7 +76,6 @@ class MyProfilesRootVC extends Component {
         [promptValue]: {name: '', phone: '', email: '', facebook: ''}
       });
       AsyncStorage.setItem('myProfiles', JSON.stringify(newProfiles));
-      alert(JSON.stringify(newProfiles));
     }).done();
   }
 }

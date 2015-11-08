@@ -66,8 +66,21 @@ class MyProfilesVC1 extends Component {
 			dataSource: ds,
 		};
 	}
+	// populate tableview the first time
 	componentDidMount() {
-		// populate tableview
+		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			if (dbValue == null) {
+			}
+			else {
+				this.profiles = JSON.parse(dbValue);	
+			}
+			this.setState({
+				dataSource: ds.cloneWithRows(this.profiles),
+			});
+		}).done();
+	}
+	// update tableview when new props are received
+	componentWillUpdate() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
 			if (dbValue == null) {
 			}
