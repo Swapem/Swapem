@@ -20,9 +20,6 @@ var styles = StyleSheet.create({
   },
 });
 
-var basicProfile = [
-]
-
 var testProfiles = [
 {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
 {School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
@@ -34,11 +31,12 @@ class MyProfilesRootVC extends Component {
     super(props);
     this.state = {
     };
+  }
+  componentDidMount() {
     // create myProfiles AsyncStorage only the first time
-    AsyncStorage.getItem('myProfiles').then((DBValue) => {
-      if (DBValue == null) {
-        AsyncStorage.setItem('myProfiles', JSON.stringify(basicProfile));
-        alert('test');
+    AsyncStorage.getItem('myProfiles').then((dbValue) => {
+      if (dbValue == null) {
+        AsyncStorage.setItem('myProfiles', JSON.stringify([]));
       }
     }).done();
   }
@@ -72,8 +70,8 @@ class MyProfilesRootVC extends Component {
       )
   }
   saveProfileName(promptValue) {
-    AsyncStorage.getItem('myProfiles').then((DBValue) => {
-      var newProfiles = JSON.parse(DBValue);
+    AsyncStorage.getItem('myProfiles').then((dbValue) => {
+      var newProfiles = JSON.parse(dbValue);
       newProfiles.push({
         [promptValue]: {name: '', phone: '', email: '', facebook: ''}
       });

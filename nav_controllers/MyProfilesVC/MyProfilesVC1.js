@@ -4,20 +4,15 @@ var React = require('react-native');
 var MyProfilesVC2 = require('./MyProfilesVC2')
 
 var {
-	StyleSheet,
+	AsyncStorage,
 	Component,
+	Image,
 	ListView,
+	StyleSheet,
+	Text,
 	TouchableHighlight,
 	View,
-	Image,
-	Text,
 } = React;
-
-var fakeProfiles = [
-{Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
-{School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
-{Work: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com'}},
-];
 
 var styles = StyleSheet.create({
 	cell: {
@@ -55,31 +50,45 @@ var styles = StyleSheet.create({
 	},
 });
 
+var testProfiles = [
+{Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
+{School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
+{Work: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com'}},
+];
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 class MyProfilesVC1 extends Component {
 	constructor(props) {
 		super(props);
+		this.profiles = [];
 		this.state = {
-			dataSource: new ListView.DataSource({
-				rowHasChanged: (row1, row2) => row1 !== row2
-			}),
+			dataSource: ds,
 		};
 	}
 	componentDidMount() {
-		var profiles = fakeProfiles;
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(profiles)
-		});
+		// populate tableview
+		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			if (dbValue == null) {
+			}
+			else {
+				this.profiles = JSON.parse(dbValue);	
+			}
+			this.setState({
+				dataSource: ds.cloneWithRows(this.profiles),
+			});
+		}).done();
 	}
 	render() {
 		return (
 			<ListView
 			dataSource = {this.state.dataSource}
-			renderRow = {this.renderContact.bind(this)}
+			renderRow = {this.renderProfile.bind(this)}
 			style = {styles.listView}/>
 			);
 	}
-	renderContact(profile) {
-		// e.g. profile = {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}}
+	renderProfile(profile) {
+		// e.g. profile = {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}
 		return (
 			<TouchableHighlight
 			onPress = {() => this.showProfileDetails(profile)}
