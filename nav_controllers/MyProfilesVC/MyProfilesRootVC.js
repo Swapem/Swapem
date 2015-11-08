@@ -7,10 +7,11 @@ var React = require('react-native');
 var MyProfilesVC1 = require('./MyProfilesVC1');
 
 var {
-  StyleSheet,
+  AlertIOS,
+  AsyncStorage,
   Component,
   NavigatorIOS,
-  AlertIOS,
+  StyleSheet,
 } = React;
 
 var styles = StyleSheet.create({
@@ -19,7 +20,28 @@ var styles = StyleSheet.create({
   },
 });
 
+var basicProfile = [
+]
+
+var testProfiles = [
+{Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
+{School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
+{Work: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com'}},
+];
+
 class MyProfilesRootVC extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+    // create myProfiles AsyncStorage only the first time
+    AsyncStorage.getItem('myProfiles').then((DBValue) => {
+      if (DBValue == null) {
+        AsyncStorage.setItem('myProfiles', JSON.stringify(basicProfile));
+        alert('test');
+      }
+    }).done();
+  }
 	render() {
 		return (
       <NavigatorIOS
@@ -34,23 +56,30 @@ class MyProfilesRootVC extends Component {
         leftButtonTitle: 'Edit',
         rightButtonIcon: require('image!Add'),
         onRightButtonPress: () => {
-          this.prompt();
+          this.promptProfileName();
         },
       }}/>
       );
   }
-  prompt() {
+  promptProfileName() {
     AlertIOS.prompt (
       'Enter profile name',
       '',
       [
       {text: 'Cancel'},
-      {text: 'Save', onPress: this.save.bind(this)},
+      {text: 'Save', onPress: this.saveProfileName.bind(this)},
       ]
       )
   }
-  save(value) {
-    alert(value);
+  saveProfileName(promptValue) {
+    AsyncStorage.getItem('myProfiles').then((DBValue) => {
+      var newProfiles = JSON.parse(DBValue);
+      newProfiles.push({
+        [promptValue]: {name: '', phone: '', email: '', facebook: ''}
+      });
+      AsyncStorage.setItem('myProfiles', JSON.stringify(newProfiles));
+      alert(JSON.stringify(newProfiles));
+    }).done();
   }
 }
 
