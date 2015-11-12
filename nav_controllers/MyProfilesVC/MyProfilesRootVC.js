@@ -43,6 +43,7 @@ class MyProfilesRootVC extends Component {
 	render() {
 		return (
       <NavigatorIOS
+      ref = 'nav'
       translucent = {false}
       style = {styles.container}
       barTintColor = '#ECF0F1'
@@ -71,11 +72,21 @@ class MyProfilesRootVC extends Component {
   }
   saveProfileName(promptValue) {
     AsyncStorage.getItem('myProfiles').then((dbValue) => {
-      var newProfiles = JSON.parse(dbValue);
-      newProfiles.push({
+      var profiles = JSON.parse(dbValue);
+      profiles.push({
         [promptValue]: {name: '', phone: '', email: '', facebook: ''}
       });
-      AsyncStorage.setItem('myProfiles', JSON.stringify(newProfiles));
+      AsyncStorage.setItem('myProfiles', JSON.stringify(profiles));
+      profiles = this.props.profiles;
+      this.refs.nav.replace({
+        title: 'My Profiles',
+        component: MyProfilesVC1,
+        leftButtonTitle: 'Edit',
+        rightButtonIcon: require('image!Add'),
+        onRightButtonPress: () => {
+          this.promptProfileName();
+        },
+      });
     }).done();
   }
 }

@@ -61,7 +61,6 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class MyProfilesVC1 extends Component {
 	constructor(props) {
 		super(props);
-		this.profiles = [];
 		this.state = {
 			dataSource: ds,
 		};
@@ -69,26 +68,30 @@ class MyProfilesVC1 extends Component {
 	// populate tableview the first time
 	componentDidMount() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			var profiles;
 			if (dbValue == null) {
+				profiles = [];
 			}
 			else {
-				this.profiles = JSON.parse(dbValue);	
+				profiles = JSON.parse(dbValue);	
 			}
 			this.setState({
-				dataSource: ds.cloneWithRows(this.profiles),
+				dataSource: ds.cloneWithRows(profiles),
 			});
 		}).done();
 	}
 	// update tableview when new props are received
-	componentWillUpdate() {
+	componentWillReceiveProps() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			var profiles;
 			if (dbValue == null) {
+				profiles = [];
 			}
 			else {
-				this.profiles = JSON.parse(dbValue);	
+				profiles = JSON.parse(dbValue);	
 			}
 			this.setState({
-				dataSource: ds.cloneWithRows(this.profiles),
+				dataSource: ds.cloneWithRows(profiles),
 			});
 		}).done();
 	}
@@ -144,7 +147,7 @@ class MyProfilesVC1 extends Component {
 			passProps: {
 				profileDetails: profileDetails,
 			},
-		})
+		});
 	}
 }
 
