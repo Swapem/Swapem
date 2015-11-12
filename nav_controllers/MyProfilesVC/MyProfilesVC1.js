@@ -146,9 +146,9 @@ class MyProfilesVC1 extends Component {
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
-			rightButtonTitle: 'Edit',
+			rightButtonTitle: 'Save',
 			passProps: {
-				profileDetails: profileInfo,
+				profileInfo: profileInfo,
 			},
 		});
 	}
