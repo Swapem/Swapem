@@ -37,7 +37,6 @@ class Swapem extends Component {
   render() {
     return (
       <TabBarIOS
-      translucent = {false}
       barTintColor = '#ECF0F1'
       tintColor = '#3498DB'>
       <TabBarIOS.Item

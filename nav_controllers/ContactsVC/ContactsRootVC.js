@@ -22,7 +22,6 @@ class ContactsRootVC extends Component {
   render() {
     return (
       <NavigatorIOS
-      translucent = {false}
       style = {styles.container}
       barTintColor = '#ECF0F1'
       titleTextColor = '#2C3E50'

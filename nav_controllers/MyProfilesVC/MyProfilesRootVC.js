@@ -44,7 +44,6 @@ class MyProfilesRootVC extends Component {
 		return (
       <NavigatorIOS
       ref = 'nav'
-      translucent = {false}
       style = {styles.container}
       barTintColor = '#ECF0F1'
       titleTextColor = '#2C3E50'

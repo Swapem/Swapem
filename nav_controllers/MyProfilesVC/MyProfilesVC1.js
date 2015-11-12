@@ -33,6 +33,8 @@ var styles = StyleSheet.create({
 		tintColor: '#3498DB',
 		width: 40,
 	},
+	listView: {
+	},
 	next: {
 		alignSelf: 'flex-end',
 		height: 20,
@@ -80,7 +82,8 @@ class MyProfilesVC1 extends Component {
 			});
 		}).done();
 	}
-	// update tableview when new props are received
+	// update tableview when new props are received,
+	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() in MyProfilesVC2 are called
 	componentWillReceiveProps() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
 			var profiles;
@@ -129,15 +132,15 @@ class MyProfilesVC1 extends Component {
 			);
 	}
 	showProfileDetails(profile) {
-		var profileType = Object.keys(profile).toString();
-		var profileDetails = [
-		{name: profile[profileType].name},
-		{phone: profile[profileType].phone},
-		{email: profile[profileType].email},
-		{facebook: profile[profileType].facebook},
+		var profileName = Object.keys(profile).toString();
+		var profileInfo = [
+		{name: profile[profileName].name},
+		{phone: profile[profileName].phone},
+		{email: profile[profileName].email},
+		{facebook: profile[profileName].facebook},
 		];
 		this.props.navigator.push({
-			title: profileType,
+			title: profileName,
 			component: MyProfilesVC2,
 			leftButtonIcon: require('image!Back'),
 			onLeftButtonPress: () => {
@@ -145,7 +148,7 @@ class MyProfilesVC1 extends Component {
 			},
 			rightButtonTitle: 'Edit',
 			passProps: {
-				profileDetails: profileDetails,
+				profileDetails: profileInfo,
 			},
 		});
 	}
