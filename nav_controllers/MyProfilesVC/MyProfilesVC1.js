@@ -83,7 +83,7 @@ class MyProfilesVC1 extends Component {
 		}).done();
 	}
 	// update tableview when new props are received,
-	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() in MyProfilesVC2 are called
+	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() and this.refreshComponent(profileName,profileInfo) in MyProfilesVC1 are called
 	componentWillReceiveProps() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
 			var profiles;
@@ -147,8 +147,30 @@ class MyProfilesVC1 extends Component {
 				this.props.navigator.pop();
 			},
 			rightButtonTitle: 'Save',
+			onRightButtonPress: () => {
+				this.refreshComponent(profileName);
+			},
 			passProps: {
+				profileName: profileName,
 				profileInfo: profileInfo,
+			},
+		});
+	}
+	refreshComponent(profileName) {
+		this.props.navigator.replace({
+			title: profileName,
+			component: MyProfilesVC2,
+			leftButtonIcon: require('image!Back'),
+			onLeftButtonPress: () => {
+				this.props.navigator.pop();
+			},
+			rightButtonTitle: 'Save',
+			onRightButtonPress: () => {
+				this.refreshComponent(profileName);
+			},
+			passProps: {
+				profileName: profileName,
+				save: true,
 			},
 		});
 	}

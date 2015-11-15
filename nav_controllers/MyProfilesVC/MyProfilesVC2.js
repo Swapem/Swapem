@@ -1,18 +1,17 @@
 'use strict';
 
 var React = require('react-native');
-var MyProfilesVC3 = require('./MyProfilesVC3')
-var MyProfilesDetailsVC = require('./MyProfilesDetailsVC')
 
 var {
-	StyleSheet,
+	AsyncStorage,
 	Component,
-	ListView,
-	TouchableHighlight,
-	View,
 	Image,
+	ListView,
+	StyleSheet,
 	Text,
 	TextInput,
+	TouchableHighlight,
+	View,
 } = React;
 
 var styles = StyleSheet.create({
@@ -62,10 +61,14 @@ class MyProfilesVC2 extends Component {
 		super(props);
 		this.state = {
 			dataSource: ds,
-			email: '',
-			facebook: '',
-			name: '',
-			phone: '',
+			newEmail: this.props.profileInfo[2].email,
+			newFacebook: this.props.profileInfo[3].facebook,
+			newName: this.props.profileInfo[0].name,
+			newPhone: this.props.profileInfo[1].phone,
+			oldEmail: this.props.profileInfo[2].email,
+			oldFacebook: this.props.profileInfo[3].facebook,
+			oldName: this.props.profileInfo[0].name,
+			oldPhone: this.props.profileInfo[1].phone,
 		};
 	}
 	// populate tableview the first time
@@ -74,6 +77,39 @@ class MyProfilesVC2 extends Component {
 		this.setState({
 			dataSource: ds.cloneWithRows(profileInfo)
 		});
+	}
+	// update tableview when new props are received,
+	// i.e. this.props.navigator.replace() in MyProfilesVC1 is called
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.save) {
+			if ( (this.state.newName !== this.state.oldName) ||
+				(this.state.newPhone !== this.state.oldPhone) ||
+				(this.state.newEmail !== this.state.oldEmail) ||
+				(this.state.newFacebook !== this.state.oldFacebook) ) {
+				AsyncStorage.getItem('myProfiles').then((dbValue) => {
+					var storedProfiles;
+					if (dbValue == null) {
+						storedProfiles = [];
+					}
+					else {
+						storedProfiles = JSON.parse(dbValue);	
+					}
+					for (var i = 0; i < storedProfiles.length; i++) {
+						var storedProfile = storedProfiles[i];
+						var storedProfileName = Object.keys(storedProfile).toString();
+						if (storedProfileName === nextProps.profileName) {
+							var newProfile = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook};
+							storedProfile[storedProfileName] = newProfile;
+							AsyncStorage.setItem('myProfiles', JSON.stringify(storedProfiles));
+							alert('Profile saved');
+						}
+					}
+				}).done();
+			}
+			else {
+				alert('No change');
+			}
+		}
 	}
 	render() {
 		return (
@@ -85,16 +121,25 @@ class MyProfilesVC2 extends Component {
 	}
 	renderRequest(profileItem) {
 	// e.g. profileItem = {name: 'Ann Kim'}
-	var profileName = Object.keys(profileItem).toString();
-	// e.g. profileName = 'name'
+	var profileType = Object.keys(profileItem).toString();
+	// e.g. profileType = 'name'
 		return (
 			<TouchableHighlight
-			activeOpacity = {1}>
+			activeOpacity = {(() => {
+				switch (profileType) {
+					case 'facebook': return;
+					default: return 1;
+				}})()}
+			underlayColor = {(() => {
+				switch (profileType) {
+					case 'facebook': return '#2980B9';
+					default: return;
+				}})()}>
 			<View>
 			<View style = {styles.cell}>
 			<Image
 			source = {(() => {
-				switch (profileName) {
+				switch (profileType) {
 					case 'email': return require('image!Email');
 					case 'facebook': return require('image!Facebook');
 					case 'name': return require('image!Person');
@@ -104,36 +149,36 @@ class MyProfilesVC2 extends Component {
 			style = {styles.icon} />
 			<View style = {styles.content}>
 			{(() => {
-				switch (profileName) {
+				switch (profileType) {
 					case 'facebook': return <Text style = {styles.infoType}>facebook.com/</Text>;
 					default: return;
 				}})()}	
 			{(() => {
-				switch (Object.keys(profileItem).toString()) {
-					case 'facebook': return <Text style = {styles.info}>{this.state.facebook}</Text>;
+				switch (profileType) {
+					case 'facebook': return <Text style = {styles.info}>{this.state.newFacebook}</Text>;
 					default: return <TextInput
 					style = {styles.infoInput}
 					placeholder = {(() => {
-						switch (Object.keys(profileItem).toString()) {
+						switch (profileType) {
 							case 'email': return 'Email';
 							case 'name': return 'Name';
 							case 'phone': return 'Phone';
 							default: return 'Name';
 						}})()}
-						onChangeText = {(() => {
-							switch (Object.keys(profileItem).toString()) {
-								case 'email': return (text) => this.setState({email: text});
-								case 'name': return (text) => this.setState({name: text});
-								case 'phone': return (text) => this.setState({phone: text});
-								default: return (text) => this.setState({name: text});
-							}})()}
-							value = {(() => {
-								switch (Object.keys(profileItem).toString()) {
-									case 'email': return this.state.email;
-									case 'name': return this.state.name;
-									case 'phone': return this.state.phone;
-									default: return this.state.name;
-								}})()} />;
+					onChangeText = {(() => {
+						switch (profileType) {
+							case 'email': return (text) => this.setState({newEmail: text});
+							case 'name': return (text) => this.setState({newName: text});
+							case 'phone': return (text) => this.setState({newPhone: text});
+							default: return (text) => this.setState({newName: text});
+						}})()}
+					value = {(() => {
+						switch (profileType) {
+							case 'email': return this.state.newEmail;
+							case 'name': return this.state.newName;
+							case 'phone': return this.state.newPhone;
+							default: return this.state.newName;
+						}})()} />;
 				}})()}
 			</View>
 			</View>
