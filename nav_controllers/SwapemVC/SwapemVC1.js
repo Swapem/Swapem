@@ -16,12 +16,11 @@ var {
 	AsyncStorage
 } = React;
 
-// TODO: Dynamically grab profile(s) information from local DB
-var fakeProfiles = [
-{Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
-{School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
-{Work: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com'}},
-];
+// var fakeProfiles = [
+// {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
+// {School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
+// {Work: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com'}},
+// ];
 
 var styles = StyleSheet.create({
 	container: {
@@ -75,10 +74,12 @@ class SwapemVC1 extends Component {
 		};
 	}
 	componentDidMount() {
-		var profiles = fakeProfiles;
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(profiles),
-		});
+		 AsyncStorage.getItem('myProfiles').then((dbValue) => {
+      		var profiles = JSON.parse(dbValue);
+      		this.setState({
+				dataSource: this.state.dataSource.cloneWithRows(profiles),
+			});
+      	})
 	}
 	render() {
 		return (
