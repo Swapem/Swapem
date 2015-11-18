@@ -59,32 +59,45 @@ class RequestsVC1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2
-      }),
+      dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2}),
+      loaded: false,
     };
   }
+  
   componentDidMount() {
     AsyncStorage.getItem('nearbyDevices').then((value) => {
-       this.setState({'nearbyDevices': value});
-       var nearbyUsers = JSON.parse(value);
+      var nearbyUsers = JSON.parse(value);
        console.log("value of asyncStorage nearby users: " + nearbyUsers);
-       
        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(nearbyUsers)
+          dataSource: this.state.dataSource.cloneWithRows(nearbyUsers),
+          loaded: true,
         });
    }).done();
-    
   }
+
   render() {
+    if (!this.state.loaded) {
+        return this.renderLoadingView();
+    }
     return (
       <ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderNearbyDevice.bind(this)}
       style = {styles.listView}
       />
+    );
+  }
+
+  renderLoadingView() {
+      return (
+        <View style={styles.cell}>
+          <Text>
+            Looking for nearby devices...
+          </Text>
+        </View>
       );
   }
+
   renderNearbyDevice(nearbyDevice) {
     // e.g. nearbyDevice = {name: 'Junoh Lee', uuid: '0000',}
     return (

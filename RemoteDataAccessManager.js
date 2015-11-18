@@ -120,8 +120,6 @@ var updateGPSLocation = function(uuid) {
 	// Search for previous entries under the same UUID
 	query.find({
 	success: function(results) {
-		console.log("Number of previous entries: " + results.length);
-
 		var deviceLocation;
 		// If no previous entries, instantiate new Parse object
 		if (results.length == 0) {
@@ -205,6 +203,7 @@ var prepareUserForScan = function(userName, callback) {
 						// query.equalTo("searching", true);
 						query.notEqualTo("uuid", uniqueIdentifier);
 						query.select("name", "uuid");
+						query.equalTo("searching", true);
 
 						// User's location  
 						var userGeoPoint = new Parse.GeoPoint.current({
@@ -217,7 +216,7 @@ var prepareUserForScan = function(userName, callback) {
 						        query.find({
 						            success: function(results) {
 						            	callback(results);
-						              query = new Parse.Query(DeviceLocations);
+						              	query = new Parse.Query(DeviceLocations);
 										query.equalTo("uuid", uniqueIdentifier);
 										// Search for previous entries under the same UUID
 										query.find({
@@ -411,11 +410,6 @@ var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 * Note that the 9s wait allows other users nearby to start scanning and persist their data
 */
 var scanForNearbyUsers = function(userName) {
-	//var callback = function(results) {
-	//	resultsOfScan = results;
-	//	alert("original callback " + resultsOfScan)
-	//	alert("resultsOfScan: "+ resultsOfScan)
-	//}
 
 	prepareUserForScan(userName, function(ln) {
 		alert('do I have the actual value of callback in here?: ' + ln);
