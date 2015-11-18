@@ -178,7 +178,7 @@ class SwapemVC1 extends Component {
 							});
 					       }
 					    // Store info of nearby users in local storage
-				       AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray))
+				       AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray));
 				     });
 				})
 				this.showResults(selectedProfileToSend);
