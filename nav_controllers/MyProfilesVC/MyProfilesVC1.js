@@ -80,7 +80,7 @@ class MyProfilesVC1 extends Component {
 			this.setState({
 				dataSource: ds.cloneWithRows(profiles),
 			});
-		}).done();
+		});
 	}
 	// update tableview when new props are received,
 	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() and this.refreshComponent(profileName,profileInfo) in MyProfilesVC1 are called
@@ -96,7 +96,7 @@ class MyProfilesVC1 extends Component {
 			this.setState({
 				dataSource: ds.cloneWithRows(profiles),
 			});
-		}).done();
+		});
 	}
 	render() {
 		return (

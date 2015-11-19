@@ -79,7 +79,7 @@ class MyProfilesVC2 extends Component {
 		});
 	}
 	// update tableview when new props are received,
-	// i.e. this.props.navigator.replace() in MyProfilesVC1 is called
+	// i.e. this.props.navigator.replace() is called in MyProfilesVC1
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.save) {
 			if ( (this.state.newName !== this.state.oldName) ||
@@ -100,11 +100,12 @@ class MyProfilesVC2 extends Component {
 						if (storedProfileName === nextProps.profileName) {
 							var newProfile = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook};
 							storedProfile[storedProfileName] = newProfile;
-							AsyncStorage.setItem('myProfiles', JSON.stringify(storedProfiles));
-							alert('Profile saved');
+							AsyncStorage.setItem('myProfiles', JSON.stringify(storedProfiles)).then(() => {
+								alert('Profile saved');
+							});
 						}
 					}
-				}).done();
+				});
 			}
 			else {
 				alert('No change');

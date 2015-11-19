@@ -6,21 +6,15 @@ var SwapemVC2 = require('./SwapemVC2')
 var SwapemVC3 = require('./SwapemVC3')
 
 var {
-	StyleSheet,
+	AsyncStorage,
 	Component,
+	Image,
 	ListView,
+	StyleSheet,
+	Text,
 	TouchableHighlight,
 	View,
-	Image,
-	Text,
-	AsyncStorage
 } = React;
-
-var styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
 
 var styles = StyleSheet.create({
 	cell: {
@@ -58,40 +52,60 @@ var styles = StyleSheet.create({
 	},
 });
 
-/**
-* Example data:
-*	profile = {Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}}
-*	fakeNearbyDevices = [{name: 'Junoh Lee', uuid: '0000',},
-*						 {name: 'Lisa Wong', uuid: '1111',},
-*					     {name: 'Ryan Lee', uuid: '2222',}];
-*/
+var testProfiles = [
+{Basic: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com', facebook: 'annkim'}},
+{School: {name: 'Ann Kim', phone: '(778) 111-1111', facebook: 'annkim'}},
+{Work: {name: 'Ann Kim', phone: '(778) 111-1111', email: 'annkim@cs410.com'}},
+];
+
+var testNearbyDevices =[
+{name: 'Junoh Lee', uuid: '0000',},
+{name: 'Lisa Wong', uuid: '1111',},
+{name: 'Ryan Lee', uuid: '2222',}
+];
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 class SwapemVC1 extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2}),
+			dataSource: ds,
 			loaded: false,
 		};
 	}
-
-	//Called once our app is loaded (once). 
-	//Load profiles data from local storage and set loaded to true once the component has loaded
+	// populate tableview the first time
 	componentDidMount() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
-			var profiles = JSON.parse(dbValue);
- 	     	this.setState({
-				dataSource: this.state.dataSource.cloneWithRows(profiles),
-				loaded: true,
+			var profiles;
+			if (dbValue == null) {
+				profiles = [];
+			}
+			else {
+				profiles = JSON.parse(dbValue);	
+			}
+			this.setState({
+				dataSource: ds.cloneWithRows(profiles),
 			});
- 	     }).done();
+		});
 	}
-
+	// update tableview when new props are received,
+	// i.e. this.refs.nav.replace() is called in SwapemRootVC
+	componentWillReceiveProps() {
+		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			var profiles;
+			if (dbValue == null) {
+				profiles = [];
+			}
+			else {
+				profiles = JSON.parse(dbValue);	
+			}
+			this.setState({
+				dataSource: ds.cloneWithRows(profiles),
+			});
+		});
+	}
 	render() {
-		// Show loading view if state hasn't been loaded.
-		if (!this.state.loaded) {
-      		return this.renderLoadingView();
-    	}
 		return (
 			<ListView
 			dataSource = {this.state.dataSource}
@@ -99,17 +113,6 @@ class SwapemVC1 extends Component {
 			style = {styles.listView}/>
 		);
 	}
-
-	renderLoadingView() {
-	    return (
-	      <View style={styles.cell}>
-	        <Text>
-	          Loading profiles...
-	        </Text>
-	      </View>
-	    );
- 	}
-
 	renderContact(profile) {
 		return (
 			<TouchableHighlight
@@ -134,7 +137,6 @@ class SwapemVC1 extends Component {
 			</TouchableHighlight>
 		);
 	}
-
 	//On press of a specifi profile, show its details
 	showProfileDetails(profile) {
 		var profileType = Object.keys(profile).toString();

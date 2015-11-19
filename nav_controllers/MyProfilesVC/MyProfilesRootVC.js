@@ -38,7 +38,7 @@ class MyProfilesRootVC extends Component {
       if (dbValue == null) {
         AsyncStorage.setItem('myProfiles', JSON.stringify([]));
       }
-    }).done();
+    });
   }
 	render() {
 		return (

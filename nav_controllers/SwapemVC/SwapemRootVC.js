@@ -7,9 +7,9 @@ var React = require('react-native');
 var SwapemVC1 = require('./SwapemVC1');
 
 var {
-  StyleSheet,
   Component,
   NavigatorIOS,
+  StyleSheet,
 } = React;
 
 var styles = StyleSheet.create({
@@ -19,9 +19,15 @@ var styles = StyleSheet.create({
 });
 
 class SwapemRootVC extends Component {
+  // update tableview when new props are received,
+  // i.e. new VC is selected for TabBarIOS.Item in index.ios
+  componentWillReceiveProps() {
+    this.refreshComponent();
+  }
   render() {
     return (
       <NavigatorIOS
+      ref = 'nav'
       style = {styles.container}
       barTintColor = '#ECF0F1'
       titleTextColor = '#2C3E50'
@@ -31,6 +37,12 @@ class SwapemRootVC extends Component {
         component: SwapemVC1,
       }}/>
       );
+  }
+  refreshComponent() {
+    this.refs.nav.replace({
+      title: 'Select profile',
+      component: SwapemVC1,
+    });
   }
 }
 
