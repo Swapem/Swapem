@@ -46,8 +46,6 @@ var styles = StyleSheet.create({
 		fontSize: 20,
 		height: 30,
 	},
-	listView: {
-	},
 	separator: {
 		backgroundColor: '#E0E0E0',
 		height: 0.5,
@@ -69,13 +67,14 @@ class MyProfilesVC2 extends Component {
 			oldFacebook: this.props.profileInfo[3].facebook,
 			oldName: this.props.profileInfo[0].name,
 			oldPhone: this.props.profileInfo[1].phone,
+			profileName: this.props.profileName,
 		};
 	}
 	// populate tableview the first time
 	componentDidMount() {
 		var profileInfo = this.props.profileInfo;
 		this.setState({
-			dataSource: ds.cloneWithRows(profileInfo)
+			dataSource: ds.cloneWithRows(profileInfo),
 		});
 	}
 	// update tableview when new props are received,
@@ -97,9 +96,15 @@ class MyProfilesVC2 extends Component {
 					for (var i = 0; i < storedProfiles.length; i++) {
 						var storedProfile = storedProfiles[i];
 						var storedProfileName = Object.keys(storedProfile).toString();
-						if (storedProfileName === nextProps.profileName) {
-							var newProfile = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook};
-							storedProfile[storedProfileName] = newProfile;
+						if (storedProfileName === this.state.profileName) {
+							var newProfileInfo = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook};
+							storedProfile[storedProfileName] = newProfileInfo;
+							this.setState({
+								oldEmail: this.state.newEmail,
+								oldFacebook: this.state.newFacebook,
+								oldName: this.state.newName,
+								oldPhone: this.state.newPhone,
+							});
 							AsyncStorage.setItem('myProfiles', JSON.stringify(storedProfiles)).then(() => {
 								alert('Profile saved');
 							});

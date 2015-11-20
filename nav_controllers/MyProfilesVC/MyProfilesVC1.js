@@ -33,8 +33,6 @@ var styles = StyleSheet.create({
 		tintColor: '#3498DB',
 		width: 40,
 	},
-	listView: {
-	},
 	next: {
 		alignSelf: 'flex-end',
 		height: 20,
@@ -83,7 +81,7 @@ class MyProfilesVC1 extends Component {
 		});
 	}
 	// update tableview when new props are received,
-	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() and this.refreshComponent(profileName,profileInfo) in MyProfilesVC1 are called
+	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() and this.refreshComponent(profileName) in MyProfilesVC1 are called
 	componentWillReceiveProps() {
 		AsyncStorage.getItem('myProfiles').then((dbValue) => {
 			var profiles;
@@ -169,7 +167,6 @@ class MyProfilesVC1 extends Component {
 				this.refreshComponent(profileName);
 			},
 			passProps: {
-				profileName: profileName,
 				save: true,
 			},
 		});
