@@ -52,7 +52,7 @@ class MyProfilesRootVC extends Component {
         title: 'My Profiles',
         component: MyProfilesVC1,
         leftButtonTitle: 'Edit',
-        rightButtonIcon: require('image!Add'),
+        rightButtonIcon: {uri:'Add'},
         onRightButtonPress: () => {
           this.promptProfileName();
         },
@@ -81,7 +81,7 @@ class MyProfilesRootVC extends Component {
         title: 'My Profiles',
         component: MyProfilesVC1,
         leftButtonTitle: 'Edit',
-        rightButtonIcon: require('image!Add'),
+        rightButtonIcon: {uri:'Add'},
         onRightButtonPress: () => {
           this.promptProfileName();
         },

@@ -3,7 +3,7 @@
 var React = require('react-native');
 var RequestsVC1 = require('../RequestsVC/RequestsVC1');
 var ContactsVC2 = require('./ContactsVC2');
-var DeviceUUID = require('react-native-device-uuid');
+var DeviceUUID = require("react-native-device-uuid");
 var ParseDB = require('../../RemoteDataAccessManager');
 var Contacts = require('react-native-contacts');
 
@@ -93,14 +93,14 @@ class ContactsVC1 extends Component {
       <View>
       <View style = {styles.cell}>
       <Image
-      source = {require('image!Person')}
+      source = {{uri:'Person'}}
       style = {styles.icon} />
       <View style = {styles.content}>
       <Text style = {styles.person}>{contact.name}</Text>
       </View>
       <View>
       <Image
-      source = {require('image!Next')}
+      source = {{uri:'Next'}}
       style = {styles.next} />
       </View>
       </View>
@@ -119,7 +119,7 @@ class ContactsVC1 extends Component {
     this.props.navigator.push({
       title: contact.name,
       component: ContactsVC2,
-      leftButtonIcon: require('image!Back'),
+      leftButtonIcon: {uri:'Back'},
       onLeftButtonPress: () => {
         this.props.navigator.pop();
       },

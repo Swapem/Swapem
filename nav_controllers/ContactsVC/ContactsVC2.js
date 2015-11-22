@@ -98,10 +98,10 @@ class ContactsVC2 extends Component {
 			<Image
 			source = {(() => {
 				switch (contactInfoKey) {
-					case 'email': return require('image!Email');
-					case 'facebook': return require('image!Facebook');
-					case 'phone': return require('image!Phone');
-					default: return require('image!Person');
+					case 'email': return {uri:'Email'};
+					case 'facebook': return {uri:'Facebook'};
+					case 'phone': return {uri:'Phone'};
+					default: return {uri:'Person'};
 				}})()}
 				style = {styles.icon} />
 				<View style = {styles.content}>
@@ -124,7 +124,7 @@ class ContactsVC2 extends Component {
 						{(() => {
 							switch (this.selectedInfo.includes(contactInfoItem)) {
 								case false: return;
-								default: return <Image source = {require('image!Checkmark')} style = {styles.checkmark} />;
+								default: return <Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />;
 							}})()}
 						</View>
 						</View>

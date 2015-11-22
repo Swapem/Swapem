@@ -4,7 +4,7 @@
 * A data access layer for inserting data and querying the database.
 */
 var Parse = require('parse/react-native');
-var DeviceUUID = require('react-native-device-uuid');
+var DeviceUUID = require("react-native-device-uuid");
 
 Parse.initialize(
   "8ejr07x24pTYlxz76vCnQS1srDLuLH3mXTbPGJKh", 

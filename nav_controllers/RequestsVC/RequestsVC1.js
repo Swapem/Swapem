@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var DeviceUUID = require('react-native-device-uuid');
+var DeviceUUID = require("react-native-device-uuid");
 var ParseDB = require('../../RemoteDataAccessManager');
 
 var {
@@ -155,14 +155,14 @@ class ContactRow extends Component{
         <View>
           <View style = {styles.cell}>
             <Image
-            source = {require('image!Person')}
+            source = {{uri:'Person'}}
             style = {styles.icon} />
             <View style = {styles.content}>
               <Text style = {styles.person}>{this.props.request.name}</Text>
             </View>
             {this.state.check? 
               <View>
-                <Image source = {require('image!Checkmark')} style = {styles.checkmark} />
+                <Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />
               </View> 
               :
               null

@@ -41,8 +41,8 @@ class Swapem extends Component {
       tintColor = '#3498DB'>
       <TabBarIOS.Item
       title = ''
-      icon = {require('image!MyProfiles')}
-      selectedIcon = {require('image!MyProfilesSelected')}
+      icon = {{uri:'MyProfiles'}}
+      selectedIcon = {{uri:'MyProfilesSelected'}}
       selected = {this.state.selectedTab === 'MyProfilesRootVC'}
       onPress = {() => {
         this.setState({
@@ -53,8 +53,8 @@ class Swapem extends Component {
       </TabBarIOS.Item>
       <TabBarIOS.Item
       title = ''
-      icon = {require('image!Swapem')}
-      selectedIcon = {require('image!SwapemSelected')}
+      icon = {{uri:'Swapem'}}
+      selectedIcon = {{uri:'SwapemSelected'}}
       selected = {this.state.selectedTab === 'SwapemRootVC'}
       onPress = {() => {
         this.setState({
@@ -65,8 +65,8 @@ class Swapem extends Component {
       </TabBarIOS.Item>
       <TabBarIOS.Item
       title = ''
-      icon = {require('image!Requests')}
-      selectedIcon = {require('image!RequestsSelected')}
+      icon = {{uri:'Requests'}}
+      selectedIcon = {{uri:'RequestsSelected'}}
       selected = {this.state.selectedTab === 'RequestsRootViewController'}
       onPress = {() => {
         this.setState({
@@ -77,8 +77,8 @@ class Swapem extends Component {
       </TabBarIOS.Item>
       <TabBarIOS.Item
       title = ''
-      icon = {require('image!Contacts')}
-      selectedIcon = {require('image!ContactsSelected')}
+      icon = {{uri:'Contacts'}}
+      selectedIcon = {{uri:'ContactsSelected'}}
       selected = {this.state.selectedTab === 'ContactsRootVC'}
       onPress = {() => {
         this.setState({
@@ -89,8 +89,8 @@ class Swapem extends Component {
       </TabBarIOS.Item>
       <TabBarIOS.Item
       title = ''
-      icon = {require('image!Settings')}
-      selectedIcon = {require('image!SettingsSelected')}
+      icon = {{uri:'Settings'}}
+      selectedIcon = {{uri:'SettingsSelected'}}
       selected = {this.state.selectedTab === 'SettingsRootVC'}
       onPress = {() => {
         this.setState({

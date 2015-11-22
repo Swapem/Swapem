@@ -86,11 +86,11 @@ class SwapemVC2 extends Component {
 			<Image
 			source = {(() => {
 				switch (Object.keys(profileItem).toString()) {
-					case 'email': return require('image!Email');
-					case 'facebook': return require('image!Facebook');
-					case 'name': return require('image!Person');
-					case 'phone': return require('image!Phone');
-					default: return require('image!Person');
+					case 'email': return {uri:'Email'};
+					case 'facebook': return {uri:'Facebook'};
+					case 'name': return {uri:'Person'};
+					case 'phone': return {uri:'Phone'};
+					default: return {uri:'Person'};
 				}})()}
 				style = {styles.icon} />
 				<View style = {styles.content}>
@@ -111,7 +111,7 @@ class SwapemVC2 extends Component {
 						</Text>
 						</View>
 						<View>
-						<Image source = {require('image!Checkmark')} style = {styles.checkmark} />
+						<Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />
 						</View>
 						</View>
 						<View style = {styles.separator} />

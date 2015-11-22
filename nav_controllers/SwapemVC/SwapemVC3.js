@@ -106,13 +106,13 @@ class RequestsVC1 extends Component {
       <View>
       <View style = {styles.cell}>
       <Image
-      source = {require('image!Person')}
+      source = {{uri:'Person'}}
       style = {styles.icon} />
       <View style = {styles.content}>
       <Text style = {styles.person}>{nearbyDevice.name}</Text>
       </View>
       <View>
-      <Image source = {require('image!Checkmark')} style = {styles.checkmark} />
+      <Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />
       </View>
       </View>
       <View style = {styles.separator} />

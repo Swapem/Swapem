@@ -121,14 +121,14 @@ class SwapemVC1 extends Component {
 			<View>
 			<View style = {styles.cell}>
 			<Image
-			source = {require('image!Profile')}
+			source = {{uri:'Profile'}}
 			style = {styles.icon} />
 			<View style = {styles.content}>
 			<Text style = {styles.person}>{Object.keys(profile).toString()}</Text>
 			</View>
 			<View>
 			<Image
-			source = {require('image!Next')}
+			source = {{uri:'Next'}}
 			style = {styles.next} />
 			</View>
 			</View>
@@ -159,7 +159,7 @@ class SwapemVC1 extends Component {
 
 			title: 'Customize',
 			component: SwapemVC2,
-			leftButtonIcon: require('image!Back'),
+			leftButtonIcon: {uri:'Back'},
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
@@ -194,7 +194,7 @@ class SwapemVC1 extends Component {
 		this.props.navigator.push({
 			title: 'Nearby Devices',
 			component: SwapemVC3,
-			leftButtonIcon: require('image!Back'),
+			leftButtonIcon: {uri:'Back'},
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},

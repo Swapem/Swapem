@@ -113,14 +113,14 @@ class MyProfilesVC1 extends Component {
 			<View>
 			<View style = {styles.cell}>
 			<Image
-			source = {require('image!Profile')}
+			source = {{uri:'Profile'}}
 			style = {styles.icon} />
 			<View style = {styles.content}>
 			<Text style = {styles.person}>{Object.keys(profile).toString()}</Text>
 			</View>
 			<View>
 			<Image
-			source = {require('image!Next')}
+			source = {{uri:'Next'}}
 			style = {styles.next} />
 			</View>
 			</View>
@@ -140,7 +140,7 @@ class MyProfilesVC1 extends Component {
 		this.props.navigator.push({
 			title: profileName,
 			component: MyProfilesVC2,
-			leftButtonIcon: require('image!Back'),
+			leftButtonIcon: {uri:'Back'},
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
@@ -158,7 +158,7 @@ class MyProfilesVC1 extends Component {
 		this.props.navigator.replace({
 			title: profileName,
 			component: MyProfilesVC2,
-			leftButtonIcon: require('image!Back'),
+			leftButtonIcon: {uri:'Back'},
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
