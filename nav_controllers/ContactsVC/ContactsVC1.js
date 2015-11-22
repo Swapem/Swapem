@@ -6,6 +6,7 @@ var ContactsVC2 = require('./ContactsVC2');
 var DeviceUUID = require("react-native-device-uuid");
 var ParseDB = require('../../RemoteDataAccessManager');
 var Contacts = require('react-native-contacts');
+var UIImagePickerManager = require('NativeModules').UIImagePickerManager;
 
 var {
   StyleSheet,
@@ -57,6 +58,26 @@ var styles = StyleSheet.create({
   },
 });
 
+// Specify any or all of these keys
+var options = {
+  title: 'Select Avatar', // specify null or empty string to remove the title
+  cancelButtonTitle: 'Cancel',
+  takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+  chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+  customButtons: {
+    //'Choose Photo from Facebook': 'fb', // [Button Text] : [String returned upon selection]
+  },
+  maxWidth: 100,
+  maxHeight: 100,
+  quality: 0.5,
+  allowsEditing: false, // Built in iOS functionality to resize/reposition the image
+  noData: false, // Disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  storageOptions: { // if this key is provided, the image will get saved in the documents directory (rather than a temporary directory)
+    skipBackup: true, // image will NOT be backed up to icloud
+    path: 'images' // will save image at /Documents/images rather than the root
+  }
+};
+
 class ContactsVC1 extends Component {
 	constructor(props) {
 		super(props);
@@ -74,14 +95,39 @@ class ContactsVC1 extends Component {
         })
       })
     })
+
+    UIImagePickerManager.showImagePicker(options, (didCancel, response) => {
+  console.log('Response = ', response);
+
+  if (didCancel) {
+    console.log('User cancelled image picker');
+  }
+  else {
+    if (response.customButton) {
+      console.log('User tapped custom button: ', response.customButton);
+    }
+    else {
+      // You can display the image using either:
+      //const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+      var source = {uri: response.uri.replace('file://', ''), isStatic: true};
+
+      this.setState({
+        avatarSource: source
+      });
+    }
+  }
+});
   }
 
 	render() {
 		return (
-			<ListView
+      <View>
+      <ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderContact.bind(this)}
       style = {styles.listView}/>
+      <Image source={this.state.avatarSource} style={{width: 100, height:100}} />
+      </View>
       );
 	}
 	renderContact(contact) {
