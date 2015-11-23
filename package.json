@@ -10,7 +10,6 @@
     "parse-react": "^0.4.2",
     "react-native": "^0.14.2",
     "react-native-contacts": "^0.1.5",
-    "react-native-db-models": "^0.1.2",
     "react-native-device-uuid": "^1.2.0",
     "react-native-fbsdkcore": "0.0.5",
     "react-native-fbsdklogin": "0.0.5",
