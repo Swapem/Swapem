@@ -137,9 +137,10 @@ class SwapemVC1 extends Component {
 			</TouchableHighlight>
 		);
 	}
-	//On press of a specifi profile, show its details
+	//On press of a specific profile, show its details
 	showProfileDetails(profile) {
 		var profileType = Object.keys(profile).toString();
+
 		var profileDetails = [
 		{name: profile[profileType].name},
 		{phone: profile[profileType].phone},
@@ -167,24 +168,7 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				// Note that an empty result value is a non-null object with length == 0
-				RemoteDataAccessManager.prepareUserForScan(profile[profileType].name, function(usersNearby) {
-					// Make sure that local temp storage is cleared (from previous scans)
-					AsyncStorage.removeItem('nearbyDevices').then((value) => {
-				      console.log('nearbyDevices table cleared');
-				      var jsonArray = [];
-				      	// Construct a jsonArray with the users who were found nearby.
-						for (var i = 0; i < usersNearby.length; i++) {
-					        var user = usersNearby[i];
-					        jsonArray.push({
-									        name: user.get('name'),
-									        uuid: user.get('uuid'),
-							});
-					       }
-					    // Store info of nearby users in local storage
-				       AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray));
-				     });
-				})
+				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name);
 				this.showResults(selectedProfileToSend);
 		    },
 			passProps: {

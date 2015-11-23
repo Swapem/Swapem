@@ -66,9 +66,15 @@ class RequestsVC1 extends Component {
   
   componentDidMount() {
     AsyncStorage.getItem('nearbyDevices').then((value) => {
-      var nearbyUsers = JSON.parse(value);
-       console.log("value of asyncStorage nearby users: " + nearbyUsers);
-       this.setState({
+      var nearbyUsers;
+      if (value === null) {
+        nearbyUsers = [];
+      }
+      else {
+        nearbyUsers = JSON.parse(value);
+      }
+      console.log("value of asyncStorage nearby users: " + nearbyUsers);
+      this.setState({
           dataSource: this.state.dataSource.cloneWithRows(nearbyUsers),
           loaded: true,
         });
