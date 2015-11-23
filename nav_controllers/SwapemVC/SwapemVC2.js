@@ -52,6 +52,12 @@ var styles = StyleSheet.create({
 	item: {
 		fontSize: 20,
 	},
+	profilepic:{
+		height: 40,
+		marginLeft: 5,
+		marginRight: 15,
+		width: 40,
+	}
 });
 
 class SwapemVC2 extends Component {
@@ -71,13 +77,14 @@ class SwapemVC2 extends Component {
 	}
 	render() {
 		return (
-			<ListView
+			<ListView 
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
 			style = {styles.listView}/>
 			);
 	}
 	renderRequest(profileItem) {
+		var profileType = Object.keys(profileItem).toString()
 		return (
 			<TouchableHighlight
 			underlayColor = '#2980B9'>
@@ -90,9 +97,16 @@ class SwapemVC2 extends Component {
 					case 'facebook': return {uri:'Facebook'};
 					case 'name': return {uri:'Person'};
 					case 'phone': return {uri:'Phone'};
+					case 'pic': return profileItem.pic;
 					default: return {uri:'Person'};
 				}})()}
-				style = {styles.icon} />
+				style = 
+				{profileType ==='pic' ?
+				styles.profilepic
+				: 
+				styles.icon
+				}
+				/>
 				<View style = {styles.content}>
 				{(() => {
 					switch (Object.keys(profileItem).toString()) {
@@ -106,6 +120,7 @@ class SwapemVC2 extends Component {
 							case 'facebook': return (profileItem.facebook);
 							case 'name': return (profileItem.name);
 							case 'phone': return (profileItem.phone);
+							case 'pic': return 'Profile Picture';
 							default: return (profileItem.name);
 						}})()}
 						</Text>

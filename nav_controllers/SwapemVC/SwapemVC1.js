@@ -145,6 +145,7 @@ class SwapemVC1 extends Component {
 		{phone: profile[profileType].phone},
 		{email: profile[profileType].email},
 		{facebook: profile[profileType].facebook},
+		{pic: profile[profileType].pic}
 		];
 		// profileDetails formatting is depended on by the next VC
 		// this selectedProfileToSend is much easier to send.
@@ -153,6 +154,7 @@ class SwapemVC1 extends Component {
 			{name: profile[profileType].name, 
 			phone: profile[profileType].phone, 
 			email: profile[profileType].email, 
+			pic: profile[profileType].pic,
 			facebook: profile[profileType].facebook};
 
 		this.props.navigator.push({
