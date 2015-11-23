@@ -351,12 +351,13 @@ var stopSearching = function(userName) {
 */
 var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 	// Extract information from profileDetails
-	var name, phone, email, facebook;
+	var name, phone, email, facebook, pic;
 	
 	name = profileDetails.name;
 	phone = profileDetails.phone;
 	email = profileDetails.email;
 	facebook = profileDetails.facebook;
+	pic = new Parse.File("profilePic.png", { base64: profileDetails.pic.uri});
 
 	var arrayUUID = [];
 
@@ -383,6 +384,9 @@ var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 		}
 		if (typeof facebook !== "undefined") {
 			tempSentContact.set("facebook", facebook);
+		}
+		if(typeof pic !=="undefined"){
+			tempSentContact.set("pic", pic)
 		}
 		// set accepted = false by default when first sending information
 		tempSentContact.set("accepted", false);

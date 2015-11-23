@@ -116,7 +116,7 @@ class MyProfilesVC2 extends Component {
       console.log('User tapped custom button: ', response.customButton);
     }
     else {
-      var source = {uri: response.uri.replace('file://', ''), isStatic: true};
+      const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
       this.setState({
         pic: source
       });
