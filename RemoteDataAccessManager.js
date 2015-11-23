@@ -162,139 +162,6 @@ var updateGPSLocation = function(uuid) {
 }
 
 /**
-* Prepares the given user for scanning of nearby users:
-* (a) Updates/Saves Geolocation
-* (b) Set "searching" to true
-* Args: UserName: Contains name of the user's profile chosen: i.e. "John Doe"
-*/
-var prepareUserForScan = function(userName) {
-	var promise = new Parse.Promise();
-	var DeviceLocations = Parse.Object.extend("DeviceLocations");
-	var query = new Parse.Query(DeviceLocations);
-	query.equalTo("uuid", uniqueIdentifier);
-	// Search for previous entries under the same UUID
-	query.find({
-		success: function(results) {
-			var deviceLocation;
-			// If no previous entries, instantiate new Parse object
-			if (results.length == 0) {
-				deviceLocation = new DeviceLocations();
-			}
-			// If previous entry exists, resuse the same object
-			else {
-				deviceLocation = results[0];
-			}
-
-			// Update user's current geolocation 
-			var userGeoPoint = new Parse.GeoPoint.current({
-				success: function(userGeoPoint) {
-					deviceLocation.set("uuid", uniqueIdentifier);
-					deviceLocation.set("name", userName);
-					deviceLocation.set("searching", true);
-					deviceLocation.set("location", userGeoPoint);
-
-					// If User's current location is successfully accessed then insert into db
-					deviceLocation.save(null, {
-						success: function(deviceLocation) {
-							console.log(deviceLocation.id + " is searching for nearby users");
-							promise.resolve();
-						},
-						error: function(error) {
-							alert("Error while preparing user for scan: " + error.code + " " + error.message);
-						   }
-						})
-				},
-				error: function(error) {
-				   alert("Error: " + error.code + " " + error.message);
-				}
-			})
-		},
-		error: function(error) {
-		   alert("Error checking for previous entries under the same UUID: " + error.code + " " + error.message);
-		   }
-		})
-	return promise;
-}
-
-/**
-* Query for nearby users who are actively scanning and within 100m
-*/
-var queryForUsersNearby = function() {
-	// Parse Object
-	var DeviceLocations = Parse.Object.extend("DeviceLocations");
-	// Query Instance of DeviceLocations table
-	var query = new Parse.Query(DeviceLocations);
-
-	var promises = [];
-
-	// Build Up the Query
-	query.notEqualTo("uuid", uniqueIdentifier);
-	query.equalTo("searching", true);
-	query.select("name", "uuid");
-	// User's current geolocation 
-	var userGeoPoint = new Parse.GeoPoint.current({
-		success: function(userGeoPoint) {
-			// If User's current location is successfully accessed, then set query to within
-	        // 100m of this location
-	        query.withinKilometers("location", userGeoPoint, 0.1)
-	        // Initiate the query
-	        query.find({
-	            success: function(results) {
-	              var promise = new Parse.Promise.as(results);
-	              promise.resolve();
-	              return promise;
-	              alert("Successfully retrieved " + results.length + " users nearby.");
-	            },
-	             error: function(error) {
-	              alert("Error: " + error.code + " " + error.message);
-	            }
-	        })
-		},
-		error: function(error) {
-				alert("Error: " + error.code + " " + error.message);
-		}
-	})
-
-}
-
-var stopSearching = function(userName) {
-	var DeviceLocations = Parse.Object.extend("DeviceLocations");
-	var query = new Parse.Query(DeviceLocations);
-
-	query.equalTo("uuid", uniqueIdentifier);
-	// Search for previous entries under the same UUID
-	query.find({
-	success: function(results) {
-		console.log("Number of previous entries: " + results.length);
-
-		var deviceLocation;
-		// If no previous entries, instantiate new Parse object
-		if (results.length == 0) {
-			deviceLocation = new DeviceLocations();
-		}
-		// If previous entry exists, resuse the same object
-		else {
-			deviceLocation = results[0];
-		}
-		deviceLocation.set("searching", false);
-
-			// If User's current location is successfully accessed then insert into db
-			return deviceLocation.save(null, {
-				success: function(result) {
-					alert('Device is no longer searching :' + deviceLocation.id);
-				},
-				error: function(deviceLocation, error) {
-					alert('Failed to stop device from searching ' + error.message);
-				}
-			});
-		},
-	error: function(error) {
-	   alert("Error finding previous deviceLocation entry to update: " + error.code + " " + error.message);
-	   }
-	})
-}
-
-/**
 * Send contact information to selected users nearby
 * Args: profileDetails - name, phone, email, facebook information to send
 *       selectedUsers - user(s) to send the information to
@@ -379,6 +246,7 @@ var delay = function(millis) {
 * Note that the 9s wait allows other users nearby to start scanning and persist their data
 */
 var scanForNearbyUsers = function(userName) {
+<<<<<<< a381faae1be6d27dfe1bff9bbbdd54a7b0721c22
 	prepareUserForScan(userName)
 		.then(function() {
 			return delay(9000);
@@ -388,30 +256,100 @@ var scanForNearbyUsers = function(userName) {
 			var jsonArray = [];
 
 			alert("Results: " + JSON.stringify(results));
+=======
+	var DeviceLocations = Parse.Object.extend("DeviceLocations");
+	var query = new Parse.Query(DeviceLocations);
+	query.equalTo("uuid", uniqueIdentifier);
+	var deviceLocation;
+	var currentGeolocation;
+>>>>>>> Scanning for Nearby Users
 
-			// Construct a jsonArray with the users who were found nearby.
-			for (var i = 0; i < results.length; i++) {
-				var user = results[i];
-				jsonArray.push({
-					name: user.get('name'),
-					uuid: user.get('uuid'),
-				});
-			}
-			console.log('nearbyDevices table cleared');
-			// Make sure that local temp storage is cleared (from previous scans)
-			return AsyncStorage.removeItem('nearbyDevices').then(AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray)));
+	query.find()
+		.then(function(results) {
+			return checkForExistingEntry(results)
 		})
 		.then(function() {
-			stopSearching();
+			return new Parse.GeoPoint.current();
+		})
+		.then(function(geolocation) {
+			return updateToSearchStatus(geolocation);
+		})			
+		.then(function() {
+			return delay(9000);
+		}).then(function() {
+			return queryForUsersNearby();
+		}).then(function(results) {
+			alert("Number of Users Found Nearby: " + results.length);
+			return saveLocallyUsersNearbyResults(results);
+		}).then(function() {
+			return stopSearching();
 		}, function(error) {
-	  		alert('An error occured while finding nearby users');
+			alert('An error occured while scanning for nearby users: '+ error.message);
 		});
+
+	function checkForExistingEntry(existingEntry) {
+		var promise = new Parse.Promise();
+		// If no previous entries, instantiate new Parse object
+		if (existingEntry.length == 0) {
+			deviceLocation = new DeviceLocations();
+		}
+		// If previous entry exists, resuse the same object
+		else {
+			deviceLocation = existingEntry[0];
+		}
+		promise.resolve();
+		return promise;
+	}
+
+	function updateToSearchStatus(geolocation) {
+		currentGeolocation = geolocation;
+		deviceLocation.set("uuid", uniqueIdentifier);
+		deviceLocation.set("name", userName);
+		deviceLocation.set("searching", true);
+		deviceLocation.set("location", geolocation);
+		alert("geoLocation: " + JSON.stringify(geolocation));
+		// If User's current location is successfully accessed then insert into db
+		return deviceLocation.save();
+	}
+
+	function queryForUsersNearby() {
+		var query = new Parse.Query(DeviceLocations);
+		// Build Up the Query
+		query.notEqualTo("uuid", uniqueIdentifier);
+		query.equalTo("searching", true);
+		query.select("name", "uuid");
+		query.withinKilometers("location", currentGeolocation, 0.1)
+		return query.find();
+	}
+
+	function saveLocallyUsersNearbyResults(results) {
+		var jsonArray = [];
+
+		alert("Results: " + JSON.stringify(results));
+
+		// Construct a jsonArray with the users who were found nearby.
+		for (var i = 0; i < results.length; i++) {
+			var user = results[i];
+			jsonArray.push({
+				name: user.get('name'),
+				uuid: user.get('uuid'),
+			});
+		}
+		// Make sure that local temp storage is cleared (from previous scans)
+		return AsyncStorage.removeItem('nearbyDevices').then(AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray)));
+	}
+
+	function stopSearching() {
+		deviceLocation.set("searching", false);
+		alert("Device is no longer searching");
+		// If User's current location is successfully accessed then insert into db
+		return deviceLocation.save()
+	}
 }
 
 module.exports = {
 	checkForRecentContactsSent: checkForRecentContactsSent,
 	scanForNearbyUsers: scanForNearbyUsers,
-	prepareUserForScan: prepareUserForScan,
 	getRequestedContacts: getRequestedContacts,
 	getAcceptedContacts: getAcceptedContacts,
 	updateContactToAccepted: updateContactToAccepted,
