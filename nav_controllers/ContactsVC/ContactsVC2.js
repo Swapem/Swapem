@@ -47,7 +47,7 @@ var styles = StyleSheet.create({
 	},
 	separator: {
 		backgroundColor: '#E0E0E0',
-		height: 0.5,
+		height: 1,
 	},
 	item: {
 		fontSize: 20,

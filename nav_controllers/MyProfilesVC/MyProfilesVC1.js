@@ -43,7 +43,7 @@ var styles = StyleSheet.create({
 	},
 	separator: {
 		backgroundColor: '#E0E0E0',
-		height: 0.5,
+		height: 1,
 	},
 	person: {
 		fontSize: 20,
@@ -136,6 +136,7 @@ class MyProfilesVC1 extends Component {
 		{phone: profile[profileName].phone},
 		{email: profile[profileName].email},
 		{facebook: profile[profileName].facebook},
+		{pic: profile[profileName].pic}
 		];
 		this.props.navigator.push({
 			title: profileName,

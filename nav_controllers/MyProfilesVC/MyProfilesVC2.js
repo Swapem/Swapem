@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+var UIImagePickerManager = require('NativeModules').UIImagePickerManager;
 
 var {
 	AsyncStorage,
@@ -14,6 +15,25 @@ var {
 	View,
 } = React;
 
+// Specify any or all of these keys
+var options = {
+	title: 'Select Avatar', // specify null or empty string to remove the title
+	cancelButtonTitle: 'Cancel',
+	takePhotoButtonTitle: 'Take Photo...', // specify null or empty string to remove this button
+	chooseFromLibraryButtonTitle: 'Choose from Library...', // specify null or empty string to remove this button
+	customButtons: {
+	},
+	maxWidth: 200,
+	maxHeight: 200,
+	quality: 0.99,
+	allowsEditing: false, // Built in iOS functionality to resize/reposition the image
+	noData: false, // Disables the base64 `data` field from being generated (greatly improves performance on large photos)
+	storageOptions: { // if this key is provided, the image will get saved in the documents directory (rather than a temporary directory)
+		skipBackup: true, // image will NOT be backed up to icloud
+		path: 'images' // will save image at /Documents/images rather than the root
+	}
+};
+
 var styles = StyleSheet.create({
 	cell: {
 		alignItems: 'center',
@@ -25,6 +45,8 @@ var styles = StyleSheet.create({
 	},
 	content: {
 		flex: 1,
+		flexDirection:'column',
+		justifyContent: 'space-between'
 	},
 	icon: {
 		height: 40,
@@ -48,8 +70,19 @@ var styles = StyleSheet.create({
 	},
 	separator: {
 		backgroundColor: '#E0E0E0',
-		height: 0.5,
+		height: 1,
 	},
+	button:{
+		alignSelf:'center',
+		width: 100,
+		height: 100,
+		tintColor: '#3498DB'
+	},
+	profilepic:{
+		width: 100,
+		height: 100
+	}
+
 });
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -64,11 +97,83 @@ class MyProfilesVC2 extends Component {
 			newName: this.props.profileInfo[0].name,
 			newPhone: this.props.profileInfo[1].phone,
 			oldEmail: this.props.profileInfo[2].email,
+			pic: this.props.profileInfo[4].pic,
 			oldFacebook: this.props.profileInfo[3].facebook,
 			oldName: this.props.profileInfo[0].name,
 			oldPhone: this.props.profileInfo[1].phone,
 			profileName: this.props.profileName,
 		};
+	}
+	profilePic(){
+
+    UIImagePickerManager.showImagePicker(options, (didCancel, response) => {
+
+  if (didCancel) {
+    console.log('User cancelled image picker');
+  }
+  else {
+    if (response.customButton) {
+      console.log('User tapped custom button: ', response.customButton);
+    }
+    else {
+      var source = {uri: response.uri.replace('file://', ''), isStatic: true};
+      this.setState({
+        pic: source
+      });
+    }
+  }
+})
+	}
+
+	renderProfile(profileType){
+		if(profileType === "facebook"){
+			return [<Text style = {styles.infoType} key={0}>facebook.com/</Text>, <Text style = {styles.info} key={1}>{this.state.newFacebook}</Text>]
+		}
+
+		else if(profileType === "email"){
+			return <TextInput
+			style = {styles.infoInput}
+			placeholder = 'Email'
+			onChangeText={(text) => this.setState({newEmail: text})}
+			value = {this.state.newEmail}
+			/>
+		}
+
+		else if (profileType === "phone"){
+			return <TextInput
+			style = {styles.infoInput}
+			placeholder = 'Phone'
+			onChangeText={(text) => this.setState({newPhone: text})}
+			value = {this.state.newPhone}
+			/>
+		}
+
+		else if(profileType === "name"){
+			return <TextInput
+			style = {styles.infoInput}
+			placeholder = 'Name'
+			onChangeText={(text) => this.setState({newName: text})}
+			value = {this.state.newName}
+			/>
+		}
+
+		else{
+			return 
+		}
+	}
+
+	renderFooter(){
+		return <TouchableHighlight 
+		onPress={this.profilePic.bind(this)}
+		style={{alignSelf:'center'}}>
+			{this.state.pic? 
+			<Image source = {this.state.pic}
+			style={styles.profilepic} />
+			:
+			<Image source = {{uri:'Email'}} 
+			style={styles.button} />
+			}
+			</TouchableHighlight>
 	}
 	// populate tableview the first time
 	componentDidMount() {
@@ -81,10 +186,6 @@ class MyProfilesVC2 extends Component {
 	// i.e. this.props.navigator.replace() is called in MyProfilesVC1
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.save) {
-			if ( (this.state.newName !== this.state.oldName) ||
-				(this.state.newPhone !== this.state.oldPhone) ||
-				(this.state.newEmail !== this.state.oldEmail) ||
-				(this.state.newFacebook !== this.state.oldFacebook) ) {
 				AsyncStorage.getItem('myProfiles').then((dbValue) => {
 					var storedProfiles;
 					if (dbValue == null) {
@@ -97,7 +198,7 @@ class MyProfilesVC2 extends Component {
 						var storedProfile = storedProfiles[i];
 						var storedProfileName = Object.keys(storedProfile).toString();
 						if (storedProfileName === this.state.profileName) {
-							var newProfileInfo = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook};
+							var newProfileInfo = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook, pic: this.state.pic};
 							storedProfile[storedProfileName] = newProfileInfo;
 							this.setState({
 								oldEmail: this.state.newEmail,
@@ -111,23 +212,27 @@ class MyProfilesVC2 extends Component {
 						}
 					}
 				});
-			}
-			else {
-				alert('No change');
-			}
 		}
 	}
 	render() {
 		return (
-			<ListView
+			<View style={styles.content}>
+			<ListView renderFooter={this.renderFooter.bind(this)}
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
-			style = {styles.listView}/>
+			/>
+			</View>
 			);
 	}
 	renderRequest(profileItem) {
 	// e.g. profileItem = {name: 'Ann Kim'}
 	var profileType = Object.keys(profileItem).toString();
+	if(profileType === 'pic'){
+		return(
+			<View>
+			</View>
+		)
+	}
 	// e.g. profileType = 'name'
 		return (
 			<TouchableHighlight
@@ -150,42 +255,11 @@ class MyProfilesVC2 extends Component {
 					case 'facebook': return {uri:'Facebook'};
 					case 'name': return {uri:'Person'};
 					case 'phone': return {uri:'Phone'};
-					default: return {uri:'Person'};
+					default: return;
 				}})()}
 			style = {styles.icon} />
 			<View style = {styles.content}>
-			{(() => {
-				switch (profileType) {
-					case 'facebook': return <Text style = {styles.infoType}>facebook.com/</Text>;
-					default: return;
-				}})()}	
-			{(() => {
-				switch (profileType) {
-					case 'facebook': return <Text style = {styles.info}>{this.state.newFacebook}</Text>;
-					default: return <TextInput
-					style = {styles.infoInput}
-					placeholder = {(() => {
-						switch (profileType) {
-							case 'email': return 'Email';
-							case 'name': return 'Name';
-							case 'phone': return 'Phone';
-							default: return 'Name';
-						}})()}
-					onChangeText = {(() => {
-						switch (profileType) {
-							case 'email': return (text) => this.setState({newEmail: text});
-							case 'name': return (text) => this.setState({newName: text});
-							case 'phone': return (text) => this.setState({newPhone: text});
-							default: return (text) => this.setState({newName: text});
-						}})()}
-					value = {(() => {
-						switch (profileType) {
-							case 'email': return this.state.newEmail;
-							case 'name': return this.state.newName;
-							case 'phone': return this.state.newPhone;
-							default: return this.state.newName;
-						}})()} />;
-				}})()}
+		{this.renderProfile(profileType)}
 			</View>
 			</View>
 			<View style = {styles.separator} />
