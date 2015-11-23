@@ -246,23 +246,11 @@ var delay = function(millis) {
 * Note that the 9s wait allows other users nearby to start scanning and persist their data
 */
 var scanForNearbyUsers = function(userName) {
-<<<<<<< a381faae1be6d27dfe1bff9bbbdd54a7b0721c22
-	prepareUserForScan(userName)
-		.then(function() {
-			return delay(9000);
-		})
-		.then(queryForUsersNearby())
-		.then(function(results) {
-			var jsonArray = [];
-
-			alert("Results: " + JSON.stringify(results));
-=======
 	var DeviceLocations = Parse.Object.extend("DeviceLocations");
 	var query = new Parse.Query(DeviceLocations);
 	query.equalTo("uuid", uniqueIdentifier);
 	var deviceLocation;
 	var currentGeolocation;
->>>>>>> Scanning for Nearby Users
 
 	query.find()
 		.then(function(results) {
