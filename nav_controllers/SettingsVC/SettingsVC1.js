@@ -30,9 +30,6 @@ class SettingsViewController1 extends Component {
   render() {
     return (
       <View style={styles.wrapper}>
-      <Text>Hello</Text>
-      <Text>Bear</Text>
-      <Text>Hello</Text>
       </View>
       );
   }

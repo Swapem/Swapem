@@ -118,6 +118,7 @@ class ContactsVC1 extends Component {
     {phone: contact.phone},
     {email: contact.email},
     {facebook: contact.facebook},
+    {pic: contact.pic}
     ];
     this.props.navigator.push({
       title: contact.name,

@@ -52,6 +52,12 @@ var styles = StyleSheet.create({
 	item: {
 		fontSize: 20,
 	},
+	profilepic:{
+		height: 40,
+		marginLeft: 5,
+		marginRight: 15,
+		width: 40,
+	}
 });
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -101,9 +107,16 @@ class ContactsVC2 extends Component {
 					case 'email': return {uri:'Email'};
 					case 'facebook': return {uri:'Facebook'};
 					case 'phone': return {uri:'Phone'};
+					case 'pic': return {uri: contactInfoItem.pic.url};
 					default: return {uri:'Person'};
 				}})()}
-				style = {styles.icon} />
+				style = 
+				{contactInfoKey === 'pic' ?
+				styles.profilepic
+				:
+				styles.icon
+				}
+				 />
 				<View style = {styles.content}>
 				{(() => {
 					switch (contactInfoKey) {
@@ -116,6 +129,7 @@ class ContactsVC2 extends Component {
 							case 'email': return (contactInfoItem.email);
 							case 'facebook': return (contactInfoItem.facebook);
 							case 'phone': return (contactInfoItem.phone);
+							case 'pic': return 'Profile Picture';
 							default: return (contactInfoItem.name);
 						}})()}
 						</Text>
