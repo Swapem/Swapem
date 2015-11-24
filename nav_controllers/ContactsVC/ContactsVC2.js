@@ -10,6 +10,7 @@ var {
 	View,
 	Image,
 	Text,
+	MapView,
 } = React;
 
 var styles = StyleSheet.create({
@@ -57,10 +58,25 @@ var styles = StyleSheet.create({
 		marginLeft: 5,
 		marginRight: 15,
 		width: 40,
-	}
+	},
+	map: {
+    	height: 150,
+    	margin: 10,
+    	borderWidth: 1,
+    	borderColor: '#000000',
+  	}
 });
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+var Fakemarkers = [
+  {
+    latitude: 49.2604741,
+    longitude: -123.2714939,
+    title: 'Initial Location',
+    subtitle: 'subtitle'
+  }
+];
 
 class ContactsVC2 extends Component {
 	constructor(props) {
@@ -73,10 +89,15 @@ class ContactsVC2 extends Component {
 	}
 	render() {
 		return (
+			<View>
 			<ListView
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
 			style = {styles.listView}/>
+			<MapView 
+				style={styles.map}
+          		annotations={Fakemarkers} />
+          		</View>
 			);
 	}
 	renderRequest(contactInfoItem,sectionID,rowID) {
@@ -102,21 +123,17 @@ class ContactsVC2 extends Component {
 			<View>
 			<View style = {styles.cell}>
 			<Image
-			source = {(() => {
-				switch (contactInfoKey) {
-					case 'email': return {uri:'Email'};
-					case 'facebook': return {uri:'Facebook'};
-					case 'phone': return {uri:'Phone'};
-					case 'pic': return {uri: contactInfoItem.pic.url};
-					default: return {uri:'Person'};
-				}})()}
-				style = 
-				{contactInfoKey === 'pic' ?
-				styles.profilepic
-				:
-				styles.icon
-				}
-				 />
+				source = {(() => {
+					switch (contactInfoKey) {
+						case 'email': return {uri:'Email'};
+						case 'facebook': return {uri:'Facebook'};
+						case 'phone': return {uri:'Phone'};
+						case 'pic': return {uri: contactInfoItem.pic.url};
+						default: return {uri:'Person'};
+					}})()}
+						style = {contactInfoKey === 'pic' ? 
+						styles.profilepic:styles.icon}/>
+
 				<View style = {styles.content}>
 				{(() => {
 					switch (contactInfoKey) {
@@ -132,8 +149,9 @@ class ContactsVC2 extends Component {
 							case 'pic': return 'Profile Picture';
 							default: return (contactInfoItem.name);
 						}})()}
-						</Text>
-						</View>
+					</Text>
+				</View>
+
 						<View>
 						{(() => {
 							switch (this.selectedInfo.includes(contactInfoItem)) {
