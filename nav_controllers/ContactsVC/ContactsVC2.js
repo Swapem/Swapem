@@ -92,15 +92,13 @@ class ContactsVC2 extends Component {
 
 	render() {
 		return (
-			<View>
 			<ListView
+			renderFooter = {()=>{return <MapView 
+				style={styles.map}
+          		annotations={fakeMarkers} />}}
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
 			/>
-			<MapView 
-				style={styles.map}
-          		annotations={fakeMarkers} />
-			</View>
 			);
 	}
 	renderRequest(contactInfoItem,sectionID,rowID) {
@@ -108,6 +106,9 @@ class ContactsVC2 extends Component {
 		var contactInfoKey = Object.keys(contactInfoItem).toString();
 		var index = this.contactInfo.indexOf(contactInfoItem);
 		if(contactInfoKey === 'location'){
+			return <View style={{height:0}}></View>
+		}
+		if(contactInfoKey === 'pic' && !contactInfoItem.pic){
 			return <View style={{height:0}}></View>
 		}
 		return (

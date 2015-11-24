@@ -176,7 +176,7 @@ var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 	phone = profileDetails.phone;
 	email = profileDetails.email;
 	facebook = profileDetails.facebook;
-	if(profileDetails.pic !== null){
+	if(!profileDetails.pic){
 		pic = new Parse.File("profilePic.png", { base64: profileDetails.pic.uri});
 	}
 
