@@ -79,12 +79,10 @@ class ContactsVC1 extends Component {
 
 	render() {
 		return (
-      <View>
       <ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderContact.bind(this)}
-      style = {styles.listView}/>
-      </View>
+      />
       );
 	}
 	renderContact(contact) {
@@ -118,7 +116,8 @@ class ContactsVC1 extends Component {
     {phone: contact.phone},
     {email: contact.email},
     {facebook: contact.facebook},
-    {pic: contact.pic}
+    {pic: contact.pic},
+    {location: contact.location},
     ];
     this.props.navigator.push({
       title: contact.name,

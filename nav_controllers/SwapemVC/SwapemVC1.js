@@ -107,10 +107,13 @@ class SwapemVC1 extends Component {
 	}
 	render() {
 		return (
-			<ListView
+			<View style={styles.content}>
+			<ListView 
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderContact.bind(this)}
-			style = {styles.listView}/>
+			/>
+			</View>
+
 		);
 	}
 	renderContact(profile) {

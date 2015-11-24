@@ -77,10 +77,12 @@ class SwapemVC2 extends Component {
 	}
 	render() {
 		return (
+			<View style={styles.content}>
 			<ListView 
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
-			style = {styles.listView}/>
+			/>
+			</View>
 			);
 	}
 	renderRequest(profileItem) {

@@ -69,6 +69,13 @@ var styles = StyleSheet.create({
     backgroundColor: '#48BBEC',
     alignSelf: 'stretch',
     justifyContent: 'center'
+  },
+  lview:{
+    flex:1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginBottom: 50
+
   }
  });
 
@@ -108,7 +115,7 @@ class RequestsVC1 extends Component {
 
 	render() {
 		return (
-      <View>
+      <View style={styles.lview}>
 			<ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderRequest.bind(this)}

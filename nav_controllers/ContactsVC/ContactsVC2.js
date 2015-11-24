@@ -69,10 +69,10 @@ var styles = StyleSheet.create({
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-var Fakemarkers = [
+var fakeMarkers = [
   {
-    latitude: 49.2604741,
-    longitude: -123.2714939,
+    latitude: 48,
+    longitude: -120.2714939,
     title: 'Initial Location',
     subtitle: 'subtitle'
   }
@@ -82,28 +82,34 @@ class ContactsVC2 extends Component {
 	constructor(props) {
 		super(props);
 		this.contactInfo = this.props.contactInfo;
+		fakeMarkers[0].latitude = this.props.contactInfo[5].location.latitude
+		fakeMarkers[0].longitude = this.props.contactInfo[5].location.longitude
 		this.selectedInfo = this.contactInfo.slice();
 		this.state = {
 			dataSource: ds.cloneWithRows(this.contactInfo),
 		};
 	}
+
 	render() {
 		return (
 			<View>
 			<ListView
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
-			style = {styles.listView}/>
+			/>
 			<MapView 
 				style={styles.map}
-          		annotations={Fakemarkers} />
-          		</View>
+          		annotations={fakeMarkers} />
+			</View>
 			);
 	}
 	renderRequest(contactInfoItem,sectionID,rowID) {
 		// e.g. contactInfoItem = {name: 'Ann Kim'}
 		var contactInfoKey = Object.keys(contactInfoItem).toString();
 		var index = this.contactInfo.indexOf(contactInfoItem);
+		if(contactInfoKey === 'location'){
+			return <View style={{height:0}}></View>
+		}
 		return (
 			<TouchableHighlight
 			onPress = {(event) => {

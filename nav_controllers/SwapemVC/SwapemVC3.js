@@ -86,11 +86,12 @@ class RequestsVC1 extends Component {
         return this.renderLoadingView();
     }
     return (
+      <View style={styles.content}>
       <ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderNearbyDevice.bind(this)}
-      style = {styles.listView}
       />
+      </View>
     );
   }
 
