@@ -21,6 +21,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2D4988B01C058694008CF4E9 /* RNGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D4988AF1C058694008CF4E9 /* RNGeocoder.m */; };
 		397BC1011C01B0BA00526B75 /* libRCTDeviceUUID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 397BC1001C01B0A500526B75 /* libRCTDeviceUUID.a */; };
 		39C0CF801C01C93C00F9AC9C /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C0CF7F1C01C93C00F9AC9C /* UIImagePickerManager.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -132,6 +133,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Swapem/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Swapem/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		2D4988AE1C058694008CF4E9 /* RNGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNGeocoder.h; sourceTree = "<group>"; };
+		2D4988AF1C058694008CF4E9 /* RNGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNGeocoder.m; sourceTree = "<group>"; };
 		397BC0FB1C01B0A500526B75 /* RCTDeviceUUID.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTDeviceUUID.xcodeproj; path = "../node_modules/react-native-device-uuid/RCTDeviceUUID.xcodeproj"; sourceTree = "<group>"; };
 		39C0CF7E1C01C93C00F9AC9C /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImagePickerManager.h; sourceTree = "<group>"; };
 		39C0CF7F1C01C93C00F9AC9C /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImagePickerManager.m; sourceTree = "<group>"; };
@@ -262,6 +265,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2D4988AD1C058694008CF4E9 /* RNGeocoder */ = {
+			isa = PBXGroup;
+			children = (
+				2D4988AE1C058694008CF4E9 /* RNGeocoder.h */,
+				2D4988AF1C058694008CF4E9 /* RNGeocoder.m */,
+			);
+			name = RNGeocoder;
+			path = "../node_modules/react-native-geocoder/RNGeocoder";
+			sourceTree = "<group>";
+		};
 		397BC0FC1C01B0A500526B75 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +304,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				2D4988AD1C058694008CF4E9 /* RNGeocoder */,
 				39C0CF7D1C01C93C00F9AC9C /* UIImagePickerManager */,
 				397BC0FB1C01B0A500526B75 /* RCTDeviceUUID.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -604,6 +618,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				39C0CF801C01C93C00F9AC9C /* UIImagePickerManager.m in Sources */,
+				2D4988B01C058694008CF4E9 /* RNGeocoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

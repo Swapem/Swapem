@@ -13,6 +13,7 @@
     "react-native-device-uuid": "^1.2.0",
     "react-native-fbsdkcore": "0.0.5",
     "react-native-fbsdklogin": "0.0.5",
+    "react-native-geocoder": "^0.1.4",
     "react-native-image-picker": "^0.9.0"
   }
 }

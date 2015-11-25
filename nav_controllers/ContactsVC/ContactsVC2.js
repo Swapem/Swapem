@@ -1,6 +1,11 @@
 'use strict';
 
 var React = require('react-native');
+var {
+  NativeModules: {
+    RNGeocoder
+  }
+} = require('react-native');
 
 var {
 	StyleSheet,
@@ -69,16 +74,7 @@ var styles = StyleSheet.create({
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-var mapMarkers = [
-  {
-    latitude: undefined,
-    longitude: undefined,
-    title: 'Initial Location',
-    subtitle: 'subtitle'
-  }
-];
-
-var region = 
+var setRegion = 
 {
 	latitude: undefined,
 	longitude: undefined,
@@ -86,14 +82,42 @@ var region =
 	longitudeDelta: 0.008
 };
 
+var location = {
+	latitude: undefined,
+	longitude: undefined
+}
+
+var mapMarkers = [
+  {
+    latitude: undefined,
+    longitude: undefined,
+    title: "place holder"
+  }
+];
+
+
 class ContactsVC2 extends Component {
 	constructor(props) {
 		super(props);
 		this.contactInfo = this.props.contactInfo;
 		mapMarkers[0].latitude = this.props.contactInfo[5].location.latitude
 		mapMarkers[0].longitude = this.props.contactInfo[5].location.longitude
-		region.latitude = this.props.contactInfo[5].location.latitude
-		region.longitude = this.props.contactInfo[5].location.longitude
+		setRegion.latitude = this.props.contactInfo[5].location.latitude
+		setRegion.longitude = this.props.contactInfo[5].location.longitude
+		location.latitude = this.props.contactInfo[5].location.latitude
+		location.longitude = this.props.contactInfo[5].location.longitude
+		RNGeocoder.reverseGeocodeLocation(location, (err, result) => {
+			if (err) {
+				return;
+				console.log("Error is: " + err);
+				}
+				mapMarkers[0].title = JSON.stringify(result[0].name);
+				// mapMarkers[0].title = result[0].name;
+				console.log("mapMarkers title is: " + mapMarkers[0].title);
+				});
+		console.log("location latitude is; " + location.latitude);
+		console.log("location longitude is; " + location.longitude);
+
 		this.selectedInfo = this.contactInfo.slice();
 		this.state = {
 			dataSource: ds.cloneWithRows(this.contactInfo),
@@ -105,7 +129,8 @@ class ContactsVC2 extends Component {
 			<ListView
 			renderFooter = {()=>{return <MapView 
 				style={styles.map}
-				region={region}
+				region={setRegion}
+				mapMarkers={mapMarkers}
           		annotations={mapMarkers}
           		maxDelta={1}           		
           		/>}}
