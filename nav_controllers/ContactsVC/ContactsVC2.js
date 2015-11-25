@@ -69,21 +69,31 @@ var styles = StyleSheet.create({
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-var fakeMarkers = [
+var mapMarkers = [
   {
-    latitude: 48,
-    longitude: -120.2714939,
+    latitude: undefined,
+    longitude: undefined,
     title: 'Initial Location',
     subtitle: 'subtitle'
   }
 ];
 
+var region = 
+{
+	latitude: undefined,
+	longitude: undefined,
+	latitudeDelta: 0.008,
+	longitudeDelta: 0.008
+};
+
 class ContactsVC2 extends Component {
 	constructor(props) {
 		super(props);
 		this.contactInfo = this.props.contactInfo;
-		fakeMarkers[0].latitude = this.props.contactInfo[5].location.latitude
-		fakeMarkers[0].longitude = this.props.contactInfo[5].location.longitude
+		mapMarkers[0].latitude = this.props.contactInfo[5].location.latitude
+		mapMarkers[0].longitude = this.props.contactInfo[5].location.longitude
+		region.latitude = this.props.contactInfo[5].location.latitude
+		region.longitude = this.props.contactInfo[5].location.longitude
 		this.selectedInfo = this.contactInfo.slice();
 		this.state = {
 			dataSource: ds.cloneWithRows(this.contactInfo),
@@ -95,7 +105,10 @@ class ContactsVC2 extends Component {
 			<ListView
 			renderFooter = {()=>{return <MapView 
 				style={styles.map}
-          		annotations={fakeMarkers} />}}
+				region={region}
+          		annotations={mapMarkers}
+          		maxDelta={1}           		
+          		/>}}
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
 			/>
