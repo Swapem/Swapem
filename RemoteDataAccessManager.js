@@ -190,7 +190,7 @@ var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 		facebook = profileDetails.facebook;
 		location = geolocation;
 
-		if(!profileDetails.pic){
+		if(profileDetails.pic){
 			pic = new Parse.File("profilePic.png", { base64: profileDetails.pic.uri});
 		}
 
@@ -223,7 +223,7 @@ var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
 				tempSentContact.set("facebook", facebook);
 			}
 			if (typeof pic !== "undefined") {
-				tempSentContact.set("pic", pic)
+				tempSentContact.set("pic", pic);
 			}
 			// set accepted = false by default when first sending information
 			tempSentContact.set("accepted", false);
