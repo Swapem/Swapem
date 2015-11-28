@@ -24,7 +24,7 @@ var {
 // TODO: check GPS permissions.
 var uniqueIdentifier;
 DeviceUUID.getUUID().then((uuid) => {
-  ParseDB.updateGPSLocation(uuid);
+  ParseDB.initializeGPSLocation(uuid);
 });
 
 class Swapem extends Component {

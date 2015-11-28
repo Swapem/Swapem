@@ -118,7 +118,7 @@ var updateContactToAccepted = function(to, name, callback) {
 	})
 }
 
-var updateGPSLocation = function(uuid) {
+var initializeGPSLocation = function(uuid) {
 	var DeviceLocations = Parse.Object.extend("DeviceLocations");
 	var query = new Parse.Query(DeviceLocations);
 	query.equalTo("uuid", uuid);
@@ -139,6 +139,7 @@ var updateGPSLocation = function(uuid) {
 			success: function(userGeoPoint) {
 				deviceLocation.set("uuid", uuid);
 				deviceLocation.set("location", userGeoPoint);
+				deviceLocation.set("name", "default");
 
 				// If User's current location is successfully accessed then insert into db
 				deviceLocation.save(null, {
@@ -344,6 +345,6 @@ module.exports = {
 	getAcceptedContacts: getAcceptedContacts,
 	updateContactToAccepted: updateContactToAccepted,
 	sendContactInfoToSelectedUsers: sendContactInfoToSelectedUsers,
-	updateGPSLocation: updateGPSLocation,
+	initializeGPSLocation: initializeGPSLocation,
 	delay: delay
 }
