@@ -254,8 +254,9 @@ var scanForNearbyUsers = function(userName) {
 	query.equalTo("uuid", uniqueIdentifier);
 	var deviceLocation;
 	var currentGeolocation;
+	var scanPromise = new Parse.Promise();
 
-	query.find()
+	return query.find()
 		.then(function(results) {
 			return checkForExistingEntry(results)
 		})
@@ -274,6 +275,9 @@ var scanForNearbyUsers = function(userName) {
 			return saveLocallyUsersNearbyResults(results);
 		}).then(function() {
 			return stopSearching();
+		}).then(function() {
+			scanPromise.resolve();
+			return scanPromise;
 		}, function(error) {
 			alert('An error occured while scanning for nearby users: '+ error.message);
 		});
@@ -298,7 +302,6 @@ var scanForNearbyUsers = function(userName) {
 		deviceLocation.set("name", userName);
 		deviceLocation.set("searching", true);
 		deviceLocation.set("location", geolocation);
-		alert("geoLocation: " + JSON.stringify(geolocation));
 		// If User's current location is successfully accessed then insert into db
 		return deviceLocation.save();
 	}
@@ -316,7 +319,7 @@ var scanForNearbyUsers = function(userName) {
 	function saveLocallyUsersNearbyResults(results) {
 		var jsonArray = [];
 
-		alert("Results: " + JSON.stringify(results));
+		// alert("Results: " + JSON.stringify(results));
 
 		// Construct a jsonArray with the users who were found nearby.
 		for (var i = 0; i < results.length; i++) {
@@ -334,7 +337,7 @@ var scanForNearbyUsers = function(userName) {
 		deviceLocation.set("searching", false);
 		alert("Device is no longer searching");
 		// If User's current location is successfully accessed then insert into db
-		return deviceLocation.save()
+		return deviceLocation.save();
 	}
 }
 

@@ -171,8 +171,11 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name);
-				this.showResults(selectedProfileToSend);
+				alert("Searching for Nearby Users...")
+				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name)
+					.then((promise) => {
+						this.showResults(selectedProfileToSend);
+					}).done();
 		    },
 			passProps: {
 				profileDetails: profileDetails,
