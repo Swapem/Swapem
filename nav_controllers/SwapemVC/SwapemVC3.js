@@ -55,7 +55,7 @@ var styles = StyleSheet.create({
    },
  });
 
-class RequestsVC1 extends Component {
+class SwapemVC3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,4 +129,4 @@ class RequestsVC1 extends Component {
   }
 }
 
-module.exports = RequestsVC1;
+module.exports = SwapemVC3;

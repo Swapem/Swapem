@@ -71,7 +71,6 @@ class SwapemVC1 extends Component {
 		super(props);
 		this.state = {
 			dataSource: ds,
-			loaded: false,
 		};
 	}
 	// populate tableview the first time
@@ -105,6 +104,7 @@ class SwapemVC1 extends Component {
 			});
 		});
 	}
+
 	render() {
 		return (
 			<View style={styles.content}>
@@ -113,9 +113,9 @@ class SwapemVC1 extends Component {
 			renderRow = {this.renderContact.bind(this)}
 			/>
 			</View>
-
 		);
 	}
+
 	renderContact(profile) {
 		return (
 			<TouchableHighlight
@@ -140,16 +140,17 @@ class SwapemVC1 extends Component {
 			</TouchableHighlight>
 		);
 	}
+
 	//On press of a specific profile, show its details
 	showProfileDetails(profile) {
 		var profileType = Object.keys(profile).toString();
 
 		var profileDetails = [
-		{name: profile[profileType].name},
-		{phone: profile[profileType].phone},
-		{email: profile[profileType].email},
-		{facebook: profile[profileType].facebook},
-		{pic: profile[profileType].pic}
+			{name: profile[profileType].name},
+			{phone: profile[profileType].phone},
+			{email: profile[profileType].email},
+			{facebook: profile[profileType].facebook},
+			{pic: profile[profileType].pic}
 		];
 		// profileDetails formatting is depended on by the next VC
 		// this selectedProfileToSend is much easier to send.
@@ -171,7 +172,7 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				alert("Searching for Nearby Users...")
+				alert("Searching for Nearby Users...");
 				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name)
 					.then((promise) => {
 						this.showResults(selectedProfileToSend);
