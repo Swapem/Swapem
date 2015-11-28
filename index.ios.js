@@ -38,7 +38,7 @@ class Swapem extends Component {
     return (
       <TabBarIOS
       barTintColor = '#ECF0F1'
-      tintColor = '#3498DB'>
+      tintColor = '#2980B9'>
       <TabBarIOS.Item
       title = ''
       icon = {{uri:'MyProfiles'}}

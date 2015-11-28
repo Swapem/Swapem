@@ -31,7 +31,7 @@ class SwapemRootVC extends Component {
       style = {styles.container}
       barTintColor = '#ECF0F1'
       titleTextColor = '#2C3E50'
-      tintColor = '#3498DB'
+      tintColor = '#2980B9'
       initialRoute = {{
         title: 'Select profile',
         component: SwapemVC1,
