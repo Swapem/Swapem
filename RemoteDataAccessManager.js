@@ -164,68 +164,84 @@ var initializeGPSLocation = function(uuid) {
 
 /**
 * Send contact information to selected users nearby
-* Args: profileDetails - name, phone, email, facebook information to send
+* Args: profileDetails - name, phone, email, facebook, profile picture to send
 *       selectedUsers - user(s) to send the information to
 * Note that accepted is set to false by default. 
 * Destination is set using selectedUsers uuid value
+* Current geolocation is found and also sent.
 */
 var sendContactInfoToSelectedUsers = function(profileDetails, selectedUsers) {
-	// Extract information from profileDetails
-	var name, phone, email, facebook, pic;
-	
-	name = profileDetails.name;
-	phone = profileDetails.phone;
-	email = profileDetails.email;
-	facebook = profileDetails.facebook;
-	if(!profileDetails.pic){
-		pic = new Parse.File("profilePic.png", { base64: profileDetails.pic.uri});
-	}
-
-	var arrayUUID = [];
-
-	var nearbyUsers = JSON.parse(selectedUsers);
-	// Grab uuid of all users to send information to
-	for (var i=0; i<nearbyUsers.length; i++) {
-		var user = nearbyUsers[i];
-		arrayUUID.push(user.uuid);
-	}
 	var TempSentContact = Parse.Object.extend("TempSentContact");
 
-	// Generate parse entry for each destination
-	for (var i=0; i<arrayUUID.length; i++) {
-		var tempSentContact = new TempSentContact();
-
-		if (typeof name !== "undefined") {
-			tempSentContact.set("name", name);
-		}
-		if (typeof phone !== "undefined") {
-			tempSentContact.set("phone", phone);
-		}
-		if (typeof email !== "undefined") {
-			tempSentContact.set("email", email);
-		}
-		if (typeof facebook !== "undefined") {
-			tempSentContact.set("facebook", facebook);
-		}
-		if(typeof pic !=="undefined"){
-			tempSentContact.set("pic", pic)
-		}
-		// set accepted = false by default when first sending information
-		tempSentContact.set("accepted", false);
-		// set sender uuid
-		tempSentContact.set("from", uniqueIdentifier);
-		tempSentContact.set("to", arrayUUID[i]);
-
-		tempSentContact.save(null, {
-		  success: function(tempSentContact) {
-		    // Execute any logic that should take place after the object is saved.
-		  },
-		  error: function(tempSentContact, error) {
-		    alert('Failed to publish intent to send contact in Parse ' + error.message);
-		  }
+	// (a) Get current geolocation
+	// (b) Send information
+	new Parse.GeoPoint.current()
+		.then(function(geolocation) {
+			return sendInformation(geolocation, profileDetails, selectedUsers);
+		}, function(error) {
+			alert('An error occured while sending your information. Please try again.');
 		});
+
+	function sendInformation(geolocation, profileDetails, selectedUsers) {
+		var name, phone, email, facebook, pic, location;
+		name = profileDetails.name;
+		phone = profileDetails.phone;
+		email = profileDetails.email;
+		facebook = profileDetails.facebook;
+		location = geolocation;
+
+		if(!profileDetails.pic){
+			pic = new Parse.File("profilePic.png", { base64: profileDetails.pic.uri});
+		}
+
+		var arrayUUID = [];
+
+		var nearbyUsers = JSON.parse(selectedUsers);
+		// Grab uuid of all users to send information to
+		for (var i=0; i<nearbyUsers.length; i++) {
+			var user = nearbyUsers[i];
+			arrayUUID.push(user.uuid);
+		}
+		
+		// Generate parse entry for each destination
+		for (var i=0; i<arrayUUID.length; i++) {
+			var tempSentContact = new TempSentContact();
+
+			if (typeof location !== "undefined") {
+				tempSentContact.set("location", location);
+			}
+			if (typeof name !== "undefined") {
+				tempSentContact.set("name", name);
+			}
+			if (typeof phone !== "undefined") {
+				tempSentContact.set("phone", phone);
+			}
+			if (typeof email !== "undefined") {
+				tempSentContact.set("email", email);
+			}
+			if (typeof facebook !== "undefined") {
+				tempSentContact.set("facebook", facebook);
+			}
+			if (typeof pic !== "undefined") {
+				tempSentContact.set("pic", pic)
+			}
+			// set accepted = false by default when first sending information
+			tempSentContact.set("accepted", false);
+			// set sender uuid
+			tempSentContact.set("from", uniqueIdentifier);
+			tempSentContact.set("to", arrayUUID[i]);
+
+			tempSentContact.save(null, {
+			  success: function(tempSentContact) {
+			    // Execute any logic that should take place after the object is saved.
+			  },
+			  error: function(tempSentContact, error) {
+			    alert('Failed to publish intent to send contact in Parse ' + error.message);
+			  }
+			});
+		}
+		alert('Contact information sent successfully');
 	}
-	alert('Contact information sent successfully');
 }
 
 /**
