@@ -82,62 +82,45 @@ var setRegion =
 	longitudeDelta: 0.008
 };
 
-var location = {
-	latitude: undefined,
-	longitude: undefined
-}
-
-var mapMarkers = [
-  {
-    latitude: undefined,
-    longitude: undefined,
-    title: "place holder"
-  }
-];
-
-
 class ContactsVC2 extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			dataSource: ds.cloneWithRows(this.props.contactInfo),
+			latitude: this.props.contactInfo[5].location.latitude,
+			longitude: this.props.contactInfo[5].location.longitude,
+			title: 'place holder',
+		}
 		this.contactInfo = this.props.contactInfo;
-		mapMarkers[0].latitude = this.props.contactInfo[5].location.latitude
-		mapMarkers[0].longitude = this.props.contactInfo[5].location.longitude
 		setRegion.latitude = this.props.contactInfo[5].location.latitude
 		setRegion.longitude = this.props.contactInfo[5].location.longitude
-		location.latitude = this.props.contactInfo[5].location.latitude
-		location.longitude = this.props.contactInfo[5].location.longitude
-		RNGeocoder.reverseGeocodeLocation(location, (err, result) => {
-			if (err) {
-				return;
-				console.log("Error is: " + err);
-				}
-				mapMarkers[0].title = JSON.stringify(result[0].name);
-				// mapMarkers[0].title = result[0].name;
-				console.log("mapMarkers title is: " + mapMarkers[0].title);
-				});
-		console.log("location latitude is; " + location.latitude);
-		console.log("location longitude is; " + location.longitude);
-
 		this.selectedInfo = this.contactInfo.slice();
-		this.state = {
-			dataSource: ds.cloneWithRows(this.contactInfo),
-		};
 	}
-
+	componentDidMount(){
+		RNGeocoder.reverseGeocodeLocation({latitdue: this.props.contactInfo[5].location.latitude, longitude: this.props.contactInfo[5].location.longitude}, (err, result) => {
+			if (err) {
+				console.log("Error is: " + err);
+				return;
+			}
+			this.setState({
+				title: JSON.stringify(result[0].name)
+			})
+		})
+	}
 	render() {
 		return (
 			<ListView
 			renderFooter = {()=>{return <MapView 
 				style={styles.map}
 				region={setRegion}
-				mapMarkers={mapMarkers}
-          		annotations={mapMarkers}
+          		annotations={[{latitude: this.state.latitude, longitude: this.state.longitude, title: this.state.title}]}
           		maxDelta={1}           		
-          		/>}}
+          		/>
+          	}}
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
 			/>
-			);
+		);
 	}
 	renderRequest(contactInfoItem,sectionID,rowID) {
 		// e.g. contactInfoItem = {name: 'Ann Kim'}
@@ -151,65 +134,64 @@ class ContactsVC2 extends Component {
 		}
 		return (
 			<TouchableHighlight
-			onPress = {(event) => {
-				if (this.selectedInfo.includes(contactInfoItem)) {
-					var index = this.selectedInfo.indexOf(contactInfoItem);
-					this.selectedInfo.splice(index, 1);
-				}
-				else {
-					this.selectedInfo.splice(index, 0, contactInfoItem);
-				}
-				// update tableview data
-				this.setState({
-					dataSource: ds.cloneWithRows(this.contactInfo),
-				});
-			}} 
-			underlayColor = '#2980B9'>
-			<View>
-			<View style = {styles.cell}>
-			<Image
-				source = {(() => {
-					switch (contactInfoKey) {
-						case 'email': return {uri:'Email'};
-						case 'facebook': return {uri:'Facebook'};
-						case 'phone': return {uri:'Phone'};
-						case 'pic': return {uri: contactInfoItem.pic.url};
-						default: return {uri:'Person'};
-					}})()}
-						style = {contactInfoKey === 'pic' ? 
-						styles.profilepic:styles.icon}/>
-
-				<View style = {styles.content}>
-				{(() => {
-					switch (contactInfoKey) {
-						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
-						default: return;
-					}})()}
-					<Text style = {styles.item}>
-					{(() => {
-						switch (contactInfoKey) {
-							case 'email': return (contactInfoItem.email);
-							case 'facebook': return (contactInfoItem.facebook);
-							case 'phone': return (contactInfoItem.phone);
-							case 'pic': return 'Profile Picture';
-							default: return (contactInfoItem.name);
-						}})()}
-					</Text>
-				</View>
-
+				onPress = {(event) => {
+					if (this.selectedInfo.includes(contactInfoItem)) {
+						var index = this.selectedInfo.indexOf(contactInfoItem);
+						this.selectedInfo.splice(index, 1);
+					}
+					else {
+						this.selectedInfo.splice(index, 0, contactInfoItem);
+					}
+					// update tableview data
+					this.setState({
+						dataSource: ds.cloneWithRows(this.contactInfo),
+					});
+				}} 
+				underlayColor = '#2980B9'>
+				<View>
+					<View style = {styles.cell}>
+						<Image
+							source = {(() => {
+								switch (contactInfoKey) {
+									case 'email': return {uri:'Email'};
+									case 'facebook': return {uri:'Facebook'};
+									case 'phone': return {uri:'Phone'};
+									case 'pic': return {uri: contactInfoItem.pic.url};
+									default: return {uri:'Person'};
+								}})()}
+							style = {contactInfoKey === 'pic' ? styles.profilepic:styles.icon} />
+						<View style = {styles.content}>
+							{(() => {
+								switch (contactInfoKey) {
+									case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
+									default: return;
+								}})()
+							}
+							<Text style = {styles.item}>
+								{(() => {
+								switch (contactInfoKey) {
+									case 'email': return (contactInfoItem.email);
+									case 'facebook': return (contactInfoItem.facebook);
+									case 'phone': return (contactInfoItem.phone);
+									case 'pic': return 'Profile Picture';
+									default: return (contactInfoItem.name);
+								}})()}
+							</Text>
+						</View>
 						<View>
 						{(() => {
 							switch (this.selectedInfo.includes(contactInfoItem)) {
 								case false: return;
 								default: return <Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />;
-							}})()}
-						</View>
-						</View>
-						<View style = {styles.separator} />
-						</View>
-						</TouchableHighlight>
-						);
+							}})()
 						}
+						</View>
+					</View>
+					<View style = {styles.separator} />
+				</View>
+			</TouchableHighlight>
+		);
+	}
 }
 
 module.exports = ContactsVC2;
