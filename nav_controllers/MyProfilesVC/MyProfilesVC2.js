@@ -4,6 +4,8 @@ var React = require('react-native');
 var UIImagePickerManager = require('NativeModules').UIImagePickerManager;
 var FBSDKLogin = require('react-native-fbsdklogin');
 var FBSDKCore = require('react-native-fbsdkcore');
+var FBURL;
+var FBName;
 
 var {
 	AsyncStorage,
@@ -15,6 +17,7 @@ var {
 	TextInput,
 	TouchableHighlight,
 	View,
+	LinkingIOS,
 } = React;
 
 var {
@@ -99,6 +102,19 @@ var options = {
 };
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+// var fetchUrlRequest = new FBSDKGraphRequest ((error, result) => {fetch
+//   if (error) {
+//     alert('Error making request');
+//     } else {
+//       console.log('FBSDKGraphRequest', error, result);
+//       // alert(JSON.stringify(result.link));
+//       FBURL = (result.link);
+//       FBName = (JSON.stringify(result.name));
+//       }
+//     }, 'me?fields=link,name');
+
+
 
 class MyProfilesVC2 extends Component {
 	constructor(props) {
@@ -236,16 +252,22 @@ class MyProfilesVC2 extends Component {
 				onPress = {(event) => {
 					if (profileType === 'facebook') {
 						if (!this.state.fbLogin) {
+							this.logOutFacebook();
+							this.setState({
+								fbLogin: false});
 							this.logIntoFacebook();
+							// this.fetchFacebookURL();
 							this.setState({
 								fbLogin: true,
 							});
 						}
 						else {
-							this.logOutFacebook();
-							this.setState({
-								fbLogin: false,
-							});
+							console.log("FBURL: "+FBURL);
+							LinkingIOS.openURL(FBURL);
+							// this.logOutFacebook();
+							// this.setState({
+							// 	fbLogin: false,
+							// });
 						}
 					}
 					else if (profileType === 'linkedIn') {
@@ -296,13 +318,34 @@ class MyProfilesVC2 extends Component {
 					alert('Login cancelled');
 				} else {
 					alert('Logged in');
+					var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
+                      console.log (token, 'Type of Token is:' + typeof token));
+					var fetchUrlRequest = new FBSDKGraphRequest ((error, result) => {fetch
+  if (error) {
+    alert('Error making request');
+    } else {
+      console.log('FBSDKGraphRequest', error, result);
+      // alert(JSON.stringify(result.link));
+      FBURL = (result.link);
+      FBName = (JSON.stringify(result.name));
+      }
+    }, 'me?fields=link,name');
+					FBSDKGraphRequestManager.batchRequests([fetchUrlRequest], function() {}, 60);
+					console.log("FBURL: "+FBURL);
 				}
 			}
 		});
 	}
+	
 	logOutFacebook() {
 		FBSDKLoginManager.logOut();
 	}
+
+	// fetchFacebookURL() {
+	// 	FBSDKGraphRequestManager.batchRequests([fetchUrlRequest], function() {}, 60);
+	// 	console.log(FBURL);
+	// }
+
 	renderProfile(profileType) {
 		if (profileType === "email"){
 			return <TextInput
@@ -312,7 +355,8 @@ class MyProfilesVC2 extends Component {
 			value = {this.state.newEmail}/>
 		}
 		else if (profileType === "facebook") {
-			return [<Text key = {0} style = {styles.infoType}>facebook.com/</Text>,
+			return [<Text key = {0} style = {styles.infoType}>
+						facebook.com/{FBName}</Text>,
 			<Text key = {1} style = {styles.info}>{this.state.newFacebook}</Text>];
 		} 
 		else if (profileType === "linkedIn"){
