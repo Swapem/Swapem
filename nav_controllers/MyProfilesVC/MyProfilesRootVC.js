@@ -73,7 +73,7 @@ class MyProfilesRootVC extends Component {
     AsyncStorage.getItem('myProfiles').then((dbValue) => {
       var profiles = JSON.parse(dbValue);
       profiles.push({
-        [promptValue]: {name: '', phone: '', email: '', facebook: '', linkedIn: '', pic:''}
+        [promptValue]: {name: '', phone: '', email: '', facebook: '', linkedIn: '', notes: '', pic:''}
       });
       AsyncStorage.setItem('myProfiles', JSON.stringify(profiles));
       profiles = this.props.profiles;
