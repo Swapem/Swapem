@@ -2,6 +2,8 @@
 
 var React = require('react-native');
 var UIImagePickerManager = require('NativeModules').UIImagePickerManager;
+var FBSDKLogin = require('react-native-fbsdklogin');
+var FBSDKCore = require('react-native-fbsdkcore');
 
 var {
 	AsyncStorage,
@@ -14,6 +16,16 @@ var {
 	TouchableHighlight,
 	View,
 } = React;
+
+var {
+	FBSDKLoginManager,
+} = FBSDKLogin;
+
+var {
+  FBSDKAccessToken,
+  FBSDKGraphRequest,
+  FBSDKGraphRequestManager,
+} = FBSDKCore;
 
 var styles = StyleSheet.create({
 	cell: {
@@ -31,7 +43,7 @@ var styles = StyleSheet.create({
 	},
 	defaultPic:{
 		height: 80,
-		tintColor: '#3498DB',
+		tintColor: 'E0E0E0',
 		width: 80,
 	},
 	icon: {
@@ -93,6 +105,7 @@ class MyProfilesVC2 extends Component {
 		super(props);
 		this.state = {
 			dataSource: ds,
+			fbLogin: false,
 			newEmail: this.props.profileInfo[2].email,
 			newFacebook: this.props.profileInfo[3].facebook,
 			newName: this.props.profileInfo[0].name,
@@ -210,6 +223,25 @@ class MyProfilesVC2 extends Component {
 						case 'facebook': return;
 						default: return 1;
 					}})()}
+				onPress = {(event) => {
+					if (profileType === 'facebook') {
+						if (!this.state.fbLogin) {
+							this.logIntoFacebook();
+							this.setState({
+								fbLogin: true,
+							});
+						}
+						else {
+							this.logOutFacebook();
+							this.setState({
+								fbLogin: false,
+							});
+						}
+					}
+					else {
+						return;
+					}
+				}}
 				underlayColor = {(() => {
 					switch (profileType) {
 						case 'facebook': return '#2980B9';
@@ -236,6 +268,24 @@ class MyProfilesVC2 extends Component {
 				</TouchableHighlight>
 			);
 		}
+	}
+	logIntoFacebook() {
+		// Attempt a login using the native login dialog asking for default permissions.
+		FBSDKLoginManager.setLoginBehavior('native');
+		FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
+			if (error) {
+				alert('Error logging in');
+			} else {
+				if (result.isCancelled) {
+					alert('Login cancelled');
+				} else {
+					alert('Logged in');
+				}
+			}
+		});
+	}
+	logOutFacebook() {
+		FBSDKLoginManager.logOut();
 	}
 	renderProfile(profileType) {
 		if (profileType === "email"){
