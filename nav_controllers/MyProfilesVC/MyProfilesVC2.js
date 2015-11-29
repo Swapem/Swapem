@@ -110,12 +110,13 @@ class MyProfilesVC2 extends Component {
 			newFacebook: this.props.profileInfo[3].facebook,
 			newLinkedIn: this.props.profileInfo[4].linkedIn,
 			newName: this.props.profileInfo[0].name,
+			newNotes: this.props.profileInfo[5].notes,
 			newPhone: this.props.profileInfo[1].phone,
 			oldEmail: this.props.profileInfo[2].email,
 			oldFacebook: this.props.profileInfo[3].facebook,
 			oldName: this.props.profileInfo[0].name,
 			oldPhone: this.props.profileInfo[1].phone,
-			pic: this.props.profileInfo[5].pic,
+			pic: this.props.profileInfo[6].pic,
 			profileName: this.props.profileName,
 		};
 	}
@@ -148,6 +149,7 @@ class MyProfilesVC2 extends Component {
 								email: this.state.newEmail,
 								facebook: this.state.newFacebook,
 								linkedin: this.state.newLinkedIn,
+								notes: this.state.newNotes,
 								pic: this.state.pic};
 							storedProfile[storedProfileName] = newProfileInfo;
 							this.setState({
@@ -269,6 +271,7 @@ class MyProfilesVC2 extends Component {
 						case 'linkedIn': return {uri: 'LinkedIn'};
 						case 'name': return {uri: 'Person'};
 						case 'phone': return {uri: 'Phone'};
+						case 'notes': return {uri: 'Notes'};
 						default: return;
 					}})()}
 				style = {styles.icon}/>
@@ -322,6 +325,13 @@ class MyProfilesVC2 extends Component {
 			placeholder = 'Name'
 			onChangeText = {(text) => this.setState({newName: text})}
 			value = {this.state.newName}/>
+		}
+		else if (profileType === "notes") {
+			return <TextInput
+			style = {styles.infoInput}
+			placeholder = 'Notes'
+			onChangeText = {(text) => this.setState({newNotes: text})}
+			value = {this.state.newNotes}/>
 		}
 		else if (profileType === "phone") {
 			return <TextInput
