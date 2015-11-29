@@ -52,6 +52,16 @@
                ReferencedContainer = "container:Swapem.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "391DE0451C0A7E3F00125A3C"
+               BuildableName = "SwapemUITests.xctest"
+               BlueprintName = "SwapemUITests"
+               ReferencedContainer = "container:Swapem.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
