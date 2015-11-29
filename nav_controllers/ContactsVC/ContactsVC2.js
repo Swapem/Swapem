@@ -97,7 +97,10 @@ class ContactsVC2 extends Component {
 		this.selectedInfo = this.contactInfo.slice();
 	}
 	componentDidMount(){
-		RNGeocoder.reverseGeocodeLocation({latitdue: this.props.contactInfo[5].location.latitude, longitude: this.props.contactInfo[5].location.longitude}, (err, result) => {
+		let location = {latitude: undefined, longitude: undefined}
+		location.latitude = this.props.contactInfo[5].location.latitude
+		location.longitude = this.props.contactInfo[5].location.longitude
+		RNGeocoder.reverseGeocodeLocation(location, (err, result) => {
 			if (err) {
 				console.log("Error is: " + err);
 				return;
