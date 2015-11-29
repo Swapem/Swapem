@@ -2,6 +2,8 @@
 
 var React = require('react-native');
 var UIImagePickerManager = require('NativeModules').UIImagePickerManager;
+var FBSDKLogin = require('react-native-fbsdklogin');
+var FBSDKCore = require('react-native-fbsdkcore');
 
 var {
 	AsyncStorage,
@@ -14,6 +16,16 @@ var {
 	TouchableHighlight,
 	View,
 } = React;
+
+var {
+	FBSDKLoginManager,
+} = FBSDKLogin;
+
+var {
+  FBSDKAccessToken,
+  FBSDKGraphRequest,
+  FBSDKGraphRequestManager,
+} = FBSDKCore;
 
 var styles = StyleSheet.create({
 	cell: {
@@ -31,7 +43,7 @@ var styles = StyleSheet.create({
 	},
 	defaultPic:{
 		height: 80,
-		tintColor: '#3498DB',
+		tintColor: 'E0E0E0',
 		width: 80,
 	},
 	icon: {
@@ -93,15 +105,17 @@ class MyProfilesVC2 extends Component {
 		super(props);
 		this.state = {
 			dataSource: ds,
+			fbLogin: false,
 			newEmail: this.props.profileInfo[2].email,
 			newFacebook: this.props.profileInfo[3].facebook,
+			newLinkedIn: this.props.profileInfo[4].linkedIn,
 			newName: this.props.profileInfo[0].name,
 			newPhone: this.props.profileInfo[1].phone,
 			oldEmail: this.props.profileInfo[2].email,
 			oldFacebook: this.props.profileInfo[3].facebook,
 			oldName: this.props.profileInfo[0].name,
 			oldPhone: this.props.profileInfo[1].phone,
-			pic: this.props.profileInfo[4].pic,
+			pic: this.props.profileInfo[5].pic,
 			profileName: this.props.profileName,
 		};
 	}
@@ -128,7 +142,13 @@ class MyProfilesVC2 extends Component {
 						var storedProfile = storedProfiles[i];
 						var storedProfileName = Object.keys(storedProfile).toString();
 						if (storedProfileName === this.state.profileName) {
-							var newProfileInfo = {name: this.state.newName, phone: this.state.newPhone, email: this.state.newEmail, facebook: this.state.newFacebook, pic: this.state.pic};
+							var newProfileInfo = {
+								name: this.state.newName,
+								phone: this.state.newPhone,
+								email: this.state.newEmail,
+								facebook: this.state.newFacebook,
+								linkedin: this.state.newLinkedIn,
+								pic: this.state.pic};
 							storedProfile[storedProfileName] = newProfileInfo;
 							this.setState({
 								oldEmail: this.state.newEmail,
@@ -208,11 +228,35 @@ class MyProfilesVC2 extends Component {
 				activeOpacity = {(() => {
 					switch (profileType) {
 						case 'facebook': return;
+						case 'linkedIn': return;
 						default: return 1;
 					}})()}
+				onPress = {(event) => {
+					if (profileType === 'facebook') {
+						if (!this.state.fbLogin) {
+							this.logIntoFacebook();
+							this.setState({
+								fbLogin: true,
+							});
+						}
+						else {
+							this.logOutFacebook();
+							this.setState({
+								fbLogin: false,
+							});
+						}
+					}
+					else if (profileType === 'linkedIn') {
+						// LinkedIn code
+					}
+					else {
+						return;
+					}
+				}}
 				underlayColor = {(() => {
 					switch (profileType) {
 						case 'facebook': return '#2980B9';
+						case 'linkedIn': return '#2980B9';
 						default: return;
 					}})()}>
 				<View>
@@ -222,6 +266,7 @@ class MyProfilesVC2 extends Component {
 					switch (profileType) {
 						case 'email': return {uri: 'Email'};
 						case 'facebook': return {uri: 'Facebook'};
+						case 'linkedIn': return {uri: 'LinkedIn'};
 						case 'name': return {uri: 'Person'};
 						case 'phone': return {uri: 'Phone'};
 						default: return;
@@ -237,6 +282,24 @@ class MyProfilesVC2 extends Component {
 			);
 		}
 	}
+	logIntoFacebook() {
+		// Attempt a login using the native login dialog asking for default permissions.
+		FBSDKLoginManager.setLoginBehavior('native');
+		FBSDKLoginManager.logInWithReadPermissions([], (error, result) => {
+			if (error) {
+				alert('Error logging in');
+			} else {
+				if (result.isCancelled) {
+					alert('Login cancelled');
+				} else {
+					alert('Logged in');
+				}
+			}
+		});
+	}
+	logOutFacebook() {
+		FBSDKLoginManager.logOut();
+	}
 	renderProfile(profileType) {
 		if (profileType === "email"){
 			return <TextInput
@@ -245,18 +308,22 @@ class MyProfilesVC2 extends Component {
 			onChangeText = {(text) => this.setState({newEmail: text})}
 			value = {this.state.newEmail}/>
 		}
-		else if (profileType === "facebook"){
-			return [<Text style = {styles.infoType} key={0}>facebook.com/</Text>,
-			<Text style = {styles.info} key={1}>{this.state.newFacebook}</Text>]
+		else if (profileType === "facebook") {
+			return [<Text key = {0} style = {styles.infoType}>facebook.com/</Text>,
+			<Text key = {1} style = {styles.info}>{this.state.newFacebook}</Text>];
+		} 
+		else if (profileType === "linkedIn"){
+			return [<Text key = {0} style = {styles.infoType}>linkedin.com/in/</Text>,
+			<Text key = {1} style = {styles.info}>{this.state.newLinkedIn}</Text>];
 		}
-		else if (profileType === "name"){
+		else if (profileType === "name") {
 			return <TextInput
 			style = {styles.infoInput}
 			placeholder = 'Name'
 			onChangeText = {(text) => this.setState({newName: text})}
 			value = {this.state.newName}/>
 		}
-		else if (profileType === "phone"){
+		else if (profileType === "phone") {
 			return <TextInput
 			style = {styles.infoInput}
 			placeholder = 'Phone'
