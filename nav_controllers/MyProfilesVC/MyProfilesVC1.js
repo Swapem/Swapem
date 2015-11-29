@@ -136,7 +136,8 @@ class MyProfilesVC1 extends Component {
 		{phone: profile[profileName].phone},
 		{email: profile[profileName].email},
 		{facebook: profile[profileName].facebook},
-		{pic: profile[profileName].pic}
+		{linkedIn: profile[profileName].linkedIn},
+		{pic: profile[profileName].pic},
 		];
 		this.props.navigator.push({
 			title: profileName,
