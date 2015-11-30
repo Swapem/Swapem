@@ -28,62 +28,82 @@ class SwapemUITests: XCTestCase {
     super.tearDown()
   }
 
-
+  // Test adding a profile
   func testAddProfile(){
     let app = XCUIApplication()
     app.navigationBars["My Profiles"].buttons["Add"].tap()
     app.alerts["Enter profile name"].collectionViews.buttons["Save"].pressForDuration(0.5);
+    
+    // check that the school profile got created
     XCTAssert(app.otherElements["    school  "].exists, "school does not exist")
     app.navigationBars["My Profiles"].buttons["Delete All"].tap()
+    
+    // check that school no longer exists after delete button is tapped
     XCTAssert(!app.otherElements["    school  "].exists, "school still exist after delete all")
   }
+  
   
   func testAddProfileDetails(){
     
     let app = XCUIApplication()
+    // create school profile
     app.navigationBars["My Profiles"].buttons["Add"].tap()
     app.alerts["Enter profile name"].collectionViews.buttons["Save"].tap()
     app.otherElements["     school  "].otherElements["    school  "].tap()
     UIPasteboard.generalPasteboard().string = "Lisa Wong"
     
+    // paste name
     app.otherElements["         Name      Phone      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Name "].doubleTap()
     app.menuItems["Paste"].tap()
     
+    // paste phone
     UIPasteboard.generalPasteboard().string = "778-399-9898"
     app.otherElements["              Phone      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Phone "].tap()
     app.otherElements["         Lisa Wong      Phone      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Phone "].tap()
     app.menuItems["Paste"].tap()
     
+    // paste email
     UIPasteboard.generalPasteboard().string = "lisaw@example.com"
-
     app.otherElements["         Lisa Wong           Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Email "].tap()
     app.otherElements["         Lisa Wong      778-399-9898      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Email "].tap()
     app.menuItems["Paste"].tap()
 
+    // paste note
     UIPasteboard.generalPasteboard().string = "Software Developer"
     app.otherElements["         Lisa Wong      778-399-9898           facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Notes "].tap()
     app.otherElements["         Lisa Wong      778-399-9898      lisaw@example.com      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Notes "].tap()
     app.menuItems["Paste"].tap()
     
+    // tap save button
     let schoolNavigationBar = app.navigationBars["school"]
     schoolNavigationBar.buttons["Save"].tap()
     
     let okButton = app.alerts["Alert"].collectionViews.buttons["OK"]
     okButton.tap()
+    
+    // go back and select school profile
     schoolNavigationBar.childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
     app.otherElements["     school  "].otherElements["    school  "].tap()
+    // added an artifical delay to ensure that information is loaded
     sleep(1)
+    // check that the information we saved earlier exists
     XCTAssert(app.otherElements["         Lisa Wong      778-399-9898      lisaw@example.com      facebook.com/       linkedin.com/in/       Software Developer  "].exists, "profile information did not save")
     app.navigationBars["school"].childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
+    
     app.navigationBars["My Profiles"].buttons["Delete All"].tap()
+    // check that school profile doesn't exist after tapping delete all button
     XCTAssert(!app.otherElements["    school  "].exists, "school still exist after delete all")
   }
   
   func testRequests(){
     
     let app = XCUIApplication()
+    // tap requests tab
     app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+    
+    // added an artifical delay to ensure that information is loaded
     sleep(1)
+    // check that the requests from tempSentContacts in database is displayed
     XCTAssert(app.otherElements["     Charlie Brown      Woodstock "].exists, "Requests from Parse are not displayed")
     app.otherElements["     Charlie Brown      Woodstock "].otherElements["    Charlie Brown "].tap()
     app.otherElements["     Charlie Brown       Woodstock "].otherElements["    Woodstock "].tap()
@@ -94,13 +114,18 @@ class SwapemUITests: XCTestCase {
   func testContacts(){
     
     let app = XCUIApplication()
+    // tap contacts tab
     app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(3).tap()
+    // added an artifical delay to ensure that information is loaded
     sleep(1)
-    app.otherElements["     Lucy       Snoopy  "].otherElements["    Lucy  "].tap()
     
+    // select Lucy profile
+    app.otherElements["     Lucy       Snoopy  "].otherElements["    Lucy  "].tap()
     let lucyElement = app.otherElements["     Lucy       778-888-9898       lucy@example.com       facebook.com/ lucy123     \"Metrotown Centre\" Legal"]
     sleep(1)
+    // check that Lucy's information is displayed
     XCTAssert(app.otherElements["     Lucy       778-888-9898       lucy@example.com       facebook.com/ lucy123     \"Metrotown Centre\" Legal"].exists, "Lucy's contact details are not displayed")
+    // check that there is no profile picture
     XCTAssert(!lucyElement.otherElements["    Profile Picture  "].exists, "Profile picture is displayed")
     lucyElement.otherElements["    Lucy  "].tap()
     lucyElement.otherElements["    778-888-9898  "].tap()
@@ -110,10 +135,12 @@ class SwapemUITests: XCTestCase {
     
     app.navigationBars["Lucy"].childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
     sleep(1)
-    app.otherElements["     Lucy       Snoopy  "].otherElements["    Snoopy  "].tap()
     
+    // select Snoopy's profile
+    app.otherElements["     Lucy       Snoopy  "].otherElements["    Snoopy  "].tap()
     let snoopyElement = app.otherElements["     Snoopy       604-321-0909       snoopy@cs410.com       facebook.com/ snoopy123       Profile Picture    \"The University Of British Columbia (Ubc)\" Legal"]
     sleep(1)
+    // cehck that Snoopy's contact information is displayed
     XCTAssert(app.otherElements["     Snoopy       604-321-0909       snoopy@cs410.com       facebook.com/ snoopy123       Profile Picture    \"The University Of British Columbia (Ubc)\" Legal"].exists, "Snoopy's contact details are not displayed")
     snoopyElement.otherElements["    Snoopy  "].tap()
     snoopyElement.otherElements["    604-321-0909  "].tap()
