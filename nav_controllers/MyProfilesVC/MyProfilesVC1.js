@@ -58,12 +58,15 @@ var testProfiles = [
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+var instance
+
 class MyProfilesVC1 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			dataSource: ds,
 		};
+		instance = this
 	}
 	// populate tableview the first time
 	componentDidMount() {
@@ -80,21 +83,17 @@ class MyProfilesVC1 extends Component {
 			});
 		});
 	}
-	// update tableview when new props are received,
-	// i.e. this.refs.nav.replace() in MyProfilesRootVC and this.props.navigator.pop() and this.refreshComponent(profileName) in MyProfilesVC1 are called
-	componentWillReceiveProps() {
-		AsyncStorage.getItem('myProfiles').then((dbValue) => {
-			var profiles;
-			if (dbValue == null) {
-				profiles = [];
-			}
-			else {
-				profiles = JSON.parse(dbValue);	
-			}
-			this.setState({
+	static insertNewProfile(profileName) {
+	    AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			var profiles = JSON.parse(dbValue);
+			profiles.push({
+				[profileName]: {name: '', phone: '', email: '', facebook: '', linkedIn: '', notes: '', pic:''}
+			});
+			AsyncStorage.setItem('myProfiles', JSON.stringify(profiles));
+			instance.setState({
 				dataSource: ds.cloneWithRows(profiles),
 			});
-		});
+		}).done();
 	}
 	render() {
 		return (
@@ -128,6 +127,12 @@ class MyProfilesVC1 extends Component {
 			</View>
 			</TouchableHighlight>
 			);
+	}
+	static onLeftButtonPress() {
+		AsyncStorage.setItem('myProfiles', '[]')
+		instance.setState({
+			dataSource: ds.cloneWithRows([]),
+		});
 	}
 	showProfileDetails(profile) {
 		var profileName = Object.keys(profile).toString();

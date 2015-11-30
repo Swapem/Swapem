@@ -43,50 +43,40 @@ class MyProfilesRootVC extends Component {
 	render() {
 		return (
       <NavigatorIOS
-      ref = 'nav'
-      style = {styles.container}
-      barTintColor = '#ECF0F1'
-      titleTextColor = '#2C3E50'
-      tintColor = '#2980B9'
-      initialRoute = {{
-        title: 'My Profiles',
-        component: MyProfilesVC1,
-        leftButtonTitle: 'Edit',
-        rightButtonIcon: {uri:'Add'},
-        onRightButtonPress: () => {
-          this.promptProfileName();
-        },
-      }}/>
-      );
+        ref = 'nav'
+        style = {styles.container}
+        barTintColor = '#ECF0F1'
+        titleTextColor = '#2C3E50'
+        tintColor = '#2980B9'
+        initialRoute = {{
+          title: 'My Profiles',
+          component: MyProfilesVC1,
+          leftButtonTitle: 'Delete All',
+          onLeftButtonPress: () => {
+            this.onLeftButtonPress()
+          },
+          rightButtonIcon: {uri:'Add'},
+          onRightButtonPress: () => {
+            this.promptProfileName();
+          },
+        }} />
+    );
+  }
+  onLeftButtonPress() {
+    MyProfilesVC1.onLeftButtonPress()
   }
   promptProfileName() {
     AlertIOS.prompt (
       'Enter profile name',
       '',
       [
-      {text: 'Cancel'},
-      {text: 'Save', onPress: this.saveProfileName.bind(this)},
+        {text: 'Cancel'},
+        {text: 'Save', onPress: this.saveProfileName.bind(this)},
       ]
-      )
+    )
   }
   saveProfileName(promptValue) {
-    AsyncStorage.getItem('myProfiles').then((dbValue) => {
-      var profiles = JSON.parse(dbValue);
-      profiles.push({
-        [promptValue]: {name: '', phone: '', email: '', facebook: '', linkedIn: '', notes: '', pic:''}
-      });
-      AsyncStorage.setItem('myProfiles', JSON.stringify(profiles));
-      profiles = this.props.profiles;
-      this.refs.nav.replace({
-        title: 'My Profiles',
-        component: MyProfilesVC1,
-        leftButtonTitle: 'Edit',
-        rightButtonIcon: {uri:'Add'},
-        onRightButtonPress: () => {
-          this.promptProfileName();
-        },
-      });
-    }).done();
+    MyProfilesVC1.insertNewProfile(promptValue)
   }
 }
 
