@@ -34,24 +34,30 @@ class RequestsRootVC extends Component {
       tintColor = '#2980B9'
       initialRoute = {{
         title: 'Requests',
-        component: RequestsVC1.instance,
+        component: RequestsVC1,
         leftButtonIcon: {uri: 'Refresh'},
         onLeftButtonPress: () => {
           this.refreshComponent();
         },
         rightButtonTitle: 'Accept',
+        onRightButtonPress: () => {
+          RequestsVC1.accept();
+        },
       }}/>
     );
   }
   refreshComponent() {
     this.refs.nav.replace({
       title: 'Requests',
-      component: RequestsVC1.instance,
+      component: RequestsVC1,
       leftButtonIcon: {uri: 'Refresh'},
       onLeftButtonPress: () => {
         this.refreshComponent();
       },
       rightButtonTitle: 'Accept',
+      onRightButtonPress: () => {
+        RequestsVC1.accept();
+      },
     });
   }
 }

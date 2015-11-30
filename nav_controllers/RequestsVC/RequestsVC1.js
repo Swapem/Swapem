@@ -110,7 +110,7 @@ class RequestsVC1 extends Component {
     })
 
   }
-  handleAcceptButton(){
+  static accept() {
     DeviceUUID.getUUID().then((uuid) => {
       for(let i=0; i<checkedNames.length; i++){
         parseDB.updateContactToAccepted(uuid, checkedNames[i], (error, result) =>{
@@ -124,20 +124,12 @@ class RequestsVC1 extends Component {
       }
     })
   }
-
 	render() {
 		return (
-      <View style={styles.lview}>
 			<ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderRequest.bind(this)}
-      style = {styles.listView}
-      />
-      <TouchableHighlight style={styles.button}
-        onPress={this.handleAcceptButton}>
-        <Text style={styles.buttonText}>Accept</Text>
-      </TouchableHighlight>
-      </View>
+      style = {styles.listView}/>
       );
 	}
 	renderRequest(request) {
@@ -194,7 +186,4 @@ class ContactRow extends Component{
   }
 }
 
-module.exports = {
-  instance: RequestsVC1,
-  contacts: fakeRequests
-}
+module.exports = RequestsVC1;
