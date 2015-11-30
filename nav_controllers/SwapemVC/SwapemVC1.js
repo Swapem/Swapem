@@ -4,6 +4,7 @@ var React = require('react-native');
 var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemVC2 = require('./SwapemVC2')
 var SwapemVC3 = require('./SwapemVC3')
+var Keys = require('./../../Keys');
 
 var {
 	AsyncStorage,
@@ -65,6 +66,8 @@ var testNearbyDevices =[
 ];
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+var parseDB = new RemoteDataAccessManager(Keys.parseAppKey, Keys.parseJsKey);
 
 class SwapemVC1 extends Component {
 	constructor(props) {
@@ -170,10 +173,11 @@ class SwapemVC1 extends Component {
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
+
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
 				alert("Searching for Nearby Users...");
-				RemoteDataAccessManager.scanForNearbyUsers(profile[profileType].name)
+				parseDB.scanForNearbyUsers(profile[profileType].name)
 					.then((promise) => {
 						this.showResults(selectedProfileToSend);
 					}).done();
@@ -197,7 +201,7 @@ class SwapemVC1 extends Component {
 			       // Send contact information to chosen users
 			       // TODO: Currently sending info to all nearby devices rather than selected
 				   console.log("contact information sent to: " + JSON.stringify(selectedUsers));
-				   RemoteDataAccessManager.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
+				   parseDB.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
 			   }).done();
 			},
 		})

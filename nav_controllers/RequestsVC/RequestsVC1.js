@@ -3,6 +3,7 @@
 var React = require('react-native');
 var DeviceUUID = require("react-native-device-uuid");
 var ParseDB = require('../../RemoteDataAccessManager');
+var Keys = require('../../Keys');
 
 var {
   StyleSheet,
@@ -21,6 +22,8 @@ var fakeRequests = [
 ];
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+var parseDB = new ParseDB(Keys.parseAppKey, Keys.parseJsKey);
 
 var checkedNames = []
 
@@ -90,7 +93,7 @@ class RequestsVC1 extends Component {
   componentDidMount() {
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
-      ParseDB.getRequestedContacts(uuid, (error, results) => {
+      parseDB.getRequestedContacts(uuid, (error, results) => {
         myself.setState({
           dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
         })
@@ -101,7 +104,7 @@ class RequestsVC1 extends Component {
   handleAcceptButton(){
     DeviceUUID.getUUID().then((uuid) => {
       for(let i=0; i<checkedNames.length; i++){
-        ParseDB.updateContactToAccepted(uuid, checkedNames[i], (error, result) =>{
+        parseDB.updateContactToAccepted(uuid, checkedNames[i], (error, result) =>{
           if(error){
             alert(error)
           }

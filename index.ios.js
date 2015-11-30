@@ -9,9 +9,10 @@ var SwapemRootVC = require('./nav_controllers/SwapemVC/SwapemRootVC');
 var RequestsRootVC = require('./nav_controllers/RequestsVC/RequestsRootVC');
 var ContactsRootVC = require('./nav_controllers/ContactsVC/ContactsRootVC');
 var SettingsRootVC = require('./nav_controllers/SettingsVC/SettingsRootVC');
-var RemoteDataAccessManager = require('./RemoteDataAccessManager');
 var DeviceUUID = require("react-native-device-uuid");
 var ParseDB = require('./RemoteDataAccessManager');
+var Keys = require('./Keys');
+
 
 var {
   AppRegistry,
@@ -24,7 +25,8 @@ var {
 // TODO: check GPS permissions.
 var uniqueIdentifier;
 DeviceUUID.getUUID().then((uuid) => {
-  ParseDB.initializeGPSLocation(uuid);
+  var parse = new ParseDB(Keys.parseAppKey, Keys.parseJsKey);
+  parse.initializeGPSLocation(uuid);
 });
 
 class Swapem extends Component {
