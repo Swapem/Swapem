@@ -62,13 +62,13 @@ function expectAsyncNoError(place, err) {
 }
 
 /*
-* Construct random 5 letter string
+* Construct random 10 letter string
 */
 function makeId() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for( var i=0; i < 5; i++ )
+    for( var i=0; i < 11; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
