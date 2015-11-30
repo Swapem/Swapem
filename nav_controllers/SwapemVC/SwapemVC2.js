@@ -32,6 +32,13 @@ var styles = StyleSheet.create({
 		tintColor: '#3498DB',
 		width: 20,
 	},
+	defaultPic:{
+		height: 40,
+		marginLeft: 5,
+		marginRight: 15,
+		tintColor: '#E0E0E0',
+		width: 40,
+	},
 	icon: {
 		height: 40,
 		marginLeft: 5,
@@ -45,96 +52,118 @@ var styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 5,
 	},
-	separator: {
-		backgroundColor: '#E0E0E0',
-		height: 1,
-	},
 	item: {
 		fontSize: 20,
 	},
-	profilepic:{
+	pic: {
+		borderColor: '#E0E0E0',
+		borderRadius: 20,
+		borderWidth: 1.5,
 		height: 40,
 		marginLeft: 5,
 		marginRight: 15,
 		width: 40,
-	}
+	},
+	separator: {
+		backgroundColor: '#E0E0E0',
+		height: 1,
+	},
 });
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 class SwapemVC2 extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataSource: new ListView.DataSource({
-				rowHasChanged: (row1, row2) => row1 !== row2
-			}),
+			dataSource: ds,
+			pic: this.props.profileInfo[0].pic,
 		};
 	}
 	componentDidMount() {
-		var profileDetails = this.props.profileDetails;
+		var profileInfo = this.props.profileInfo;
 		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(profileDetails)
+			dataSource: ds.cloneWithRows(profileInfo),
 		});
 	}
 	render() {
 		return (
-			<View style={styles.content}>
+			<View style = {styles.content}>
 			<ListView 
 			dataSource = {this.state.dataSource}
-			renderRow = {this.renderRequest.bind(this)}
-			/>
+			renderRow = {this.renderProfile.bind(this)}
+			listView = {styles.listView}/>
 			</View>
 			);
 	}
-	renderRequest(profileItem) {
-		var profileType = Object.keys(profileItem).toString()
-		return (
+	renderProfile(profileItem) {
+	// e.g. profileItem = {name: 'Ann Kim'}
+		var profileType = Object.keys(profileItem).toString();
+		// e.g. profileType = 'name'
+		if (profileType === 'pic') {
+			return (
+				<View>
+				</View>
+				)}
+		else {
+			return (
 			<TouchableHighlight
 			underlayColor = '#2980B9'>
 			<View>
 			<View style = {styles.cell}>
 			<Image
 			source = {(() => {
-				switch (Object.keys(profileItem).toString()) {
-					case 'email': return {uri:'Email'};
-					case 'facebook': return {uri:'Facebook'};
-					case 'name': return {uri:'Person'};
-					case 'phone': return {uri:'Phone'};
-					case 'pic': return profileItem.pic;
-					default: return {uri:'Person'};
+				switch (profileType) {
+					case 'email': return {uri: 'Email'};
+					case 'facebook': return {uri: 'Facebook'};
+					case 'linkedIn': return {uri: 'LinkedIn'};
+					case 'name': return this.state.pic ? this.state.pic : {uri: 'Pic'};
+					case 'notes': return {uri: 'Notes'};
+					case 'phone': return {uri: 'Phone'};
+					default: return;
 				}})()}
-				style = 
-				{profileType ==='pic' ?
-				styles.profilepic
-				: 
-				styles.icon
-				}
-				/>
-				<View style = {styles.content}>
-				{(() => {
-					switch (Object.keys(profileItem).toString()) {
-						case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
-						default: return;t
-					}})()}
-					<Text style = {styles.item}>
-					{(() => {
-						switch (Object.keys(profileItem).toString()) {
-							case 'email': return (profileItem.email);
-							case 'facebook': return (profileItem.facebook);
-							case 'name': return (profileItem.name);
-							case 'phone': return (profileItem.phone);
-							case 'pic': return 'Profile Picture';
-							default: return (profileItem.name);
-						}})()}
-						</Text>
-						</View>
-						<View>
-						<Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />
-						</View>
-						</View>
-						<View style = {styles.separator} />
-						</View>
-						</TouchableHighlight>
-						);
+			style = {(() => {
+				switch (profileType) {
+					case 'name': return this.state.pic ? styles.pic : styles.defaultPic;
+					default: return styles.icon;
+				}})()}/>
+			<View style = {styles.content}>
+			{(() => {
+				switch (profileType) {
+					case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
+					case 'linkedIn': return <Text style = {styles.info}>linkedin.com/in/</Text>;
+					default: return;t
+				}})()}
+			<Text style = {styles.item}>
+			{(() => {
+				switch (profileType) {
+					case 'email': return (profileItem.email);
+					case 'facebook': return (profileItem.facebook);
+					case 'linkedIn': return (profileItem.linkedIn);
+					case 'name': return (profileItem.name);
+					case 'notes': return (profileItem.notes);
+					case 'phone': return (profileItem.phone);
+					default: return;
+				}})()}
+			</Text>
+			</View>
+			<View>
+			{this.renderCheckmark(profileType)}
+			</View>
+			</View>
+			<View style = {styles.separator} />
+			</View>
+			</TouchableHighlight>
+			);
+		}
+	}
+	renderCheckmark(profileType) {
+		if (profileType === 'name') {
+			return;
+		}
+		else {
+			return <Image source = {{uri: 'Checkmark'}} style = {styles.checkmark}/>
+		}
 	}
 }
 

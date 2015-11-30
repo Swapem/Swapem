@@ -148,25 +148,28 @@ class SwapemVC1 extends Component {
 	showProfileDetails(profile) {
 		var profileType = Object.keys(profile).toString();
 
-		var profileDetails = [
+		var profileInfo = [
+			{pic: profile[profileType].pic},
 			{name: profile[profileType].name},
 			{phone: profile[profileType].phone},
 			{email: profile[profileType].email},
 			{facebook: profile[profileType].facebook},
-			{pic: profile[profileType].pic}
+			{linkedIn: profile[profileType].linkedIn},
+			{notes: profile[profileType].notes},
 		];
 		// profileDetails formatting is depended on by the next VC
 		// this selectedProfileToSend is much easier to send.
 		// TODO: Consolidate formatting into one.
-		var selectedProfileToSend = 
-			{name: profile[profileType].name, 
-			phone: profile[profileType].phone, 
-			email: profile[profileType].email, 
+		var selectedProfileToSend = {
 			pic: profile[profileType].pic,
-			facebook: profile[profileType].facebook};
-
+			name: profile[profileType].name, 
+			phone: profile[profileType].phone, 
+			email: profile[profileType].email,
+			facebook: profile[profileType].facebook,
+			linkedIn: profile[profileType].linkedIn,
+			notes: profile[profileType].notes,
+		};
 		this.props.navigator.push({
-
 			title: 'Customize',
 			component: SwapemVC2,
 			leftButtonIcon: {uri:'Back'},
@@ -183,7 +186,7 @@ class SwapemVC1 extends Component {
 					}).done();
 		    },
 			passProps: {
-				profileDetails: profileDetails,
+				profileInfo: profileInfo,
 			},
 		})
 	}
