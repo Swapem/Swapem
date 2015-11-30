@@ -6,6 +6,7 @@ var ContactsVC2 = require('./ContactsVC2');
 var DeviceUUID = require("react-native-device-uuid");
 var ParseDB = require('../../RemoteDataAccessManager');
 var Contacts = require('react-native-contacts');
+var Keys = require('../../Keys');
 
 var {
   StyleSheet,
@@ -20,6 +21,8 @@ var {
 var fakeContacts = RequestsVC1.contacts;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+var parseDB = new ParseDB(Keys.parseAppKey, Keys.parseJsKey);
 
 var styles = StyleSheet.create({
   cell: {
@@ -69,7 +72,7 @@ class ContactsVC1 extends Component {
   componentDidMount() {
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
-      ParseDB.getAcceptedContacts(uuid, (error, results) => {
+      parseDB.getAcceptedContacts(uuid, (error, results) => {
         myself.setState({
           dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
         })
