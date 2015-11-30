@@ -19,9 +19,15 @@ var styles = StyleSheet.create({
 });
 
 class ContactsRootVC extends Component {
+  // update tableview when new props are received,
+  // i.e. new VC is selected for TabBarIOS.Item in index.ios
+  componentWillReceiveProps() {
+    this.refreshComponent();
+  }
   render() {
     return (
       <NavigatorIOS
+      ref = 'nav'
       style = {styles.container}
       barTintColor = '#ECF0F1'
       titleTextColor = '#2C3E50'
@@ -31,7 +37,14 @@ class ContactsRootVC extends Component {
         component: ContactsVC1,
         rightButtonTitle: 'Edit',
       }}/>
-      );
+    );
+  }
+  refreshComponent() {
+    this.refs.nav.replace({
+      title: 'Contacts',
+      component: ContactsVC1,
+      rightButtonTitle: 'Edit',
+    });
   }
 }
 
