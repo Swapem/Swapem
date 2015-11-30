@@ -34,41 +34,67 @@ class SwapemUITests: XCTestCase {
     
     
     
-    let app = XCUIApplication()
-    app.otherElements["     school  "].otherElements["    school  "].tap()
-    
-    let facebookComElement = app.otherElements["                        facebook.com/   "]
-    let element = facebookComElement.childrenMatchingType(.Other).matchingIdentifier("    ").elementBoundByIndex(0)
-    element.doubleTap()
-    
-    let pasteMenuItem = app.menuItems["Paste"]
-    pasteMenuItem.tap()
-    facebookComElement.childrenMatchingType(.Other).matchingIdentifier("    ").elementBoundByIndex(1).tap()
-    
-    let lisaWongFacebookComElement = app.otherElements["         Lisa Wong                facebook.com/   "]
-    lisaWongFacebookComElement.childrenMatchingType(.Other).matchingIdentifier("    ").elementBoundByIndex(0).tap()
-    pasteMenuItem.tap()
-    lisaWongFacebookComElement.childrenMatchingType(.Other).matchingIdentifier("    ").elementBoundByIndex(1).tap()
-    app.otherElements["         Lisa Wong      Lisa Wong           facebook.com/   "].otherElements["    "].tap()
-    pasteMenuItem.tap()
-    app.navigationBars["school"].buttons["Save"].tap()
-    app.alerts["Alert"].collectionViews.buttons["OK"].tap()
-    
   }
   
-  func testProfile(){
-    
+  func testAddProfile(){
+    let app = XCUIApplication()
+    app.navigationBars["My Profiles"].buttons["Add"].tap()
+    app.alerts["Enter profile name"].collectionViews.buttons["Save"].pressForDuration(0.5);
+    XCTAssert(app.otherElements["    school  "].exists, "school does not exist")
+    app.navigationBars["My Profiles"].buttons["Delete All"].tap()
+    XCTAssert(!app.otherElements["    school  "].exists, "school still exist after delete all")
+  }
+  
+  func testAddProfileDetails(){
     
     let app = XCUIApplication()
     app.navigationBars["My Profiles"].buttons["Add"].tap()
+    app.alerts["Enter profile name"].collectionViews.buttons["Save"].tap()
+    app.otherElements["     school  "].otherElements["    school  "].tap()
+    UIPasteboard.generalPasteboard().string = "Lisa Wong"
     
-    let collectionViewsQuery = app.alerts["Enter profile name"].collectionViews
-    collectionViewsQuery.buttons["Save"].tap()
-    collectionViewsQuery.buttons["Cancel"].tap()
+    app.otherElements["         Name      Phone      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Name "].doubleTap()
+    app.menuItems["Paste"].tap()
+    
+    UIPasteboard.generalPasteboard().string = "778-399-9898"
+    app.otherElements["              Phone      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Phone "].tap()
+    app.otherElements["         Lisa Wong      Phone      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Phone "].tap()
+    app.menuItems["Paste"].tap()
+    
+    UIPasteboard.generalPasteboard().string = "lisaw@example.com"
 
+    app.otherElements["         Lisa Wong           Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Email "].tap()
+    app.otherElements["         Lisa Wong      778-399-9898      Email      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Email "].tap()
+    app.menuItems["Paste"].tap()
 
+    UIPasteboard.generalPasteboard().string = "Software Developer"
+    app.otherElements["         Lisa Wong      778-399-9898           facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Notes "].tap()
+    app.otherElements["         Lisa Wong      778-399-9898      lisaw@example.com      facebook.com/       linkedin.com/in/       Notes  "].otherElements["    Notes "].tap()
+    app.menuItems["Paste"].tap()
     
+    let schoolNavigationBar = app.navigationBars["school"]
+    schoolNavigationBar.buttons["Save"].tap()
     
+    let okButton = app.alerts["Alert"].collectionViews.buttons["OK"]
+    okButton.tap()
+    schoolNavigationBar.childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
+    app.otherElements["     school  "].otherElements["    school  "].tap()
+    sleep(1)
+    XCTAssert(app.otherElements["         Lisa Wong      778-399-9898      lisaw@example.com      facebook.com/       linkedin.com/in/       Software Developer  "].exists, "profile information did not save")
+    app.navigationBars["school"].childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
+    app.navigationBars["My Profiles"].buttons["Delete All"].tap()
+    XCTAssert(!app.otherElements["    school  "].exists, "school still exist after delete all")
+  }
+  
+  func testRequests(){
+    
+  }
+  
+  func testAcceptRequests(){
+    
+  }
+  
+  func testContacts(){
     
   }
 }

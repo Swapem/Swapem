@@ -127,17 +127,17 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 								console.log('Geolocation updated for device: ' + deviceLocation.id);
 							},
 							error: function(error) {
-								alert("Error: " + error.code + " " + error.message);
+								//alert("Error: " + error.code + " " + error.message);
 							   }
 							})
 					},
 					error: function(error) {
-					   alert("Error: " + error.code + " " + error.message);
+					   //alert("Error: " + error.code + " " + error.message);
 					}
 				})
 			},
 			error: function(error) {
-				alert("Error: " + error.code + " " + error.message);
+				//alert("Error: " + error.code + " " + error.message);
 				}
 			})
 	};
