@@ -114,7 +114,7 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 //       }
 //     }, 'me?fields=link,name');
 
-
+var instance
 
 class MyProfilesVC2 extends Component {
 	constructor(props) {
@@ -135,52 +135,61 @@ class MyProfilesVC2 extends Component {
 			pic: this.props.profileInfo[6].pic,
 			profileName: this.props.profileName,
 		};
+
+		instance = this
 	}
 	// populate tableview the first time
 	componentDidMount() {
 		var profileInfo = this.props.profileInfo;
 		this.setState({
 			dataSource: ds.cloneWithRows(profileInfo),
-		});
+		})
+		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			var storedProfiles = JSON.parse(dbValue)
+			for(let i = 0; i<storedProfiles.length; i++) {
+				if(storedProfiles[i][this.props.profileName]) {
+					this.setState({
+						newEmail: storedProfiles[i][this.props.profileName].email,
+						newFacebook: storedProfiles[i][this.props.profileName].facebook,
+						newLinkedIn: storedProfiles[i][this.props.profileName].linkedin,
+						newName: storedProfiles[i][this.props.profileName].name,
+						newNotes: storedProfiles[i][this.props.profileName].notes,
+						pic: storedProfiles[i][this.props.profileName].pic,
+						newPhone: storedProfiles[i][this.props.profileName].phone,
+					})
+					break
+				}
+			}
+		})
 	}
-	// update tableview when new props are received,
-	// i.e. this.props.navigator.replace() is called in MyProfilesVC1
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.save) {
-				AsyncStorage.getItem('myProfiles').then((dbValue) => {
-					var storedProfiles;
-					if (dbValue == null) {
-						storedProfiles = [];
-					}
-					else {
-						storedProfiles = JSON.parse(dbValue);	
-					}
-					for (var i = 0; i < storedProfiles.length; i++) {
-						var storedProfile = storedProfiles[i];
-						var storedProfileName = Object.keys(storedProfile).toString();
-						if (storedProfileName === this.state.profileName) {
-							var newProfileInfo = {
-								name: this.state.newName,
-								phone: this.state.newPhone,
-								email: this.state.newEmail,
-								facebook: this.state.newFacebook,
-								linkedin: this.state.newLinkedIn,
-								notes: this.state.newNotes,
-								pic: this.state.pic};
-							storedProfile[storedProfileName] = newProfileInfo;
-							this.setState({
-								oldEmail: this.state.newEmail,
-								oldFacebook: this.state.newFacebook,
-								oldName: this.state.newName,
-								oldPhone: this.state.newPhone,
-							});
-							AsyncStorage.setItem('myProfiles', JSON.stringify(storedProfiles)).then(() => {
-								alert('Profile saved');
-							});
-						}
-					}
-				});
-		}
+	static saveProfileDetails(profileName) {
+		AsyncStorage.getItem('myProfiles').then((dbValue) => {
+			var storedProfiles;
+			if (dbValue == null) {
+				storedProfiles = [];
+			}
+			else {
+				storedProfiles = JSON.parse(dbValue);	
+			}
+			for (var i = 0; i < storedProfiles.length; i++) {
+				var storedProfile = storedProfiles[i];
+				var storedProfileName = Object.keys(storedProfile).toString();
+				if (storedProfileName === instance.state.profileName) {
+					var newProfileInfo = {
+						name: instance.state.newName,
+						phone: instance.state.newPhone,
+						email: instance.state.newEmail,
+						facebook: instance.state.newFacebook,
+						linkedin: instance.state.newLinkedIn,
+						notes: instance.state.newNotes,
+						pic: instance.state.pic};
+					storedProfile[storedProfileName] = newProfileInfo;
+					AsyncStorage.setItem('myProfiles', JSON.stringify(storedProfiles)).then(() => {
+						alert('Profile saved');
+					});
+				}
+			}
+		});
 	}
 	render() {
 		return (

@@ -85,7 +85,7 @@ class MyProfilesVC1 extends Component {
 	}
 	static insertNewProfile(profileName) {
 	    AsyncStorage.getItem('myProfiles').then((dbValue) => {
-			var profiles = JSON.parse(dbValue);
+			var profiles = dbValue?JSON.parse(dbValue): [];
 			profiles.push({
 				[profileName]: {name: '', phone: '', email: '', facebook: '', linkedIn: '', notes: '', pic:''}
 			});
@@ -129,7 +129,7 @@ class MyProfilesVC1 extends Component {
 			);
 	}
 	static onLeftButtonPress() {
-		AsyncStorage.setItem('myProfiles', '[]')
+		AsyncStorage.removeItem('myProfiles')
 		instance.setState({
 			dataSource: ds.cloneWithRows([]),
 		});
@@ -154,7 +154,7 @@ class MyProfilesVC1 extends Component {
 			},
 			rightButtonTitle: 'Save',
 			onRightButtonPress: () => {
-				this.refreshComponent(profileName);
+				this.saveProfileDetails(profileName);
 			},
 			passProps: {
 				profileName: profileName,
@@ -162,22 +162,8 @@ class MyProfilesVC1 extends Component {
 			},
 		});
 	}
-	refreshComponent(profileName) {
-		this.props.navigator.replace({
-			title: profileName,
-			component: MyProfilesVC2,
-			leftButtonIcon: {uri:'Back'},
-			onLeftButtonPress: () => {
-				this.props.navigator.pop();
-			},
-			rightButtonTitle: 'Save',
-			onRightButtonPress: () => {
-				this.refreshComponent(profileName);
-			},
-			passProps: {
-				save: true,
-			},
-		});
+	saveProfileDetails(profileName) {
+		MyProfilesVC2.saveProfileDetails(profileName)
 	}
 }
 
