@@ -72,7 +72,7 @@ class ContactsVC1 extends Component {
   componentDidMount() {
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
-      parseDB.getAcceptedContacts(uuid, (error, results) => {
+      parseDB.getAcceptedContacts("uitestuuid", (error, results) => {
         myself.setState({
           dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
         })

@@ -28,14 +28,7 @@ class SwapemUITests: XCTestCase {
     super.tearDown()
   }
 
-  func testExample() {
-    // Use recording to get started writing UI tests.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-    
-    
-    
-  }
-  
+
   func testAddProfile(){
     let app = XCUIApplication()
     app.navigationBars["My Profiles"].buttons["Add"].tap()
@@ -88,13 +81,47 @@ class SwapemUITests: XCTestCase {
   
   func testRequests(){
     
-  }
-  
-  func testAcceptRequests(){
+    let app = XCUIApplication()
+    app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(2).tap()
+    sleep(1)
+    XCTAssert(app.otherElements["     Charlie Brown      Woodstock "].exists, "Requests from Parse are not displayed")
+    app.otherElements["     Charlie Brown      Woodstock "].otherElements["    Charlie Brown "].tap()
+    app.otherElements["     Charlie Brown       Woodstock "].otherElements["    Woodstock "].tap()
     
   }
   
+  
   func testContacts(){
+    
+    let app = XCUIApplication()
+    app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(3).tap()
+    sleep(1)
+    app.otherElements["     Lucy       Snoopy  "].otherElements["    Lucy  "].tap()
+    
+    let lucyElement = app.otherElements["     Lucy       778-888-9898       lucy@example.com       facebook.com/ lucy123     \"Metrotown Centre\" Legal"]
+    sleep(1)
+    XCTAssert(app.otherElements["     Lucy       778-888-9898       lucy@example.com       facebook.com/ lucy123     \"Metrotown Centre\" Legal"].exists, "Lucy's contact details are not displayed")
+    XCTAssert(!lucyElement.otherElements["    Profile Picture  "].exists, "Profile picture is displayed")
+    lucyElement.otherElements["    Lucy  "].tap()
+    lucyElement.otherElements["    778-888-9898  "].tap()
+    lucyElement.otherElements["    lucy@example.com  "].tap()
+    lucyElement.otherElements["    facebook.com/ lucy123  "].tap()
+    lucyElement.otherElements["\"Metrotown Centre\""].tap()
+    
+    app.navigationBars["Lucy"].childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
+    sleep(1)
+    app.otherElements["     Lucy       Snoopy  "].otherElements["    Snoopy  "].tap()
+    
+    let snoopyElement = app.otherElements["     Snoopy       604-321-0909       snoopy@cs410.com       facebook.com/ snoopy123       Profile Picture    \"The University Of British Columbia (Ubc)\" Legal"]
+    sleep(1)
+    XCTAssert(app.otherElements["     Snoopy       604-321-0909       snoopy@cs410.com       facebook.com/ snoopy123       Profile Picture    \"The University Of British Columbia (Ubc)\" Legal"].exists, "Snoopy's contact details are not displayed")
+    snoopyElement.otherElements["    Snoopy  "].tap()
+    snoopyElement.otherElements["    604-321-0909  "].tap()
+    snoopyElement.otherElements["    snoopy@cs410.com  "].tap()
+    snoopyElement.otherElements["    facebook.com/ snoopy123  "].tap()
+    snoopyElement.otherElements["    Profile Picture  "].tap()
+    snoopyElement.otherElements["\"The University Of British Columbia (Ubc)\""].tap()
+    app.navigationBars["Snoopy"].childrenMatchingType(.Button).matchingIdentifier("Back").elementBoundByIndex(0).tap()
     
   }
 }

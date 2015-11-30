@@ -93,7 +93,7 @@ class RequestsVC1 extends Component {
   componentDidMount() {
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
-      parseDB.getRequestedContacts(uuid, (error, results) => {
+      parseDB.getRequestedContacts("uitestuuid", (error, results) => {
         myself.setState({
           dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
         })
