@@ -26,8 +26,10 @@ var {
 var uniqueIdentifier;
 DeviceUUID.getUUID().then((uuid) => {
   var parse = new ParseDB(Keys.parseAppKey, Keys.parseJsKey);
-  parse.initializeGPSLocation(uuid);
-});
+  parse.initializeGPSLocation(uuid, (error, results) => {
+      console.log("GPS location initialized")
+    })
+  });
 
 class Swapem extends Component {
   constructor(props) {

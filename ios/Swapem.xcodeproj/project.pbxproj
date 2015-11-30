@@ -30,6 +30,8 @@
 		391DE0491C0A7E3F00125A3C /* SwapemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391DE0481C0A7E3F00125A3C /* SwapemUITests.swift */; };
 		397BC1011C01B0BA00526B75 /* libRCTDeviceUUID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 397BC1001C01B0A500526B75 /* libRCTDeviceUUID.a */; };
 		39C0CF801C01C93C00F9AC9C /* UIImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C0CF7F1C01C93C00F9AC9C /* UIImagePickerManager.m */; };
+		79496CF91C0C1488002431D9 /* libRCTTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79496CF81C0C146E002431D9 /* libRCTTest.a */; };
+		79496D081C0C1F79002431D9 /* SwapemIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79496D071C0C1F79002431D9 /* SwapemIntegrationTests.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -139,6 +141,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
 		};
+		79496CF71C0C146E002431D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79496CF31C0C146E002431D9 /* RCTTest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 580C376F1AB104AF0015E709;
+			remoteInfo = RCTTest;
+		};
+		79496D0A1C0C1F79002431D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = Swapem;
+		};
 		832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
@@ -181,6 +197,10 @@
 		39C0CF7E1C01C93C00F9AC9C /* UIImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImagePickerManager.h; sourceTree = "<group>"; };
 		39C0CF7F1C01C93C00F9AC9C /* UIImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImagePickerManager.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		79496CF31C0C146E002431D9 /* RCTTest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTTest.xcodeproj; path = "../node_modules/react-native/Libraries/RCTTest/RCTTest.xcodeproj"; sourceTree = "<group>"; };
+		79496D051C0C1F79002431D9 /* SwapemIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwapemIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		79496D071C0C1F79002431D9 /* SwapemIntegrationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwapemIntegrationTests.m; sourceTree = "<group>"; };
+		79496D091C0C1F79002431D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F83C6D91C0C161F0081306E /* libRCTContacts.a in Frameworks */,
+				79496CF91C0C1488002431D9 /* libRCTTest.a in Frameworks */,
 				0FDD73151C0A7B300078CC69 /* libRCTFBSDKLogin.a in Frameworks */,
 				0FDD73141C0A7B2C0078CC69 /* libRCTFBSDKCore.a in Frameworks */,
 				0FDD73191C0A7CD30078CC69 /* FBSDKLoginKit.framework in Frameworks */,
@@ -216,6 +237,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		391DE0431C0A7E3F00125A3C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79496D021C0C1F79002431D9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -398,9 +426,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		79496CF41C0C146E002431D9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				79496CF81C0C146E002431D9 /* libRCTTest.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		79496D061C0C1F79002431D9 /* SwapemIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				79496D071C0C1F79002431D9 /* SwapemIntegrationTests.m */,
+				79496D091C0C1F79002431D9 /* Info.plist */,
+			);
+			path = SwapemIntegrationTests;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				79496CF31C0C146E002431D9 /* RCTTest.xcodeproj */,
 				2D4988AD1C058694008CF4E9 /* RNGeocoder */,
 				39C0CF7D1C01C93C00F9AC9C /* UIImagePickerManager */,
 				0F83C6C61C0C160C0081306E /* RCTContacts.xcodeproj */,
@@ -436,6 +482,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SwapemTests */,
 				391DE0471C0A7E3F00125A3C /* SwapemUITests */,
+				79496D061C0C1F79002431D9 /* SwapemIntegrationTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
 			indentWidth = 2;
@@ -448,6 +495,7 @@
 				13B07F961A680F5B00A75B9A /* Swapem.app */,
 				00E356EE1AD99517003FC87E /* SwapemTests.xctest */,
 				391DE0461C0A7E3F00125A3C /* SwapemUITests.xctest */,
+				79496D051C0C1F79002431D9 /* SwapemIntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -510,6 +558,24 @@
 			productReference = 391DE0461C0A7E3F00125A3C /* SwapemUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		79496D041C0C1F79002431D9 /* SwapemIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79496D0C1C0C1F79002431D9 /* Build configuration list for PBXNativeTarget "SwapemIntegrationTests" */;
+			buildPhases = (
+				79496D011C0C1F79002431D9 /* Sources */,
+				79496D021C0C1F79002431D9 /* Frameworks */,
+				79496D031C0C1F79002431D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				79496D0B1C0C1F79002431D9 /* PBXTargetDependency */,
+			);
+			name = SwapemIntegrationTests;
+			productName = SwapemIntegrationTests;
+			productReference = 79496D051C0C1F79002431D9 /* SwapemIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -530,6 +596,10 @@
 					391DE0451C0A7E3F00125A3C = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = GF35EQ46BG;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					79496D041C0C1F79002431D9 = {
+						CreatedOnToolsVersion = 7.1.1;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 				};
@@ -587,6 +657,10 @@
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
 				{
+					ProductGroup = 79496CF41C0C146E002431D9 /* Products */;
+					ProjectRef = 79496CF31C0C146E002431D9 /* RCTTest.xcodeproj */;
+				},
+				{
 					ProductGroup = 832341B11AAA6A8300B99B32 /* Products */;
 					ProjectRef = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
 				},
@@ -608,6 +682,7 @@
 				13B07F861A680F5B00A75B9A /* Swapem */,
 				00E356ED1AD99517003FC87E /* SwapemTests */,
 				391DE0451C0A7E3F00125A3C /* SwapemUITests */,
+				79496D041C0C1F79002431D9 /* SwapemIntegrationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -704,6 +779,13 @@
 			remoteRef = 78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		79496CF81C0C146E002431D9 /* libRCTTest.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTTest.a;
+			remoteRef = 79496CF71C0C146E002431D9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		832341B51AAA6A8300B99B32 /* libRCTText.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -731,6 +813,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		391DE0441C0A7E3F00125A3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79496D031C0C1F79002431D9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -797,6 +886,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		79496D011C0C1F79002431D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79496D081C0C1F79002431D9 /* SwapemIntegrationTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -809,6 +906,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Swapem */;
 			targetProxy = 391DE04B1C0A7E3F00125A3C /* PBXContainerItemProxy */;
+		};
+		79496D0B1C0C1F79002431D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* Swapem */;
+			targetProxy = 79496D0A1C0C1F79002431D9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -933,6 +1035,37 @@
 			};
 			name = Release;
 		};
+		79496D0D1C0C1F79002431D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "FB_REFERENCE_IMAGE_DIR=\"\\\"$(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages\\\"\"";
+				INFOPLIST_FILE = SwapemIntegrationTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.eunjung-kim.SwapemIntegrationTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swapem.app/Swapem";
+			};
+			name = Debug;
+		};
+		79496D0E1C0C1F79002431D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "FB_REFERENCE_IMAGE_DIR=\"\\\"$(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages\\\"\"";
+				INFOPLIST_FILE = SwapemIntegrationTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.eunjung-kim.SwapemIntegrationTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swapem.app/Swapem";
+			};
+			name = Release;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1046,6 +1179,15 @@
 			buildConfigurations = (
 				391DE04E1C0A7E4000125A3C /* Debug */,
 				391DE04F1C0A7E4000125A3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79496D0C1C0C1F79002431D9 /* Build configuration list for PBXNativeTarget "SwapemIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79496D0D1C0C1F79002431D9 /* Debug */,
+				79496D0E1C0C1F79002431D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

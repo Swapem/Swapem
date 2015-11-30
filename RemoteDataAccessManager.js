@@ -98,7 +98,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 		})
 	};
 
-	this.initializeGPSLocation = function(uuid) {
+	this.initializeGPSLocation = function(uuid, callback) {
 		var DeviceLocations = Parse.Object.extend("DeviceLocations");
 		var query = new Parse.Query(DeviceLocations);
 		query.equalTo("uuid", uuid);
@@ -124,20 +124,24 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 						// If User's current location is successfully accessed then insert into db
 						deviceLocation.save(null, {
 							success: function(deviceLocation) {
+								callback(null, deviceLocation)
 								console.log('Geolocation updated for device: ' + deviceLocation.id);
 							},
 							error: function(error) {
 								//alert("Error: " + error.code + " " + error.message);
+								callback(error, null);
 							   }
 							})
 					},
 					error: function(error) {
 					   //alert("Error: " + error.code + " " + error.message);
+						callback(error, null)
 					}
 				})
 			},
 			error: function(error) {
 				//alert("Error: " + error.code + " " + error.message);
+				callback(error, null)
 				}
 			})
 	};
@@ -231,7 +235,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 	*				(c) query for users nearby
 	* Note that the 9s wait allows other users nearby to start scanning and persist their data
 	*/
-	this.scanForNearbyUsers = function(userName) {
+	this.scanForNearbyUsers = function(userName, callback) {
 		var DeviceLocations = Parse.Object.extend("DeviceLocations");
 		var query = new Parse.Query(DeviceLocations);
 		query.equalTo("uuid", uniqueIdentifier);
@@ -255,6 +259,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 				return queryForUsersNearby();
 			}).then(function(results) {
 				alert("Number of Users Found Nearby: " + results.length);
+				callback(null, results)
 				return saveLocallyUsersNearbyResults(results);
 			}).then(function() {
 				return stopSearching();
@@ -262,6 +267,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 				scanPromise.resolve();
 				return scanPromise;
 			}, function(error) {
+				callback(error, null)
 				alert('An error occured while scanning for nearby users: '+ error.message);
 			});
 

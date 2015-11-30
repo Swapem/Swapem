@@ -180,10 +180,9 @@ class SwapemVC1 extends Component {
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
 				alert("Searching for Nearby Users...");
-				parseDB.scanForNearbyUsers(profile[profileType].name)
-					.then((promise) => {
-						this.showResults(selectedProfileToSend);
-					}).done();
+				parseDB.scanForNearbyUsers(profile[profileType].name, (error, results) => {
+					this.showResults(selectedProfileToSend);
+				});
 		    },
 			passProps: {
 				profileInfo: profileInfo,
