@@ -60,7 +60,6 @@ class SwapemVC3 extends Component {
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2}),
-      loaded: false,
     };
   }
   
@@ -76,21 +75,17 @@ class SwapemVC3 extends Component {
       console.log("value of asyncStorage nearby users: " + nearbyUsers);
       this.setState({
           dataSource: this.state.dataSource.cloneWithRows(nearbyUsers),
-          loaded: true,
         });
    }).done();
   }
 
   render() {
-    if (!this.state.loaded) {
-        return this.renderLoadingView();
-    }
     return (
       <View style={styles.content}>
       <ListView
       dataSource = {this.state.dataSource}
       renderRow = {this.renderNearbyDevice.bind(this)}
-      />
+      listView = {styles.listView}/>
       </View>
     );
   }
