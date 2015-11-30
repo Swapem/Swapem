@@ -89,7 +89,6 @@ class RequestsVC1 extends Component {
       dataSource: ds.cloneWithRows([]),
     }
   }
-  
   componentDidMount() {
     let myself = this
     DeviceUUID.getUUID().then((uuid) => {
@@ -100,7 +99,17 @@ class RequestsVC1 extends Component {
       })
     })
   }
+  componentWillReceiveProps() {
+    let myself = this
+    DeviceUUID.getUUID().then((uuid) => {
+      parseDB.getRequestedContacts(uuid, (error, results) => {
+        myself.setState({
+          dataSource: ds.cloneWithRows(JSON.parse(JSON.stringify((results))))
+        })
+      })
+    })
 
+  }
   handleAcceptButton(){
     DeviceUUID.getUUID().then((uuid) => {
       for(let i=0; i<checkedNames.length; i++){
