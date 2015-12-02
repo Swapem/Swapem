@@ -68,7 +68,7 @@ class MyProfilesRootVC extends Component {
   promptProfileName() {
     AlertIOS.prompt (
       'Enter profile name',
-      'school',
+      'School',
       [
         {text: 'Cancel'},
         {text: 'Save', onPress: this.saveProfileName.bind(this)},

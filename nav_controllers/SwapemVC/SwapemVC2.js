@@ -1,8 +1,12 @@
 'use strict';
 
 var React = require('react-native');
+var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
+var SwapemVC3 = require('./SwapemVC3');
+var Keys = require('./../../Keys');
 
 var {
+	AsyncStorage,
 	StyleSheet,
 	Component,
 	ListView,
@@ -72,6 +76,8 @@ var styles = StyleSheet.create({
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+var parseDB = new RemoteDataAccessManager(Keys.parseAppKey, Keys.parseJsKey);
+
 class SwapemVC2 extends Component {
 	constructor(props) {
 		super(props);
@@ -81,9 +87,11 @@ class SwapemVC2 extends Component {
 		};
 	}
 	componentDidMount() {
-		var profileInfo = this.props.profileInfo;
 		this.setState({
-			dataSource: ds.cloneWithRows(profileInfo),
+			dataSource: ds.cloneWithRows(this.props.profileInfo),
+		});
+		parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
+			this.showResults(this.props.selectedProfileToSend);
 		});
 	}
 	render() {
@@ -164,6 +172,26 @@ class SwapemVC2 extends Component {
 		else {
 			return <Image source = {{uri: 'Checkmark'}} style = {styles.checkmark}/>
 		}
+	}
+	showResults(selectedProfileToSend) {
+		this.props.navigator.push({
+			title: 'Nearby Devices',
+			component: SwapemVC3,
+			leftButtonTitle: 'Cancel',
+			onLeftButtonPress: () => {
+				this.props.navigator.popToTop();
+			},
+			rightButtonTitle: 'Send',
+			onRightButtonPress: () => {
+				AsyncStorage.getItem('nearbyDevices').then((selectedUsers) => {
+			       // Send contact information to chosen users
+			       // TODO: Currently sending info to all nearby devices rather than selected
+				   console.log("contact information sent to: " + JSON.stringify(selectedUsers));
+				   parseDB.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
+			   	}).done();
+			   	this.props.navigator.popToTop();
+			},
+		})
 	}
 }
 

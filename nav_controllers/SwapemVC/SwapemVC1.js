@@ -1,10 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemVC2 = require('./SwapemVC2')
-var SwapemVC3 = require('./SwapemVC3')
-var Keys = require('./../../Keys');
 
 var {
 	AsyncStorage,
@@ -67,8 +64,6 @@ var testNearbyDevices =[
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-var parseDB = new RemoteDataAccessManager(Keys.parseAppKey, Keys.parseJsKey);
-
 class SwapemVC1 extends Component {
 	constructor(props) {
 		super(props);
@@ -107,7 +102,6 @@ class SwapemVC1 extends Component {
 			});
 		});
 	}
-
 	render() {
 		return (
 			<View style={styles.content}>
@@ -118,7 +112,6 @@ class SwapemVC1 extends Component {
 			</View>
 		);
 	}
-
 	renderContact(profile) {
 		return (
 			<TouchableHighlight
@@ -143,7 +136,6 @@ class SwapemVC1 extends Component {
 			</TouchableHighlight>
 		);
 	}
-
 	//On press of a specific profile, show its details
 	showProfileDetails(profile) {
 		var profileType = Object.keys(profile).toString();
@@ -176,35 +168,15 @@ class SwapemVC1 extends Component {
 			onLeftButtonPress: () => {
 				this.props.navigator.pop();
 			},
-
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
 				alert("Searching for Nearby Users...");
-				parseDB.scanForNearbyUsers(profile[profileType].name, (error, results) => {
-					this.showResults(selectedProfileToSend);
-				});
 		    },
 			passProps: {
+				profile: profile,
 				profileInfo: profileInfo,
-			},
-		})
-	}
-	showResults(selectedProfileToSend) {
-		this.props.navigator.push({
-			title: 'Nearby Devices',
-			component: SwapemVC3,
-			leftButtonIcon: {uri:'Back'},
-			onLeftButtonPress: () => {
-				this.props.navigator.pop();
-			},
-			rightButtonTitle: 'Send',
-			onRightButtonPress: () => {
-				AsyncStorage.getItem('nearbyDevices').then((selectedUsers) => {
-			       // Send contact information to chosen users
-			       // TODO: Currently sending info to all nearby devices rather than selected
-				   console.log("contact information sent to: " + JSON.stringify(selectedUsers));
-				   parseDB.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
-			   }).done();
+				profileType: profileType,
+				selectedProfileToSend: selectedProfileToSend,
 			},
 		})
 	}
