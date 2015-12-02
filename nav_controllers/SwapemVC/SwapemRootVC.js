@@ -39,7 +39,7 @@ class SwapemRootVC extends Component {
     );
   }
   refreshComponent() {
-    this.refs.nav.replace({
+    this.refs.nav.replacePrevious({
       title: 'Select profile',
       component: SwapemVC1,
     });
