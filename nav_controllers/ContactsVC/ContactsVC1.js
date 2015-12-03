@@ -123,6 +123,8 @@ class ContactsVC1 extends Component {
     {linkedIn: contact.linkedIn},
     ];
 
+    //var userNotes = "Facebook: " + contact.facebook + "\ LinkedIn: " + contact.LinkedIn + "\ Notes: " + contact.notes
+    
     this.props.navigator.push({
       title: contact.name,
       component: ContactsVC2,
@@ -137,6 +139,8 @@ class ContactsVC1 extends Component {
         var newPerson = {
             givenName: contact.name,
             phoneNumbers: [ { number: contact.phone, label: 'mobile' } ],
+            //notes: userNotes,
+            //thumbnailPath: contact.pic,
             emailAddresses: [{
               label: "personal",
               email: contact.email,

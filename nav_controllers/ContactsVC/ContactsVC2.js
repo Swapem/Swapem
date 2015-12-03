@@ -158,6 +158,8 @@ class ContactsVC2 extends Component {
 								switch (contactInfoKey) {
 									case 'email': return {uri:'Email'};
 									case 'facebook': return {uri:'Facebook'};
+									case 'linkedIn': return {uri: 'LinkedIn'};
+									case 'notes': return {uri: 'Notes'};
 									case 'phone': return {uri:'Phone'};
 									case 'pic': return {uri: contactInfoItem.pic.url};
 									default: return {uri:'Person'};
@@ -175,9 +177,9 @@ class ContactsVC2 extends Component {
 								switch (contactInfoKey) {
 									case 'email': return (contactInfoItem.email);
 									case 'facebook': return (contactInfoItem.facebook);
-									case 'phone': return (contactInfoItem.phone);
+									case 'linkedIn': return (contactInfoItem.linkedIn);
 									case 'notes': return (contactInfoItem.notes);
-									case 'linkedin': return (contactInfoItem.linkedin);
+									case 'phone': return (contactInfoItem.phone);
 									case 'pic': return 'Profile Picture';
 									default: return (contactInfoItem.name);
 								}})()}
