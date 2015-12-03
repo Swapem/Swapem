@@ -171,11 +171,57 @@ class SwapemVC1 extends Component {
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
 				alert("Searching for Nearby Users...");
+				this.refreshComponent(profile);
 		    },
 			passProps: {
 				profile: profile,
 				profileInfo: profileInfo,
 				profileType: profileType,
+				selectedProfileToSend: selectedProfileToSend,
+			},
+		})
+	}
+	refreshComponent(profile) {
+		var profileType = Object.keys(profile).toString();
+
+		var profileInfo = [
+			{pic: profile[profileType].pic},
+			{name: profile[profileType].name},
+			{phone: profile[profileType].phone},
+			{email: profile[profileType].email},
+			{facebook: profile[profileType].facebook},
+			{linkedIn: profile[profileType].linkedIn},
+			{notes: profile[profileType].notes},
+		];
+		// profileDetails formatting is depended on by the next VC
+		// this selectedProfileToSend is much easier to send.
+		// TODO: Consolidate formatting into one.
+		var selectedProfileToSend = {
+			pic: profile[profileType].pic,
+			name: profile[profileType].name, 
+			phone: profile[profileType].phone, 
+			email: profile[profileType].email,
+			facebook: profile[profileType].facebook,
+			linkedIn: profile[profileType].linkedIn,
+			notes: profile[profileType].notes,
+		};
+		this.props.navigator.push({
+			title: 'Customize',
+			component: SwapemVC2,
+			leftButtonIcon: {uri:'Back'},
+			onLeftButtonPress: () => {
+				this.props.navigator.pop();
+			},
+			rightButtonTitle: 'Scan',
+			onRightButtonPress: () => {
+				alert("Searching for Nearby Users...");
+				this.refreshComponent(profile);
+		    },
+			passProps: {
+				profile: profile,
+				profileInfo: profileInfo,
+				profileType: profileType,
+				refresh: true,
 				selectedProfileToSend: selectedProfileToSend,
 			},
 		})

@@ -87,11 +87,13 @@ class SwapemVC2 extends Component {
 		};
 	}
 	componentDidMount() {
+		if (this.props.refresh) {
+			parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
+				this.showResults(this.props.selectedProfileToSend);
+			});
+		}
 		this.setState({
 			dataSource: ds.cloneWithRows(this.props.profileInfo),
-		});
-		parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
-			this.showResults(this.props.selectedProfileToSend);
 		});
 	}
 	render() {
