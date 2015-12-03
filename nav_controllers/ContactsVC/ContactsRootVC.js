@@ -40,7 +40,7 @@ class ContactsRootVC extends Component {
     );
   }
   refreshComponent() {
-    this.refs.nav.replacePrevious({
+    this.refs.nav.replace({
       title: 'Contacts',
       component: ContactsVC1,
       rightButtonTitle: 'Edit',
