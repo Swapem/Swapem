@@ -176,6 +176,8 @@ class ContactsVC2 extends Component {
 									case 'email': return (contactInfoItem.email);
 									case 'facebook': return (contactInfoItem.facebook);
 									case 'phone': return (contactInfoItem.phone);
+									case 'notes': return (contactInfoItem.notes);
+									case 'linkedin': return (contactInfoItem.linkedin);
 									case 'pic': return 'Profile Picture';
 									default: return (contactInfoItem.name);
 								}})()}

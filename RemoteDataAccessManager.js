@@ -167,11 +167,13 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 			});
 
 		function sendInformation(geolocation, profileDetails, selectedUsers) {
-			var name, phone, email, facebook, pic, location;
+			var name, phone, email, facebook, pic, location, notes, linkedin;
 			name = profileDetails.name;
 			phone = profileDetails.phone;
 			email = profileDetails.email;
 			facebook = profileDetails.facebook;
+			notes = profileDetails.notes;
+			linkedin = profileDetails.linkedin;
 			location = geolocation;
 
 			if(profileDetails.pic){
@@ -205,6 +207,12 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 				}
 				if (typeof facebook !== "undefined") {
 					tempSentContact.set("facebook", facebook);
+				}
+				if (typeof notes !== "undefined") {
+					tempSentContact.set("notes", notes);
+				}
+				if (typeof linkedin !== "undefined") {
+					tempSentContact.set("linkedin", linkedin);
 				}
 				if (typeof pic !== "undefined") {
 					tempSentContact.set("pic", pic);

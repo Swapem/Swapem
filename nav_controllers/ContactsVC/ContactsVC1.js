@@ -119,7 +119,10 @@ class ContactsVC1 extends Component {
     {facebook: contact.facebook},
     {pic: contact.pic},
     {location: contact.location},
+    {notes: contact.notes},
+    {linkedIn: contact.linkedIn},
     ];
+
     this.props.navigator.push({
       title: contact.name,
       component: ContactsVC2,
