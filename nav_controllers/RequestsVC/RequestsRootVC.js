@@ -47,7 +47,7 @@ class RequestsRootVC extends Component {
     );
   }
   refreshComponent() {
-    this.refs.nav.replacePrevious({
+    this.refs.nav.replace({
       title: 'Requests',
       component: RequestsVC1,
       leftButtonIcon: {uri: 'Refresh'},
