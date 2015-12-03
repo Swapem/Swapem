@@ -227,6 +227,63 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 			alert('Contact information sent successfully');
 		}
 	};
+	/**
+	* Set searching to false 30seconds after calling
+	*/
+	this.stopSearching = function(userName) {
+		var DeviceLocations = Parse.Object.extend("DeviceLocations");
+		var query = new Parse.Query(DeviceLocations);
+		query.equalTo("uuid", uniqueIdentifier);
+		var deviceLocation;
+		var scanPromise = new Parse.Promise();
+
+		return query.find()
+			.then(function(results) {
+				return checkForExistingEntry(results);
+			})
+			.then(function() {
+				return delay(30000);
+			}).then(function() {
+				return setSearchingToFalse();
+			}).then(function() {
+				scanPromise.resolve();
+				return scanPromise;
+			}, function(error) {
+				callback(error, null)
+				alert('An error occured while scanning for nearby users: '+ error.message);
+			});
+
+		function checkForExistingEntry(existingEntry) {
+			var promise = new Parse.Promise();
+			// If no previous entries, instantiate new Parse object
+			if (existingEntry.length == 0) {
+				deviceLocation = new DeviceLocations();
+			}
+			// If previous entry exists, resuse the same object
+			else {
+				deviceLocation = existingEntry[0];
+			}
+			promise.resolve();
+			return promise;
+		}
+
+		function setSearchingToFalse() {
+			deviceLocation.set("searching", false);
+			alert("Device is no longer searching");
+			// If User's current location is successfully accessed then insert into db
+			return deviceLocation.save();
+		}
+
+		function delay(millis) {
+			var promise = new Parse.Promise();
+
+			setTimeout(function() {
+			  promise.resolve();
+			}, millis);
+
+			return promise;
+		}
+	}
 
 	/**
 	* Perform a scan for nearby users.
@@ -236,6 +293,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 	* Note that the 9s wait allows other users nearby to start scanning and persist their data
 	*/
 	this.scanForNearbyUsers = function(userName, callback) {
+		alert("Searching for Nearby Users...");
 		var DeviceLocations = Parse.Object.extend("DeviceLocations");
 		var query = new Parse.Query(DeviceLocations);
 		query.equalTo("uuid", uniqueIdentifier);
@@ -262,8 +320,6 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 				callback(null, results)
 				return saveLocallyUsersNearbyResults(results);
 			}).then(function() {
-				return stopSearching();
-			}).then(function() {
 				scanPromise.resolve();
 				return scanPromise;
 			}, function(error) {
@@ -273,7 +329,6 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 
 		function delay(millis) {
 			var promise = new Parse.Promise();
-
 			setTimeout(function() {
 			  promise.resolve();
 			}, millis);
@@ -312,14 +367,12 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 			query.equalTo("searching", true);
 			query.select("name", "uuid");
 			query.withinKilometers("location", currentGeolocation, 10);
+
 			return query.find();
 		}
 
 		function saveLocallyUsersNearbyResults(results) {
 			var jsonArray = [];
-
-			// alert("Results: " + JSON.stringify(results));
-
 			// Construct a jsonArray with the users who were found nearby.
 			for (var i = 0; i < results.length; i++) {
 				var user = results[i];
@@ -330,13 +383,6 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 			}
 			// Make sure that local temp storage is cleared (from previous scans)
 			return AsyncStorage.removeItem('nearbyDevices').then(AsyncStorage.setItem('nearbyDevices', JSON.stringify(jsonArray)));
-		}
-
-		function stopSearching() {
-			deviceLocation.set("searching", false);
-			alert("Device is no longer searching");
-			// If User's current location is successfully accessed then insert into db
-			return deviceLocation.save();
 		}
 	};
 }

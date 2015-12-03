@@ -170,7 +170,6 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				alert("Searching for Nearby Users...");
 				this.refreshComponent(profile);
 		    },
 			passProps: {

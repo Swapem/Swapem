@@ -89,6 +89,7 @@ class SwapemVC2 extends Component {
 	componentDidMount() {
 		if (this.props.refresh) {
 			parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
+				parseDB.stopSearching();
 				this.showResults(this.props.selectedProfileToSend);
 			});
 		}
