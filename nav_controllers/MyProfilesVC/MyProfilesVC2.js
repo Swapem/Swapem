@@ -255,7 +255,6 @@ class MyProfilesVC2 extends Component {
 				activeOpacity = {(() => {
 					switch (profileType) {
 						case 'facebook': return;
-						case 'linkedIn': return;
 						default: return 1;
 					}})()}
 				onPress = {(event) => {
@@ -279,9 +278,6 @@ class MyProfilesVC2 extends Component {
 							// });
 						}
 					}
-					else if (profileType === 'linkedIn') {
-						// LinkedIn code
-					}
 					else {
 						return;
 					}
@@ -289,7 +285,6 @@ class MyProfilesVC2 extends Component {
 				underlayColor = {(() => {
 					switch (profileType) {
 						case 'facebook': return '#2980B9';
-						case 'linkedIn': return '#2980B9';
 						default: return;
 					}})()}>
 				<View>
@@ -358,10 +353,10 @@ class MyProfilesVC2 extends Component {
 	renderProfile(profileType) {
 		if (profileType === "email"){
 			return <TextInput
-			style = {styles.infoInput}
-			placeholder = 'Email'
-			onChangeText = {(text) => this.setState({newEmail: text})}
-			value = {this.state.newEmail}/>
+				style = {styles.infoInput}
+				placeholder = 'Email'
+				onChangeText = {(text) => this.setState({newEmail: text})}
+				value = {this.state.newEmail}/>
 		}
 		else if (profileType === "facebook") {
 			return [<Text key = {0} style = {styles.infoType}>
@@ -369,8 +364,13 @@ class MyProfilesVC2 extends Component {
 			<Text key = {1} style = {styles.info}>{this.state.newFacebook}</Text>];
 		} 
 		else if (profileType === "linkedIn"){
-			return [<Text key = {0} style = {styles.infoType}>linkedin.com/in/</Text>,
-			<Text key = {1} style = {styles.info}>{this.state.newLinkedIn}</Text>];
+			return [<Text key = {0} style = {styles.infoType}>
+						linkedIn.com/in/</Text>,
+					<TextInput
+						style = {styles.infoInput}
+						placeholder = 'linkedIn'
+						onChangeText = {(text) => this.setState({newLinkedIn: text})}
+						value = {this.state.newLinkedIn}/>];
 		}
 		else if (profileType === "name") {
 			return <TextInput

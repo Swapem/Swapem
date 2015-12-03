@@ -122,7 +122,7 @@ class ContactsVC1 extends Component {
     {notes: contact.notes},
     {linkedIn: contact.linkedIn},
     ];
-
+    
     //var userNotes = "Facebook: " + contact.facebook + "\ LinkedIn: " + contact.LinkedIn + "\ Notes: " + contact.notes
     
     this.props.navigator.push({

@@ -277,7 +277,6 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 
 		function setSearchingToFalse() {
 			deviceLocation.set("searching", false);
-			alert("Device is no longer searching");
 			// If User's current location is successfully accessed then insert into db
 			return deviceLocation.save();
 		}
