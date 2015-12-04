@@ -69,7 +69,18 @@ var styles = StyleSheet.create({
     	margin: 10,
     	borderWidth: 1,
     	borderColor: '#000000',
-  	}
+  	},
+  	mapAnnotation: {
+		fontSize: 15,
+	},
+	mapAnnotationCell: {
+		alignItems: 'center',
+		backgroundColor: '#FFFFFF',
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		paddingBottom: 10,
+	},
 });
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -113,12 +124,13 @@ class ContactsVC2 extends Component {
 	render() {
 		return (
 			<ListView
-			renderFooter = {()=>{return <MapView 
+			renderFooter = {()=>{return [<MapView 
 				style={styles.map}
 				region={setRegion}
-          		annotations={[{latitude: this.state.latitude, longitude: this.state.longitude, subtitle: this.state.title}]}
+          		annotations={[{latitude: this.state.latitude, longitude: this.state.longitude}]}
           		maxDelta={1}           		
-          		/>
+          		/>,
+          		 <View style = {styles.mapAnnotationCell}><Text style = {styles.mapAnnotation}>Contact exchanged at: {this.state.title}</Text></View>];
           	}}
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
