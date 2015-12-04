@@ -47,6 +47,7 @@ class RequestsRootVC extends Component {
     );
   }
   refreshComponent() {
+    this.refs.nav.popToTop();
     this.refs.nav.replace({
       title: 'Requests',
       component: RequestsVC1,

@@ -116,7 +116,7 @@ class ContactsVC2 extends Component {
 			renderFooter = {()=>{return <MapView 
 				style={styles.map}
 				region={setRegion}
-          		annotations={[{latitude: this.state.latitude, longitude: this.state.longitude, title: this.state.title}]}
+          		annotations={[{latitude: this.state.latitude, longitude: this.state.longitude, subtitle: this.state.title}]}
           		maxDelta={1}           		
           		/>
           	}}

@@ -108,7 +108,6 @@ class RequestsVC1 extends Component {
         })
       })
     })
-
   }
   static accept() {
     DeviceUUID.getUUID().then((uuid) => {

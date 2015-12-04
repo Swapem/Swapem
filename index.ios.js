@@ -71,10 +71,10 @@ class Swapem extends Component {
       title = ''
       icon = {{uri:'Requests'}}
       selectedIcon = {{uri:'RequestsSelected'}}
-      selected = {this.state.selectedTab === 'RequestsRootViewController'}
+      selected = {this.state.selectedTab === 'RequestsRootVC'}
       onPress = {() => {
         this.setState({
-          selectedTab: 'RequestsRootViewController',
+          selectedTab: 'RequestsRootVC',
         });
       }}>
       <RequestsRootVC/>
