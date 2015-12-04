@@ -94,7 +94,7 @@ function makeEntryInTempSentContact(from, to, accepted, callback) {
 }
 
 /**
-* Retrieves a device from DeviceLocations with th supplied uuid.
+* Retrieves a device from DeviceLocations with the supplied uuid.
 */
 function retrieveDeviceWithUUID(uuid, callback) {
 	var query = new Parse.Query(DeviceLocations);
@@ -130,6 +130,34 @@ function postGPSLocation(uuid, geolocation, searching, callback) {
 			callback(error, null)
 		}
 	})
+}
+
+/**
+* Clean up: delete all entries in the device locations table.
+*/
+function clearDeviceLocationsTable(callback) {
+	var findAllEntries = new Parse.Query(DeviceLocations);
+	findAllEntries.notEqualTo("uuid", "nonExistingUUID");
+	findAllEntries.find({
+		success: function(result) {
+			for(var i=0; i<result.length; i++) {
+	            result[i].destroy({
+	                success: function(object) {
+	                    console.log("Delete job completed");
+	                    callback(null, object)
+	                },
+	                error: function(object, error) {
+	                    console.log("Delete job failed");
+	                    callback(error, null)
+	                }
+	            });
+        	}
+		},
+		error: function(error) {
+			console.log("Error while finding all entries during clearDeviceLocationsTable job");
+			callback(error, null)
+		}
+	});
 }
 
 // -------------------------------------------------------Test Cases--------------------------------------------------------
@@ -202,7 +230,7 @@ function testScanForNearbyUsers() {
 	var user1 = uniqueIdentifier;
 	var user1Name = "User1Name" + makeId(); 
 	var user2 = "User2" + makeId();
-	var geolocation = new Parse.GeoPoint({latitude: 40.785834, longitude: -30.406417});
+	//var geolocation = new Parse.GeoPoint({latitude: 40.785834, longitude: -30.406417});
 
 	parseDB.initializeGPSLocation(user1, (err1, results) => {
 		expectAsyncNoError('testScanForNearbyUsers/postGPSUser1', err1);
@@ -213,12 +241,29 @@ function testScanForNearbyUsers() {
 					expectAsyncNoError('testScanForNearbyUsers/scanForNearbyUsers', err3);
 					expectEqual(results[0].get('uuid'), user2, 'testScanForNearbyUsers/checkValues');
 					updateMessage('Scan for nearby users correctly retrived' + results[0].get('uuid'));
-					done();
+					updateMessage('Cleaning up after completing the tests...');
+					// End test class by cleaning up entries which were created for the tests.
+					clearDeviceLocationsTable((err4, results) => {
+						expectAsyncNoError('testCleanUp', err4);
+						// Give time to finish clearing table.
+						setTimeout(function() {
+						  done();
+						}, 5000);
+					});
 				});
 			});
 		})	
 	});
 }
+
+function delay(millis) {
+			var promise = new Parse.Promise();
+			setTimeout(function() {
+			  promise.resolve();
+			}, millis);
+
+			return promise;
+		}
 
 /**
 * Scenario: (a) User 1 send contact information to User2
