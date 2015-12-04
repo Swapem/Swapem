@@ -204,6 +204,7 @@ class SwapemVC1 extends Component {
 			linkedIn: profile[profileType].linkedIn,
 			notes: profile[profileType].notes,
 		};
+
 		this.props.navigator.push({
 			title: 'Customize',
 			component: SwapemVC2,

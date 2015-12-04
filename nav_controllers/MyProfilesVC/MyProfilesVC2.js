@@ -151,7 +151,7 @@ class MyProfilesVC2 extends Component {
 					this.setState({
 						newEmail: storedProfiles[i][this.props.profileName].email,
 						newFacebook: storedProfiles[i][this.props.profileName].facebook,
-						newLinkedIn: storedProfiles[i][this.props.profileName].linkedin,
+						newLinkedIn: storedProfiles[i][this.props.profileName].linkedIn,
 						newName: storedProfiles[i][this.props.profileName].name,
 						newNotes: storedProfiles[i][this.props.profileName].notes,
 						pic: storedProfiles[i][this.props.profileName].pic,
@@ -180,7 +180,7 @@ class MyProfilesVC2 extends Component {
 						phone: instance.state.newPhone,
 						email: instance.state.newEmail,
 						facebook: instance.state.newFacebook,
-						linkedin: instance.state.newLinkedIn,
+						linkedIn: instance.state.newLinkedIn,
 						notes: instance.state.newNotes,
 						pic: instance.state.pic};
 					storedProfile[storedProfileName] = newProfileInfo;

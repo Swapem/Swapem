@@ -211,7 +211,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 				if (typeof notes !== "undefined") {
 					tempSentContact.set("notes", notes);
 				}
-				if (typeof linkedin !== "undefined") {
+				if (typeof linkedIn !== "undefined") {
 					tempSentContact.set("linkedIn", linkedIn);
 				}
 				if (typeof pic !== "undefined") {
