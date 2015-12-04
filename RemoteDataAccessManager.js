@@ -300,7 +300,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 	* Note that the 9s wait allows other users nearby to start scanning and persist their data
 	*/
 	this.scanForNearbyUsers = function(userName, callback) {
-		alert("Searching for Nearby Users...");
+		// alert("Searching for Nearby Users...");
 		var DeviceLocations = Parse.Object.extend("DeviceLocations");
 		var query = new Parse.Query(DeviceLocations);
 		query.equalTo("uuid", uniqueIdentifier);
@@ -323,7 +323,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 			}).then(function() {
 				return queryForUsersNearby();
 			}).then(function(results) {
-				alert("Number of Users Found Nearby: " + results.length);
+				// alert("Number of Users Found Nearby: " + results.length);
 				callback(null, results)
 				return saveLocallyUsersNearbyResults(results);
 			}).then(function() {
