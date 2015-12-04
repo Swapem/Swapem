@@ -373,7 +373,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 			query.notEqualTo("uuid", uniqueIdentifier);
 			query.equalTo("searching", true);
 			query.select("name", "uuid");
-			query.withinKilometers("location", currentGeolocation, 10);
+			query.withinKilometers("location", currentGeolocation, 100);
 
 			return query.find();
 		}
