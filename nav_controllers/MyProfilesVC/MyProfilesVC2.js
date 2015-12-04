@@ -6,6 +6,8 @@ var FBSDKLogin = require('react-native-fbsdklogin');
 var FBSDKCore = require('react-native-fbsdkcore');
 var FBURL;
 var FBName;
+var str;
+var res;
 
 var {
 	AsyncStorage,
@@ -103,17 +105,6 @@ var options = {
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-// var fetchUrlRequest = new FBSDKGraphRequest ((error, result) => {fetch
-//   if (error) {
-//     alert('Error making request');
-//     } else {
-//       console.log('FBSDKGraphRequest', error, result);
-//       // alert(JSON.stringify(result.link));
-//       FBURL = (result.link);
-//       FBName = (JSON.stringify(result.name));
-//       }
-//     }, 'me?fields=link,name');
-
 var instance
 
 class MyProfilesVC2 extends Component {
@@ -151,7 +142,7 @@ class MyProfilesVC2 extends Component {
 					this.setState({
 						newEmail: storedProfiles[i][this.props.profileName].email,
 						newFacebook: storedProfiles[i][this.props.profileName].facebook,
-						newLinkedIn: storedProfiles[i][this.props.profileName].linkedIn,
+						newLinkedIn: storedProfiles[i][this.props.profileName].linkedin,
 						newName: storedProfiles[i][this.props.profileName].name,
 						newNotes: storedProfiles[i][this.props.profileName].notes,
 						pic: storedProfiles[i][this.props.profileName].pic,
@@ -180,7 +171,7 @@ class MyProfilesVC2 extends Component {
 						phone: instance.state.newPhone,
 						email: instance.state.newEmail,
 						facebook: instance.state.newFacebook,
-						linkedIn: instance.state.newLinkedIn,
+						linkedin: instance.state.newLinkedIn,
 						notes: instance.state.newNotes,
 						pic: instance.state.pic};
 					storedProfile[storedProfileName] = newProfileInfo;
@@ -255,6 +246,7 @@ class MyProfilesVC2 extends Component {
 				activeOpacity = {(() => {
 					switch (profileType) {
 						case 'facebook': return;
+						case 'linkedIn': return;
 						default: return 1;
 					}})()}
 				onPress = {(event) => {
@@ -264,19 +256,23 @@ class MyProfilesVC2 extends Component {
 							this.setState({
 								fbLogin: false});
 							this.logIntoFacebook();
-							// this.fetchFacebookURL();
 							this.setState({
 								fbLogin: true,
 							});
 						}
 						else {
 							console.log("FBURL: "+FBURL);
+							str = JSON.stringify(FBURL);
+							res = str.substr(26);
 							LinkingIOS.openURL(FBURL);
 							// this.logOutFacebook();
 							// this.setState({
 							// 	fbLogin: false,
 							// });
 						}
+					}
+					else if (profileType === 'linkedIn') {
+						// LinkedIn code
 					}
 					else {
 						return;
@@ -285,6 +281,7 @@ class MyProfilesVC2 extends Component {
 				underlayColor = {(() => {
 					switch (profileType) {
 						case 'facebook': return '#2980B9';
+						case 'linkedIn': return '#2980B9';
 						default: return;
 					}})()}>
 				<View>
@@ -311,6 +308,7 @@ class MyProfilesVC2 extends Component {
 			);
 		}
 	}
+
 	logIntoFacebook() {
 		// Attempt a login using the native login dialog asking for default permissions.
 		FBSDKLoginManager.setLoginBehavior('native');
@@ -324,18 +322,9 @@ class MyProfilesVC2 extends Component {
 					alert('Logged in');
 					var token = new FBSDKAccessToken.getCurrentAccessToken(token => 
                       console.log (token, 'Type of Token is:' + typeof token));
-					var fetchUrlRequest = new FBSDKGraphRequest ((error, result) => {fetch
-  if (error) {
-    alert('Error making request');
-    } else {
-      console.log('FBSDKGraphRequest', error, result);
-      // alert(JSON.stringify(result.link));
-      FBURL = (result.link);
-      FBName = (JSON.stringify(result.name));
-      }
-    }, 'me?fields=link,name');
-					FBSDKGraphRequestManager.batchRequests([fetchUrlRequest], function() {}, 60);
-					console.log("FBURL: "+FBURL);
+					// FBSDKGraphRequestManager.batchRequests([fetchUrlRequest], function() {}, 60);
+					// console.log("FBURL: "+FBURL);
+					this.fetchFacebookURL();
 				}
 			}
 		});
@@ -345,32 +334,45 @@ class MyProfilesVC2 extends Component {
 		FBSDKLoginManager.logOut();
 	}
 
-	// fetchFacebookURL() {
-	// 	FBSDKGraphRequestManager.batchRequests([fetchUrlRequest], function() {}, 60);
-	// 	console.log(FBURL);
-	// }
+
+// var fetchUrlRequest = new FBSDKGraphRequest ((error, result) => {fetch
+//   if (error) {
+//     alert('Error making request');
+//     } else {
+//       FBURL = (result.link);
+//       FBName = (JSON.stringify(result.name));
+//       }
+//     }, 'me?fields=link,name');
+
+	fetchFacebookURL() {
+		var fetchUrlRequest = new FBSDKGraphRequest ((error, result) => {fetch
+  			if (error) {
+    		alert('Error making request');
+    		} else {
+     			FBURL = (result.link);
+    		  	FBName = (JSON.stringify(result.name));
+    		  }
+    		}, 'me?fields=link,name');
+		FBSDKGraphRequestManager.batchRequests([fetchUrlRequest], function() {}, 60);
+		console.log("FBURL is:" + FBURL);
+	}
 
 	renderProfile(profileType) {
 		if (profileType === "email"){
 			return <TextInput
-				style = {styles.infoInput}
-				placeholder = 'Email'
-				onChangeText = {(text) => this.setState({newEmail: text})}
-				value = {this.state.newEmail}/>
+			style = {styles.infoInput}
+			placeholder = 'Email'
+			onChangeText = {(text) => this.setState({newEmail: text})}
+			value = {this.state.newEmail}/>
 		}
 		else if (profileType === "facebook") {
 			return [<Text key = {0} style = {styles.infoType}>
-						facebook.com/{FBName}</Text>,
-			<Text key = {1} style = {styles.info}>{this.state.newFacebook}</Text>];
+						facebook.com/</Text>,
+			<Text key = {1} style = {styles.info}>{res}</Text>];
 		} 
 		else if (profileType === "linkedIn"){
-			return [<Text key = {0} style = {styles.infoType}>
-						linkedIn.com/in/</Text>,
-					<TextInput
-						style = {styles.infoInput}
-						placeholder = 'linkedIn'
-						onChangeText = {(text) => this.setState({newLinkedIn: text})}
-						value = {this.state.newLinkedIn}/>];
+			return [<Text key = {0} style = {styles.infoType}>linkedin.com/in/</Text>,
+			<Text key = {1} style = {styles.info}>{this.state.newLinkedIn}</Text>];
 		}
 		else if (profileType === "name") {
 			return <TextInput
