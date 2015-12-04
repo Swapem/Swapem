@@ -1,11 +1,10 @@
 'use strict';
 
 var React = require('react-native');
-var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemVC2 = require('./SwapemVC2')
 var SwapemVC3 = require('./SwapemVC3')
+var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
 var Keys = require('./../../Keys');
-
 
 var {
 	AsyncStorage,
@@ -176,10 +175,7 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				parseDB.scanForNearbyUsers(profile[profileType].name, (error, results) => {
-					parseDB.stopSearching();
-					this.showResults(selectedProfileToSend);
-				});
+				this.showResults(selectedProfileToSend,profile,profileType);
 		    },
 			passProps: {
 				profile: profile,
@@ -189,7 +185,7 @@ class SwapemVC1 extends Component {
 			},
 		})
 	}
-	showResults(selectedProfileToSend) {
+	showResults(selectedProfileToSend,profile,profileType) {
 		this.props.navigator.push({
 			title: 'Nearby Devices',
 			component: SwapemVC3,
@@ -206,8 +202,11 @@ class SwapemVC1 extends Component {
 				   parseDB.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
 			   	}).done();
 			   	this.props.navigator.popToTop();
-
-			}
+			},
+			passProps: {
+				profile: profile,
+				profileType: profileType,
+			},
 		});
 	}
 }

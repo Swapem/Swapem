@@ -1,8 +1,11 @@
 'use strict';
 
 var React = require('react-native');
+var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
+var Keys = require('./../../Keys');
 
 var {
+  ActivityIndicatorIOS,
   StyleSheet,
   Component,
   ListView,
@@ -39,6 +42,12 @@ var styles = StyleSheet.create({
   content: {
       flex: 1,
   },
+  loading: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   icon: {
     height: 40,
     marginLeft: 5,
@@ -55,31 +64,50 @@ var styles = StyleSheet.create({
    },
  });
 
+var parseDB = new RemoteDataAccessManager(Keys.parseAppKey, Keys.parseJsKey);
+
 class SwapemVC3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2}),
+      loading: true,
     };
   }
-  
   componentDidMount() {
-    AsyncStorage.getItem('nearbyDevices').then((value) => {
-      var nearbyUsers;
-      if (value === null) {
-        nearbyUsers = [];
-      }
-      else {
-        nearbyUsers = JSON.parse(value);
-      }
-      console.log("value of asyncStorage nearby users: " + nearbyUsers);
-      this.setState({
+    parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
+      parseDB.stopSearching();
+        AsyncStorage.getItem('nearbyDevices').then((value) => {
+        var nearbyUsers;
+        if (value === null) {
+          nearbyUsers = [];
+        }
+        else {
+          nearbyUsers = JSON.parse(value);
+        }
+        console.log("value of asyncStorage nearby users: " + nearbyUsers);
+        this.setState({
           dataSource: this.state.dataSource.cloneWithRows(nearbyUsers),
+          loading: false,
         });
-   }).done();
+      }).done();
+    });
   }
-
+  renderLoadingView() {
+    return (
+      <View style = {styles.loading}>
+        <ActivityIndicatorIOS
+        animating = {true}
+        style = {[styles.centering, {height: 80}]}
+        size = 'large'
+        />
+      </View>
+    );
+  }
   render() {
+    if (this.state.loading) {
+      return this.renderLoadingView();
+    }
     return (
       <View style={styles.content}>
       <ListView
@@ -89,17 +117,6 @@ class SwapemVC3 extends Component {
       </View>
     );
   }
-
-  renderLoadingView() {
-      return (
-        <View style={styles.cell}>
-          <Text>
-            Looking for nearby devices...
-          </Text>
-        </View>
-      );
-  }
-
   renderNearbyDevice(nearbyDevice) {
     // e.g. nearbyDevice = {name: 'Junoh Lee', uuid: '0000',}
     return (
