@@ -23,7 +23,6 @@ class ContactsRootVC extends Component {
   // i.e. new VC is selected for TabBarIOS.Item in index.ios
   componentWillReceiveProps() {
     this.refreshComponent();
-    alert('hi');
   }
   render() {
     return (
