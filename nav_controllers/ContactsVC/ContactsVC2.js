@@ -8,6 +8,7 @@ var {
 } = require('react-native');
 
 var {
+	LinkingIOS,
 	StyleSheet,
 	Component,
 	ListView,
@@ -53,6 +54,9 @@ var styles = StyleSheet.create({
 		width: 40,
 	},
 	info: {
+		fontSize: 15,
+	},
+	infoType: {
 		color: '#2C3E50',
 		fontSize: 15,
 		fontWeight: 'bold',
@@ -161,17 +165,17 @@ class ContactsVC2 extends Component {
 		return (
 			<TouchableHighlight
 				onPress = {(event) => {
-					if (this.selectedInfo.includes(contactInfoItem)) {
-						var index = this.selectedInfo.indexOf(contactInfoItem);
-						this.selectedInfo.splice(index, 1);
+					if (contactInfoKey === 'facebook') {
+						var facebookURL = 'http://www.facebook.com/' + contactInfoItem.facebook;
+						LinkingIOS.openURL(facebookURL);
+					}
+					else if (contactInfoKey === 'linkedIn') {
+						var linkedInURL = 'http://www.linkedin.com/in/' + contactInfoItem.linkedIn;
+						LinkingIOS.openURL(linkedInURL);
 					}
 					else {
-						this.selectedInfo.splice(index, 0, contactInfoItem);
+						return;
 					}
-					// update tableview data
-					this.setState({
-						dataSource: ds.cloneWithRows(this.contactInfo),
-					});
 				}} 
 				underlayColor = '#2980B9'>
 				<View>
@@ -195,22 +199,17 @@ class ContactsVC2 extends Component {
 						<View style = {styles.content}>
 							{(() => {
 								switch (contactInfoKey) {
-									case 'facebook': return <Text style = {styles.info}>facebook.com/</Text>;
+									case 'facebook': return [<Text key = {0} style = {styles.infoType}>facebook.com/</Text>,
+									<Text key = {1} style = {styles.info}>{contactInfoItem.facebook}</Text>];
+									case 'linkedIn': return [<Text key = {0} style = {styles.infoType}>linkedIn.com/in/</Text>,
+									<Text key = {1} style = {styles.info}>{contactInfoItem.linkedIn}</Text>];
+									case 'email': return <Text style = {styles.item}>{contactInfoItem.email}</Text>
+									case 'name': return <Text style = {styles.item}>{contactInfoItem.name}</Text>
+									case 'notes': return <Text style = {styles.item}>{contactInfoItem.notes}</Text>
+									case 'phone': return <Text style = {styles.item}>{contactInfoItem.phone}</Text>
 									default: return;
 								}})()
 							}
-							<Text style = {styles.item}>
-								{(() => {
-								switch (contactInfoKey) {
-									case 'name': return (contactInfoItem.name);
-									case 'email': return (contactInfoItem.email);
-									case 'facebook': return (contactInfoItem.facebook);
-									case 'linkedIn': return (contactInfoItem.linkedIn);
-									case 'notes': return (contactInfoItem.notes);
-									case 'phone': return (contactInfoItem.phone);
-									default: return;
-								}})()}
-							</Text>
 						</View>
 						<View>
 						{this.renderCheckmark(contactInfoKey)}

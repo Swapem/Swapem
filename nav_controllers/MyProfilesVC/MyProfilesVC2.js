@@ -58,18 +58,19 @@ var styles = StyleSheet.create({
 		tintColor: '#3498DB',
 		width: 40,
 	},
+	info: {
+		fontSize: 15,
+		height: 22.5,
+	},
+	infoInput: {
+		fontSize: 20,
+		height: 30,
+	},
 	infoType: {
 		color: '#2C3E50',
 		fontSize: 15,
 		fontWeight: 'bold',
 		marginBottom: 5,
-	},
-	info: {
-		fontSize: 20,
-	},
-	infoInput: {
-		fontSize: 20,
-		height: 30,
 	},
 	pic: {
 		borderColor: '#E0E0E0',
@@ -119,10 +120,6 @@ class MyProfilesVC2 extends Component {
 			newName: this.props.profileInfo[0].name,
 			newNotes: this.props.profileInfo[5].notes,
 			newPhone: this.props.profileInfo[1].phone,
-			oldEmail: this.props.profileInfo[2].email,
-			oldFacebook: this.props.profileInfo[3].facebook,
-			oldName: this.props.profileInfo[0].name,
-			oldPhone: this.props.profileInfo[1].phone,
 			pic: this.props.profileInfo[6].pic,
 			profileName: this.props.profileName,
 		};
@@ -245,35 +242,35 @@ class MyProfilesVC2 extends Component {
 				<TouchableHighlight
 				activeOpacity = {(() => {
 					switch (profileType) {
-						case 'facebook': return;
+						// case 'facebook': return;
 						default: return 1;
 					}})()}
-				onPress = {(event) => {
-					if (profileType === 'facebook') {
-						if (!this.state.fbLogin) {
-							this.logOutFacebook();
-							this.setState({
-								fbLogin: false});
-							this.logIntoFacebook();
-							this.setState({
-								fbLogin: true,
-							});
-						}
-						else {
-							console.log("FBURL: "+FBURL);
-							str = JSON.stringify(FBURL);
-							res = str.substr(26);
-							LinkingIOS.openURL(FBURL);
-							// this.logOutFacebook();
-							// this.setState({
-							// 	fbLogin: false,
-							// });
-						}
-					}
-					else {
-						return;
-					}
-				}}
+				// onPress = {(event) => {
+				// 	if (profileType === 'facebook') {
+				// 		if (!this.state.fbLogin) {
+				// 			this.logOutFacebook();
+				// 			this.setState({
+				// 				fbLogin: false});
+				// 			this.logIntoFacebook();
+				// 			this.setState({
+				// 				fbLogin: true,
+				// 			});
+				// 		}
+				// 		else {
+				// 			console.log("FBURL: "+FBURL);
+				// 			str = JSON.stringify(FBURL);
+				// 			res = str.substr(26);
+				// 			LinkingIOS.openURL(FBURL);
+				// 			// this.logOutFacebook();
+				// 			// this.setState({
+				// 			// 	fbLogin: false,
+				// 			// });
+				// 		}
+				// 	}
+				// 	else {
+				// 		return;
+				// 	}
+				// }}
 				underlayColor = {(() => {
 					switch (profileType) {
 						case 'facebook': return '#2980B9';
@@ -363,14 +360,18 @@ class MyProfilesVC2 extends Component {
 		else if (profileType === "facebook") {
 			return [<Text key = {0} style = {styles.infoType}>
 						facebook.com/</Text>,
-			<Text key = {1} style = {styles.info}>{res}</Text>];
-		} 
+					<TextInput
+						style = {styles.info}
+						placeholder = 'Facebook URL'
+						onChangeText = {(text) => this.setState({newFacebook: text})}
+						value = {this.state.newFacebook}/>];
+		}
 		else if (profileType === "linkedIn"){
 			return [<Text key = {0} style = {styles.infoType}>
-						linkedIn.com/in/</Text>,
+						linkedin.com/in/</Text>,
 					<TextInput
-						style = {styles.infoInput}
-						placeholder = 'linkedIn'
+						style = {styles.info}
+						placeholder = 'LinkedIn URL'
 						onChangeText = {(text) => this.setState({newLinkedIn: text})}
 						value = {this.state.newLinkedIn}/>];
 		}
