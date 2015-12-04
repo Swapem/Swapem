@@ -176,9 +176,9 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
+				parseDB.scanForNearbyUsers(profile[profileType].name, (error, results) => {
 					parseDB.stopSearching();
-					this.showResults(this.props.selectedProfileToSend);
+					this.showResults(selectedProfileToSend);
 				});
 		    },
 			passProps: {
