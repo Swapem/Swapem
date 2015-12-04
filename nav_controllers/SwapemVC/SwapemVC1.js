@@ -1,7 +1,11 @@
 'use strict';
 
 var React = require('react-native');
+var RemoteDataAccessManager = require('./../../RemoteDataAccessManager');
 var SwapemVC2 = require('./SwapemVC2')
+var SwapemVC3 = require('./SwapemVC3')
+var Keys = require('./../../Keys');
+
 
 var {
 	AsyncStorage,
@@ -63,6 +67,8 @@ var testNearbyDevices =[
 ];
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+var parseDB = new RemoteDataAccessManager(Keys.parseAppKey, Keys.parseJsKey);
 
 class SwapemVC1 extends Component {
 	constructor(props) {
@@ -170,7 +176,9 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				this.refreshComponent(profile);
+				parseDB.scanForNearbyUsers(profile[profileType].name, (error, results) => {
+					this.showResults(selectedProfileToSend);
+				});
 		    },
 			passProps: {
 				profile: profile,
@@ -180,50 +188,24 @@ class SwapemVC1 extends Component {
 			},
 		})
 	}
-	refreshComponent(profile) {
-		var profileType = Object.keys(profile).toString();
-
-		var profileInfo = [
-			{pic: profile[profileType].pic},
-			{name: profile[profileType].name},
-			{phone: profile[profileType].phone},
-			{email: profile[profileType].email},
-			{facebook: profile[profileType].facebook},
-			{linkedIn: profile[profileType].linkedIn},
-			{notes: profile[profileType].notes},
-		];
-		// profileDetails formatting is depended on by the next VC
-		// this selectedProfileToSend is much easier to send.
-		// TODO: Consolidate formatting into one.
-		var selectedProfileToSend = {
-			pic: profile[profileType].pic,
-			name: profile[profileType].name, 
-			phone: profile[profileType].phone, 
-			email: profile[profileType].email,
-			facebook: profile[profileType].facebook,
-			linkedIn: profile[profileType].linkedIn,
-			notes: profile[profileType].notes,
-		};
-
+	showResults(selectedProfileToSend) {
 		this.props.navigator.push({
-			title: 'Customize',
-			component: SwapemVC2,
-			leftButtonIcon: {uri:'Back'},
+			title: 'Nearby Devices',
+			component: SwapemVC3,
+			leftButtonTitle: 'Cancel',
 			onLeftButtonPress: () => {
-				this.props.navigator.pop();
+				this.props.navigator.popToTop();
 			},
-			rightButtonTitle: 'Scan',
+			rightButtonTitle: 'Send',
 			onRightButtonPress: () => {
-				this.refreshComponent(profile);
-		    },
-			passProps: {
-				profile: profile,
-				profileInfo: profileInfo,
-				profileType: profileType,
-				refresh: true,
-				selectedProfileToSend: selectedProfileToSend,
-			},
-		})
+				AsyncStorage.getItem('nearbyDevices').then((selectedUsers) => {
+			       // Send contact information to chosen users
+			       // TODO: Currently sending info to all nearby devices rather than selected
+				   console.log("contact information sent to: " + JSON.stringify(selectedUsers));
+				   parseDB.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
+			   }).done();
+			}
+		});
 	}
 }
 
