@@ -176,8 +176,9 @@ class SwapemVC1 extends Component {
 			},
 			rightButtonTitle: 'Scan',
 			onRightButtonPress: () => {
-				parseDB.scanForNearbyUsers(profile[profileType].name, (error, results) => {
-					this.showResults(selectedProfileToSend);
+				parseDB.scanForNearbyUsers(this.props.profile[this.props.profileType].name, (error, results) => {
+					parseDB.stopSearching();
+					this.showResults(this.props.selectedProfileToSend);
 				});
 		    },
 			passProps: {
@@ -203,7 +204,9 @@ class SwapemVC1 extends Component {
 			       // TODO: Currently sending info to all nearby devices rather than selected
 				   console.log("contact information sent to: " + JSON.stringify(selectedUsers));
 				   parseDB.sendContactInfoToSelectedUsers(selectedProfileToSend, selectedUsers);
-			   }).done();
+			   	}).done();
+			   	this.props.navigator.popToTop();
+
 			}
 		});
 	}
