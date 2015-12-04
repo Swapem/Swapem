@@ -158,12 +158,7 @@ class SwapemVC2 extends Component {
 		}
 	}
 	renderCheckmark(profileType) {
-		if (profileType === 'name') {
-			return;
-		}
-		else {
-			return <Image source = {{uri: 'Checkmark'}} style = {styles.checkmark}/>
-		}
+		return <Image source = {{uri: 'Checkmark'}} style = {styles.checkmark}/>
 	}
 }
 

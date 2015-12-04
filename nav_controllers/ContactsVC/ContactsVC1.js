@@ -121,14 +121,14 @@ class ContactsVC1 extends Component {
 	}
   showContactInfo(contact) {
     var contactInfo = [
+    {pic: contact.pic},
     {name: contact.name},
+    {notes: contact.notes},
     {phone: contact.phone},
     {email: contact.email},
     {facebook: contact.facebook},
-    {pic: contact.pic},
-    {location: contact.location},
-    {notes: contact.notes},
     {linkedIn: contact.linkedIn},
+    {location: contact.location},
     ];
     
     //var userNotes = "Facebook: " + contact.facebook + "\ LinkedIn: " + contact.LinkedIn + "\ Notes: " + contact.notes

@@ -38,6 +38,13 @@ var styles = StyleSheet.create({
 		tintColor: '#3498DB',
 		width: 20,
 	},
+	defaultPic:{
+		height: 40,
+		marginLeft: 5,
+		marginRight: 15,
+		tintColor: '#E0E0E0',
+		width: 40,
+	},
 	icon: {
 		height: 40,
 		marginLeft: 5,
@@ -58,12 +65,6 @@ var styles = StyleSheet.create({
 	item: {
 		fontSize: 20,
 	},
-	profilepic:{
-		height: 40,
-		marginLeft: 5,
-		marginRight: 15,
-		width: 40,
-	},
 	map: {
     	height: 150,
     	margin: 10,
@@ -80,6 +81,15 @@ var styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		paddingBottom: 10,
+	},
+	pic: {
+		borderColor: '#E0E0E0',
+		borderRadius: 20,
+		borderWidth: 1.5,
+		height: 40,
+		marginLeft: 5,
+		marginRight: 15,
+		width: 40,
 	},
 });
 
@@ -98,26 +108,27 @@ class ContactsVC2 extends Component {
 		super(props);
 		this.state = {
 			dataSource: ds.cloneWithRows(this.props.contactInfo),
-			latitude: this.props.contactInfo[5].location.latitude,
-			longitude: this.props.contactInfo[5].location.longitude,
-			title: 'place holder',
+			latitude: this.props.contactInfo[7].location.latitude,
+			longitude: this.props.contactInfo[7].location.longitude,
+			title: {},
+			pic: this.props.contactInfo[0].pic,
 		}
 		this.contactInfo = this.props.contactInfo;
-		setRegion.latitude = this.props.contactInfo[5].location.latitude
-		setRegion.longitude = this.props.contactInfo[5].location.longitude
 		this.selectedInfo = this.contactInfo.slice();
+		setRegion.latitude = this.props.contactInfo[7].location.latitude
+		setRegion.longitude = this.props.contactInfo[7].location.longitude
 	}
 	componentDidMount(){
 		let location = {latitude: undefined, longitude: undefined}
-		location.latitude = this.props.contactInfo[5].location.latitude
-		location.longitude = this.props.contactInfo[5].location.longitude
+		location.latitude = this.props.contactInfo[7].location.latitude
+		location.longitude = this.props.contactInfo[7].location.longitude
 		RNGeocoder.reverseGeocodeLocation(location, (err, result) => {
 			if (err) {
 				console.log("Error is: " + err);
 				return;
 			}
 			this.setState({
-				title: JSON.stringify(result[0].name)
+				title: result[0].name
 			})
 		})
 	}
@@ -130,7 +141,7 @@ class ContactsVC2 extends Component {
           		annotations={[{latitude: this.state.latitude, longitude: this.state.longitude}]}
           		maxDelta={1}           		
           		/>,
-          		 <View style = {styles.mapAnnotationCell}><Text style = {styles.mapAnnotation}>Contact exchanged at: {this.state.title}</Text></View>];
+          		 <View style = {styles.mapAnnotationCell}><Text style = {styles.mapAnnotation}>{this.state.title}</Text></View>];
           	}}
 			dataSource = {this.state.dataSource}
 			renderRow = {this.renderRequest.bind(this)}
@@ -144,7 +155,7 @@ class ContactsVC2 extends Component {
 		if(contactInfoKey === 'location'){
 			return <View style={{height:0}}></View>
 		}
-		if(contactInfoKey === 'pic' && !contactInfoItem.pic){
+		if(contactInfoKey === 'pic'){
 			return <View style={{height:0}}></View>
 		}
 		return (
@@ -168,15 +179,19 @@ class ContactsVC2 extends Component {
 						<Image
 							source = {(() => {
 								switch (contactInfoKey) {
+									case 'name': return this.state.pic ? {uri: this.state.pic.url} : {uri: 'Pic'};
 									case 'email': return {uri:'Email'};
 									case 'facebook': return {uri:'Facebook'};
 									case 'linkedIn': return {uri: 'LinkedIn'};
 									case 'notes': return {uri: 'Notes'};
 									case 'phone': return {uri:'Phone'};
-									case 'pic': return {uri: contactInfoItem.pic.url};
-									default: return {uri:'Person'};
+									default: return;
 								}})()}
-							style = {contactInfoKey === 'pic' ? styles.profilepic:styles.icon} />
+							style = {(() => {
+								switch (contactInfoKey) {
+									case 'name': return this.state.pic ? styles.pic : styles.defaultPic;
+									default: return styles.icon;
+							}})()}/>
 						<View style = {styles.content}>
 							{(() => {
 								switch (contactInfoKey) {
@@ -187,29 +202,32 @@ class ContactsVC2 extends Component {
 							<Text style = {styles.item}>
 								{(() => {
 								switch (contactInfoKey) {
+									case 'name': return (contactInfoItem.name);
 									case 'email': return (contactInfoItem.email);
 									case 'facebook': return (contactInfoItem.facebook);
 									case 'linkedIn': return (contactInfoItem.linkedIn);
 									case 'notes': return (contactInfoItem.notes);
 									case 'phone': return (contactInfoItem.phone);
-									case 'pic': return 'Profile Picture';
-									default: return (contactInfoItem.name);
+									default: return;
 								}})()}
 							</Text>
 						</View>
 						<View>
-						{(() => {
-							switch (this.selectedInfo.includes(contactInfoItem)) {
-								case false: return;
-								default: return <Image source = {{uri:'Checkmark'}} style = {styles.checkmark} />;
-							}})()
-						}
+						{this.renderCheckmark(contactInfoKey)}
 						</View>
 					</View>
 					<View style = {styles.separator} />
 				</View>
 			</TouchableHighlight>
 		);
+	}
+	renderCheckmark(contactInfoKey) {
+		if ( (contactInfoKey === 'facebook') || (contactInfoKey === 'linkedIn') || (contactInfoKey === 'notes') ) {
+			return;
+		}
+		else {
+			return <Image source = {{uri: 'Checkmark'}} style = {styles.checkmark}/>
+		}
 	}
 }
 
