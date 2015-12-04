@@ -250,7 +250,7 @@ function RemoteDataAccessManager (applicationKey, jsKey) {
 				return checkForExistingEntry(results);
 			})
 			.then(function() {
-				return delay(30000);
+				return delay(20000);
 			}).then(function() {
 				return setSearchingToFalse();
 			}).then(function() {
